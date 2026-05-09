@@ -4,7 +4,7 @@ const iconMap: Record<string, any> = { Star, Users, ShieldCheck, Award };
 
 interface TrustBarData {
   isVisible: boolean;
-  items: { value: string; label: string }[];
+  items: readonly { value: string; label: string }[];
 }
 
 export function TrustBar({ data }: { data: TrustBarData }) {

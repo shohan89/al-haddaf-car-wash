@@ -16,9 +16,9 @@ export default async function AreasIndexPage() {
       orderBy: { order: 'asc' },
       select: {
         id: true,
-        name: true,
+        title: true,
         slug: true,
-        address: true,
+        shortDescription: true,
       }
     }),
     getPageSeo('page:areas'),

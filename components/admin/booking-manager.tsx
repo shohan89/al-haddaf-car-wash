@@ -64,7 +64,7 @@ export function BookingManager({ bookings }: BookingManagerProps) {
           {['ALL', 'PENDING', 'CONFIRMED', 'COMPLETED', 'CANCELLED'].map((s) => (
             <Button
               key={s}
-              variant={filter === s ? 'default' : 'outline'}
+              variant={filter === s ? 'primary' : 'outline'}
               size="sm"
               onClick={() => setFilter(s)}
               className="text-xs font-bold"

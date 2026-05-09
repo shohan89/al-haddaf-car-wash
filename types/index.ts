@@ -15,7 +15,7 @@ export type Service = {
   image: string
   features: string[]
   benefits: string[]
-  faqs: { question: string; answer: string }[]
+  faqs?: { question: string; answer: string }[]
   isPopular?: boolean
   metaTitle: string
   metaDescription: string
@@ -24,14 +24,14 @@ export type Service = {
 export type Area = {
   id: string
   slug: string
-  name: string
   title: string
-  description: string
-  longDescription: string
-  highlights: string[]
-  faqs: { question: string; answer: string }[]
-  metaTitle: string
-  metaDescription: string
+  shortDescription: string
+  fullDescription: string
+  image?: string | null
+  highlights?: string[]
+  faqs?: { question: string; answer: string }[]
+  metaTitle?: string | null
+  metaDescription?: string | null
 }
 
 export type Review = {

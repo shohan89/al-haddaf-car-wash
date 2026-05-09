@@ -1,7 +1,7 @@
 'use server';
 
 import prisma from '@/lib/db';
-import { revalidatePath, unstable_cache } from 'next/cache';
+import { revalidatePath, revalidateTag, unstable_cache } from 'next/cache';
 import { SITE_SETTINGS_DEFAULTS, type SiteSettingsKey } from '@/data/site-settings-defaults';
 
 const KEY_PREFIX = 'site.';
@@ -45,8 +45,7 @@ export async function saveSiteSection(section: SiteSettingsKey, value: any) {
     });
     revalidatePath('/');
     revalidatePath('/admin/settings');
-    const { revalidateTag } = await import('next/cache');
-    revalidateTag('settings');
+    revalidateTag('settings', 'max');
     return { success: true };
   } catch (error) {
     console.error('Error saving site setting:', error);

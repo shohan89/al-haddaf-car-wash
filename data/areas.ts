@@ -4,10 +4,9 @@ export const areas: Area[] = [
   {
     id: 'dubai-marina',
     slug: 'dubai-marina',
-    name: 'Dubai Marina',
-    title: 'Premium Mobile Car Wash in Dubai Marina',
-    description: "Dubai's #1 mobile car detailing service available right at your doorstep in Dubai Marina.",
-    longDescription: "Al Haddaf provides luxury mobile car wash services across the entire Dubai Marina area. Whether you're parked at Marina Gate, Princess Tower, or the Address Marina, our professional team arrives fully equipped to give your vehicle a showroom shine while you enjoy the waterfront lifestyle.",
+    title: 'Dubai Marina',
+    shortDescription: "Dubai's #1 mobile car detailing service available right at your doorstep in Dubai Marina.",
+    fullDescription: "Al Haddaf provides luxury mobile car wash services across the entire Dubai Marina area. Whether you're parked at Marina Gate, Princess Tower, or the Address Marina, our professional team arrives fully equipped to give your vehicle a showroom shine while you enjoy the waterfront lifestyle.",
     highlights: [
       'Serving all Marina residential towers',
       'Fast response times (under 45 mins)',
@@ -30,10 +29,9 @@ export const areas: Area[] = [
   {
     id: 'downtown-dubai',
     slug: 'downtown-dubai',
-    name: 'Downtown Dubai',
-    title: 'Professional Car Detailing in Downtown Dubai',
-    description: 'Expert mobile car care services for residents and offices in Downtown Dubai and Burj Khalifa area.',
-    longDescription: 'In the heart of the city, Al Haddaf delivers unmatched detailing quality. We serve all major developments in Downtown Dubai, including Old Town, The Residences, and commercial hubs. Our steam cleaning technology is perfect for the upscale Downtown lifestyle.',
+    title: 'Downtown Dubai',
+    shortDescription: 'Expert mobile car care services for residents and offices in Downtown Dubai and Burj Khalifa area.',
+    fullDescription: 'In the heart of the city, Al Haddaf delivers unmatched detailing quality. We serve all major developments in Downtown Dubai, including Old Town, The Residences, and commercial hubs. Our steam cleaning technology is perfect for the upscale Downtown lifestyle.',
     highlights: [
       'Burj Khalifa district coverage',
       'Underground parking friendly units',
@@ -52,10 +50,9 @@ export const areas: Area[] = [
   {
     id: 'business-bay',
     slug: 'business-bay',
-    name: 'Business Bay',
-    title: 'Mobile Car Detailing & Wash Business Bay',
-    description: 'The preferred mobile car wash partner for Business Bay residents and professionals.',
-    longDescription: 'Al Haddaf understands the fast-paced life of Business Bay. Our mobile detailing units provide quick yet thorough cleaning services for professionals at their office or home, ensuring your car stays pristine without interrupting your workday.',
+    title: 'Business Bay',
+    shortDescription: 'The preferred mobile car wash partner for Business Bay residents and professionals.',
+    fullDescription: 'Al Haddaf understands the fast-paced life of Business Bay. Our mobile detailing units provide quick yet thorough cleaning services for professionals at their office or home, ensuring your car stays pristine without interrupting your workday.',
     highlights: [
       'Serving all Business Bay office towers',
       'Eco-friendly steam wash',
@@ -74,10 +71,9 @@ export const areas: Area[] = [
   {
     id: 'jbr',
     slug: 'jbr',
-    name: 'JBR (Jumeirah Beach Residence)',
-    title: 'Car Detailing & Wash JBR Dubai',
-    description: 'Top-rated mobile car wash services for the JBR community.',
-    longDescription: "Living in JBR means dealing with sand and salt air. Al Haddaf's specialized exterior protection and wash services are designed to protect your vehicle from the coastal elements while providing the convenience of doorstep service in any JBR cluster.",
+    title: 'JBR',
+    shortDescription: 'Top-rated mobile car wash services for the JBR community.',
+    fullDescription: "Living in JBR means dealing with sand and salt air. Al Haddaf's specialized exterior protection and wash services are designed to protect your vehicle from the coastal elements while providing the convenience of doorstep service in any JBR cluster.",
     highlights: [
       'Coverage for all JBR clusters (Sadaf, Murjan, etc.)',
       'Salt & sand removal experts',
@@ -96,10 +92,9 @@ export const areas: Area[] = [
   {
     id: 'arabian-ranches',
     slug: 'arabian-ranches',
-    name: 'Arabian Ranches',
-    title: 'Premium Villa Car Wash Arabian Ranches',
-    description: 'Exclusive villa-doorstep mobile detailing for Arabian Ranches residents.',
-    longDescription: 'Al Haddaf provides the ultimate convenience for Arabian Ranches residents. Our fully-equipped vans arrive at your villa, providing everything from a standard wash to full ceramic coating, all while your car stays in your driveway.',
+    title: 'Arabian Ranches',
+    shortDescription: 'Exclusive villa-doorstep mobile detailing for Arabian Ranches residents.',
+    fullDescription: 'Al Haddaf provides the ultimate convenience for Arabian Ranches residents. Our fully-equipped vans arrive at your villa, providing everything from a standard wash to full ceramic coating, all while your car stays in your driveway.',
     highlights: [
       'Villa-doorstep service',
       'Family SUV detailing specialists',

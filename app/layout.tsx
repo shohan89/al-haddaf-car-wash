@@ -31,9 +31,9 @@ export async function generateMetadata(): Promise<Metadata> {
       description: settings.seo.defaultDescription,
       images: [{ url: settings.seo.ogImage }],
     },
-    ...(settings.scripts.googleSiteVerification && {
+    ...(settings.scripts.googleSiteVerification ? {
       verification: { google: settings.scripts.googleSiteVerification },
-    }),
+    } : {}),
   }
 }
 

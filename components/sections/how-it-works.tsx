@@ -5,7 +5,7 @@ interface HowItWorksData {
   title: string;
   titleHighlight: string;
   description: string;
-  steps: { number: string; title: string; description: string }[];
+  steps: readonly { number: string; title: string; description: string }[];
 }
 
 export function HowItWorks({ data }: { data: HowItWorksData }) {

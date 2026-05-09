@@ -8,7 +8,7 @@ interface WhyChooseUsData {
   title: string;
   titleHighlight: string;
   description: string;
-  items: { title: string; description: string }[];
+  items: readonly { title: string; description: string }[];
 }
 
 export function WhyChooseUs({ data }: { data: WhyChooseUsData }) {

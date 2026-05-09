@@ -15,21 +15,21 @@ export type PageSeoData = {
   id?: string;
   pageKey: string;
   pageLabel: string;
-  metaTitle?: string;
-  metaDescription?: string;
-  canonicalUrl?: string;
-  focusKeyword?: string;
-  ogTitle?: string;
-  ogDescription?: string;
-  ogImage?: string;
-  ogType?: string;
-  twitterCard?: string;
-  twitterTitle?: string;
-  twitterDescription?: string;
-  twitterImage?: string;
-  noIndex?: boolean;
-  noFollow?: boolean;
-  schemaMarkup?: string;
+  metaTitle?: string | null;
+  metaDescription?: string | null;
+  canonicalUrl?: string | null;
+  focusKeyword?: string | null;
+  ogTitle?: string | null;
+  ogDescription?: string | null;
+  ogImage?: string | null;
+  ogType?: string | null;
+  twitterCard?: string | null;
+  twitterTitle?: string | null;
+  twitterDescription?: string | null;
+  twitterImage?: string | null;
+  noIndex?: boolean | null;
+  noFollow?: boolean | null;
+  schemaMarkup?: string | null;
 };
 
 /**
