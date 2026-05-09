@@ -5,7 +5,7 @@ export default defineConfig({
   schema: "prisma/schema.prisma",
   datasource: {
     url: env("DATABASE_URL"),
-    // @ts-ignore
+    // @ts-expect-error
     directUrl: env("DIRECT_URL"),
   },
   migrations: {
