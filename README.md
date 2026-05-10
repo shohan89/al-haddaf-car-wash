@@ -1,36 +1,76 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Al Haddaf Mobile Car Wash 🚗✨
 
-## Getting Started
+A premium, high-performance web application for Al Haddaf Mobile Car Wash, built with **Next.js 16 (App Router)**, **TypeScript**, **Tailwind CSS**, and **Prisma ORM** with **PostgreSQL**.
 
-First, run the development server:
+## Features
 
+- **Dynamic Public Pages:** SEO-optimized, highly engaging landing pages for Services, Areas, and Blogs.
+- **Admin Dashboard:** Full CMS to manage Services, Service Areas, Blog Posts, Reviews, and FAQs.
+- **Rich Text Editing:** Integrated TipTap editor for managing blog posts and descriptions.
+- **Drag and Drop:** Sortable interfaces using `@dnd-kit` for ordering services and areas.
+- **Authentication:** Secure login for administrators using NextAuth v5.
+- **Responsive Design:** Premium UI optimized for all devices, featuring Framer Motion micro-animations.
+- **Serverless Database:** Fully compatible with serverless Edge environments utilizing Prisma PostgreSQL Adapter.
+
+## Tech Stack
+
+- **Framework:** [Next.js 16](https://nextjs.org/)
+- **Language:** TypeScript
+- **Database:** PostgreSQL (hosted via Supabase)
+- **ORM:** [Prisma](https://www.prisma.io/) (with `@prisma/adapter-pg`)
+- **Styling:** Tailwind CSS + custom UI components
+- **Auth:** NextAuth.js (v5)
+
+## Local Development
+
+### 1. Prerequisites
+- Node.js (v20+)
+- npm or pnpm
+- PostgreSQL Database URL
+
+### 2. Install Dependencies
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 3. Environment Variables
+Copy the example environment file and fill in your details:
+```bash
+cp .env.example .env
+```
+Ensure you have the following variables set in your `.env` file:
+- `DATABASE_URL` (Connection pool URL)
+- `DIRECT_URL` (Direct connection for Prisma migrations)
+- `AUTH_SECRET` (A strong random secret for NextAuth)
+- `ADMIN_EMAIL` & `ADMIN_PASSWORD` (For the initial admin account)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 4. Database Setup
+Generate the Prisma client and push the schema to your database:
+```bash
+npm run postinstall
+npx prisma db push
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+*(Optional)* Seed the database with initial data:
+```bash
+npx prisma db seed
+```
 
-## Learn More
+### 5. Start Development Server
+```bash
+npm run dev
+```
+Navigate to `http://localhost:3000` to view the app. The admin portal is located at `/admin`.
 
-To learn more about Next.js, take a look at the following resources:
+## Production Deployment (Vercel)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+This project is optimized for deployment on Vercel.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. **Push to GitHub:** Ensure your code is pushed to your `main` branch.
+2. **Import Project:** Import the repository into your Vercel account.
+3. **Set Environment Variables:** Add `DATABASE_URL`, `DIRECT_URL`, `AUTH_SECRET`, `ADMIN_EMAIL`, and `ADMIN_PASSWORD` to your Vercel Project Settings -> Environment Variables.
+4. **Deploy:** Vercel will automatically detect Next.js. The `postinstall` script (`prisma generate`) will run automatically to build the Prisma client.
+5. **Verify:** Once deployed, your app will be securely served on the edge!
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## License
+Private Property of Al Haddaf. All rights reserved.

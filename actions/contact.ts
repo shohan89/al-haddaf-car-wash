@@ -9,8 +9,6 @@ export async function submitContactForm(data: ContactFormValues) {
   // Simulate network delay
   await new Promise((resolve) => setTimeout(resolve, 1000))
 
-  console.log('Form submission received:', data)
-
   // In a real app, you would:
   // 1. Validate data with Zod
   // 2. Send email using Resend/Nodemailer
