@@ -16,10 +16,6 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  // @ts-expect-error - Vercel build compatibility
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   experimental: {
     workerThreads: false,
     cpus: 1,
