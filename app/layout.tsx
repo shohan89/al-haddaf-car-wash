@@ -3,6 +3,7 @@ import { Inter, Outfit } from 'next/font/google'
 import '@/styles/globals.css'
 import { cn } from '@/lib/utils'
 import { getSiteSettings } from '@/actions/settings-actions'
+import { SITE_SETTINGS_DEFAULTS } from '@/data/site-settings-defaults'
 import Script from 'next/script'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' })
@@ -40,7 +41,12 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const settings = await getSiteSettings()
+  let settings = SITE_SETTINGS_DEFAULTS
+  try {
+    settings = await getSiteSettings()
+  } catch {
+    // fall back to defaults
+  }
   const { googleAnalyticsId, googleTagManagerId, facebookPixelId, customHeadScripts, customBodyScripts } = settings.scripts
 
   return (
