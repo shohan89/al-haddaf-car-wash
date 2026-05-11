@@ -8,8 +8,13 @@ const KEY_PREFIX = 'site.';
 
 export const getSiteSettings = unstable_cache(
   async () => {
-    const keys = Object.keys(SITE_SETTINGS_DEFAULTS).map((k) => `${KEY_PREFIX}${k}`);
-    const rows = await prisma.siteSetting.findMany({ where: { key: { in: keys } } });
+    let rows: { key: string; value: string }[] = [];
+    try {
+      const keys = Object.keys(SITE_SETTINGS_DEFAULTS).map((k) => `${KEY_PREFIX}${k}`);
+      rows = await prisma.siteSetting.findMany({ where: { key: { in: keys } } });
+    } catch {
+      return SITE_SETTINGS_DEFAULTS;
+    }
 
     const result: Record<string, any> = {};
     for (const sectionKey of Object.keys(SITE_SETTINGS_DEFAULTS) as SiteSettingsKey[]) {

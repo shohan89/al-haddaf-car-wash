@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import prisma from '@/lib/db';
 import { getSiteSettings } from '@/actions/settings-actions';
+import { SITE_SETTINGS_DEFAULTS } from '@/data/site-settings-defaults';
 
 /**
  * Generates Next.js Metadata for any page by looking up PageSeo in the DB.
@@ -13,10 +14,16 @@ export async function generatePageMetadata(pageKey: string, overrides?: {
   image?: string;
   canonicalUrl?: string;
 }): Promise<Metadata> {
-  const [pageSeo, siteSettings] = await Promise.all([
-    prisma.pageSeo.findUnique({ where: { pageKey } }),
-    getSiteSettings(),
-  ]);
+  let pageSeo = null;
+  let siteSettings = SITE_SETTINGS_DEFAULTS;
+  try {
+    [pageSeo, siteSettings] = await Promise.all([
+      prisma.pageSeo.findUnique({ where: { pageKey } }),
+      getSiteSettings(),
+    ]);
+  } catch {
+    // fall through to defaults
+  }
 
   const defaults = siteSettings.seo;
   const baseUrl = defaults.canonicalUrl || 'https://alhaddafcarwash.ae';
@@ -68,7 +75,12 @@ export async function generateEntityMetadata(entity: {
   excerpt?: string;
   slug?: string;
 }, type: 'service' | 'area' | 'post' = 'service'): Promise<Metadata> {
-  const siteSettings = await getSiteSettings();
+  let siteSettings = SITE_SETTINGS_DEFAULTS;
+  try {
+    siteSettings = await getSiteSettings();
+  } catch {
+    // fall through to defaults
+  }
   const defaults = siteSettings.seo;
   const baseUrl = defaults.canonicalUrl || 'https://alhaddafcarwash.ae';
 

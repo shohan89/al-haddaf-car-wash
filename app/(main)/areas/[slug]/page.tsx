@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     const { slug } = await params;
     const area = await prisma.area.findUnique({ where: { slug } });
     if (!area) return { title: 'Area Not Found' };
-    return generateEntityMetadata(area, 'area');
+    return await generateEntityMetadata(area, 'area');
   } catch (error) {
     console.error("Metadata DB error:", error);
     return { title: 'Area Not Found' };
