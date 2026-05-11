@@ -22,4 +22,10 @@ export const authConfig = {
     },
   },
   providers: [], // Add providers in auth.ts
+  session: {
+    strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60, // 30 Days
+  },
+  trustHost: true,
+  secret: process.env.AUTH_SECRET,
 } satisfies NextAuthConfig

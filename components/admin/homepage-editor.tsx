@@ -48,6 +48,16 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
   );
 }
 
+function SaveButton({ section, save, saving, saved }: { section: SectionKey, save: (s: SectionKey) => void, saving: string | null, saved: string | null }) {
+  return (
+    <div className="flex justify-end pt-4 border-t border-border mt-4">
+      <Button onClick={() => save(section)} disabled={saving === section} className="min-w-32">
+        {saving === section ? 'Saving...' : saved === section ? <><CheckCircle2 className="w-4 h-4 mr-1.5" /> Saved!</> : 'Save Changes'}
+      </Button>
+    </div>
+  );
+}
+
 export function HomepageEditor({ settings }: HomepageEditorProps) {
   const [data, setData] = useState<any>(settings);
   const [saving, setSaving] = useState<string | null>(null);
@@ -89,14 +99,6 @@ export function HomepageEditor({ settings }: HomepageEditorProps) {
     }
   };
 
-  const SaveButton = ({ section }: { section: SectionKey }) => (
-    <div className="flex justify-end pt-4 border-t border-border mt-4">
-      <Button onClick={() => save(section)} disabled={saving === section} className="min-w-32">
-        {saving === section ? 'Saving...' : saved === section ? <><CheckCircle2 className="w-4 h-4 mr-1.5" /> Saved!</> : 'Save Changes'}
-      </Button>
-    </div>
-  );
-
   return (
     <div className="space-y-6">
       {/* SEO */}
@@ -111,7 +113,7 @@ export function HomepageEditor({ settings }: HomepageEditorProps) {
           <Field label="Meta Description">
             <Textarea value={data.seo.metaDescription} onChange={e => update('seo', 'metaDescription', e.target.value)} rows={3} />
           </Field>
-          <SaveButton section="seo" />
+          <SaveButton section="seo" save={save} saving={saving} saved={saved} />
         </div>
       </div>
 
@@ -149,7 +151,7 @@ export function HomepageEditor({ settings }: HomepageEditorProps) {
           <Field label="Trust Badge 2"><Input value={data.hero.badge2} onChange={e => update('hero', 'badge2', e.target.value)} /></Field>
           <Field label="Trust Badge 3"><Input value={data.hero.badge3} onChange={e => update('hero', 'badge3', e.target.value)} /></Field>
         </div>
-        <SaveButton section="hero" />
+        <SaveButton section="hero" save={save} saving={saving} saved={saved} />
       </SectionCard>
 
       {/* Trust Bar */}
@@ -166,7 +168,7 @@ export function HomepageEditor({ settings }: HomepageEditorProps) {
             <Plus className="w-4 h-4 mr-1" /> Add Badge
           </Button>
         </div>
-        <SaveButton section="trustBar" />
+        <SaveButton section="trustBar" save={save} saving={saving} saved={saved} />
       </SectionCard>
 
       {/* Why Choose Us */}
@@ -192,7 +194,7 @@ export function HomepageEditor({ settings }: HomepageEditorProps) {
             <Plus className="w-4 h-4 mr-1" /> Add Card
           </Button>
         </div>
-        <SaveButton section="whyChooseUs" />
+        <SaveButton section="whyChooseUs" save={save} saving={saving} saved={saved} />
       </SectionCard>
 
       {/* How It Works */}
@@ -220,7 +222,7 @@ export function HomepageEditor({ settings }: HomepageEditorProps) {
             <Plus className="w-4 h-4 mr-1" /> Add Step
           </Button>
         </div>
-        <SaveButton section="howItWorks" />
+        <SaveButton section="howItWorks" save={save} saving={saving} saved={saved} />
       </SectionCard>
 
       {/* Final CTA */}
@@ -240,7 +242,7 @@ export function HomepageEditor({ settings }: HomepageEditorProps) {
             <Field label="Disclaimer Text"><Input value={data.finalCta.disclaimer} onChange={e => update('finalCta', 'disclaimer', e.target.value)} /></Field>
           </div>
         </div>
-        <SaveButton section="finalCta" />
+        <SaveButton section="finalCta" save={save} saving={saving} saved={saved} />
       </SectionCard>
     </div>
   );

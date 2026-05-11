@@ -107,6 +107,7 @@ function SortableRow({ service, onTogglePublish, onDelete }: { service: Service,
 export function SortableServiceTable({ initialServices }: TableProps) {
   const [services, setServices] = useState(initialServices);
   const [isMounted, setIsMounted] = useState(false);
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => { setIsMounted(true); }, []);
 
   const sensors = useSensors(

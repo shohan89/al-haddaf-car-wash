@@ -7,11 +7,16 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'i.pravatar.cc',
       },
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+      },
     ],
   },
   typescript: {
     ignoreBuildErrors: true,
   },
+  // @ts-expect-error - Vercel build compatibility
   eslint: {
     ignoreDuringBuilds: true,
   },

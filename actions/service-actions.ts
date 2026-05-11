@@ -112,7 +112,7 @@ export async function saveService(formData: FormData) {
 
     // Base slug logic
     const requestedSlug = formData.get('slug') as string;
-    let slug = requestedSlug ? slugify(requestedSlug, { lower: true, strict: true }) : slugify(title, { lower: true, strict: true });
+    const slug = requestedSlug ? slugify(requestedSlug, { lower: true, strict: true }) : slugify(title, { lower: true, strict: true });
 
     // Handle image upload
     const imageFile = formData.get('imageFile') as File | null;

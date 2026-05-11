@@ -8,15 +8,20 @@
  */
 export function SchemaMarkup({ json }: { json?: string | null }) {
   if (!json) return null;
+  let isValid = false;
   try {
     JSON.parse(json); // validate before rendering
-    return (
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: json }}
-      />
-    );
+    isValid = true;
   } catch {
     return null;
   }
+
+  if (!isValid) return null;
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: json }}
+    />
+  );
 }
