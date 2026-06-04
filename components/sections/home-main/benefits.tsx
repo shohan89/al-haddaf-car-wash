@@ -15,7 +15,7 @@ export function Benefits() {
   const { openOptionsModal } = useBookingModal()
 
   return (
-    <section id="benefits" className="section-padding bg-white">
+    <section id="about" className="section-padding bg-white">
       <div className="container-custom">
         <div className="text-center max-w-3xl mx-auto mb-12 md:mb-16">
           <h2 className="text-3xl md:text-5xl font-bold text-[hsl(var(--brand-dark))] mb-4">

@@ -100,7 +100,7 @@ export function Navbar({
           </div>
 
           <Link href="/blogs" className={cn('text-sm font-medium transition-colors', scrolled ? 'text-muted-foreground hover:text-primary' : 'text-white/90 hover:text-white')}>Blog</Link>
-          <Link href="/#about" className={cn('text-sm font-medium transition-colors', scrolled ? 'text-muted-foreground hover:text-primary' : 'text-white/90 hover:text-white')}>About</Link>
+          <Link href="/#about" className={cn('text-sm font-medium transition-colors', scrolled ? 'text-muted-foreground hover:text-primary' : 'text-white/90 hover:text-white')}>Why Us</Link>
           <Link href="/contact" className={cn('text-sm font-medium transition-colors', scrolled ? 'text-muted-foreground hover:text-primary' : 'text-white/90 hover:text-white')}>Contact</Link>
         </nav>
 
@@ -169,7 +169,7 @@ export function Navbar({
               </div>
 
               <Link href="/blogs" onClick={() => setIsOpen(false)} className="text-xl font-bold text-foreground hover:text-primary">Blog</Link>
-              <Link href="/#about" onClick={() => setIsOpen(false)} className="text-xl font-bold text-foreground hover:text-primary">About</Link>
+              <Link href="/#about" onClick={() => setIsOpen(false)} className="text-xl font-bold text-foreground hover:text-primary">Why Us</Link>
               <Link href="/contact" onClick={() => setIsOpen(false)} className="text-xl font-bold text-foreground hover:text-primary">Contact</Link>
 
               <hr className="border-border my-2" />
