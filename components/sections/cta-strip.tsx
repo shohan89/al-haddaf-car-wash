@@ -1,7 +1,7 @@
 import { siteConfig } from '@/data/site-config'
 import { Button } from '@/components/ui/button'
 import { Phone } from 'lucide-react'
-import Link from 'next/link'
+import { BookNowButton } from '@/components/shared/book-now-button'
 
 export function CTAStrip() {
   return (
@@ -16,11 +16,9 @@ export function CTAStrip() {
           </p>
         </div>
         <div className="flex flex-wrap items-center justify-center gap-4">
-          <Link href="/book">
-            <Button variant="accent" size="lg" className="h-16 px-10">
-              Book Appointment Now
-            </Button>
-          </Link>
+          <BookNowButton className="inline-flex items-center justify-center h-16 px-10 rounded-md bg-accent text-accent-foreground text-sm font-medium hover:bg-accent/90 transition-colors">
+            Book Appointment Now
+          </BookNowButton>
           <a href={`tel:${siteConfig.phone.replace(/\s/g, '')}`} className="flex items-center gap-3 text-xl font-bold hover:text-white/80 transition-colors">
             <div className="h-12 w-12 rounded-full border-2 border-white/20 flex items-center justify-center">
               <Phone size={24} />

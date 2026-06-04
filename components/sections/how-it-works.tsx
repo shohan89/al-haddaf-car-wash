@@ -19,9 +19,9 @@ export function HowItWorks({ data }: { data: HowItWorksData }) {
         </div>
 
         <div className="mb-20 max-w-2xl">
-          <h2 className="text-4xl font-bold tracking-tight sm:text-6xl mb-6 text-white">
+          <h2 className="text-4xl font-bold tracking-tight sm:text-6xl mb-6">
             {data.title} <br />
-            <span className="text-accent">{data.titleHighlight}</span>
+            <span className="text-secondary">{data.titleHighlight}</span>
           </h2>
           <p className="text-xl text-white/70">
             {data.description}

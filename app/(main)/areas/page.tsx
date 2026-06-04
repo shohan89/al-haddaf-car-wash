@@ -2,6 +2,7 @@ import prisma from '@/lib/db';
 import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { BookNowButton } from '@/components/shared/book-now-button';
 import { generatePageMetadata } from '@/lib/seo';
 import { SchemaMarkup } from '@/components/shared/schema-markup';
 import { getPageSeo } from '@/actions/seo-actions';
@@ -85,9 +86,7 @@ export default async function AreasIndexPage() {
               We are constantly expanding our mobile fleet. Contact us to see if we can reach you today!
             </p>
             <div className="flex flex-wrap gap-4 pt-4">
-              <Link href="/book">
-                <Button size="lg" className="font-bold px-8">Request Custom Visit</Button>
-              </Link>
+              <BookNowButton size="lg" className="font-bold px-8">Request Custom Visit</BookNowButton>
               <Link href="tel:+971555503288">
                 <Button size="lg" variant="outline" className="font-bold px-8">Call Dispatch</Button>
               </Link>

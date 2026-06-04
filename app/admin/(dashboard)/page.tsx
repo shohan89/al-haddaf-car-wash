@@ -1,15 +1,13 @@
 import { getDashboardStats } from '@/actions/admin-actions'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { cn, formatPrice } from '@/lib/utils'
 import Link from 'next/link'
 import Image from 'next/image'
 import {
-  CalendarCheck, Clock, TrendingUp, DollarSign,
-  ArrowUpRight, FileText, Star, HelpCircle, MapPin,
-  Plus, Eye, BarChart3, Activity, Users, Zap,
-  CheckCircle2, XCircle, AlertCircle, Car
+  FileText, Star, HelpCircle, MapPin,
+  ArrowUpRight, BarChart3, Activity, Users, Zap,
+  TrendingUp, Car, Mail, MessageSquare
 } from 'lucide-react'
 
 export const metadata = { title: 'Dashboard | Admin' }
@@ -29,7 +27,7 @@ function StatCard({ title, value, sub, icon: Icon, color, bg, trend, trendUp }: 
           {trend && (
             <span className={cn(
               "text-xs font-bold px-2 py-1 rounded-full",
-              trendUp ? "bg-emerald-100 text-emerald-700" : "bg-amber-100 text-amber-700"
+              trendUp ? "bg-emerald-100 text-emerald-700" : "bg-rose-100 text-rose-700"
             )}>
               {trend}
             </span>
@@ -43,46 +41,43 @@ function StatCard({ title, value, sub, icon: Icon, color, bg, trend, trendUp }: 
   )
 }
 
-function BookingStatusBadge({ status }: { status: string }) {
-  const map: Record<string, { label: string; className: string; icon: any }> = {
-    PENDING: { label: 'Pending', className: 'bg-amber-100 text-amber-700', icon: AlertCircle },
-    CONFIRMED: { label: 'Confirmed', className: 'bg-blue-100 text-blue-700', icon: CheckCircle2 },
-    COMPLETED: { label: 'Completed', className: 'bg-emerald-100 text-emerald-700', icon: CheckCircle2 },
-    CANCELLED: { label: 'Cancelled', className: 'bg-red-100 text-red-700', icon: XCircle },
-  };
-  const s = map[status] || map.PENDING;
-  const Icon = s.icon;
+function ContactStatusBadge({ status }: { status: string }) {
+  const map: Record<string, { label: string; className: string }> = {
+    NEW:     { label: 'New',     className: 'bg-blue-100 text-blue-700' },
+    READ:    { label: 'Read',    className: 'bg-gray-100 text-gray-600' },
+    REPLIED: { label: 'Replied', className: 'bg-emerald-100 text-emerald-700' },
+  }
+  const s = map[status] || map.NEW
   return (
-    <span className={cn("inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold", s.className)}>
-      <Icon size={11} /> {s.label}
+    <span className={cn("inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold", s.className)}>
+      {s.label}
     </span>
-  );
+  )
 }
 
 export default async function AdminDashboard() {
   const stats = await getDashboardStats()
 
   const quickActions = [
-    { label: 'Add Booking', href: '/admin/bookings', icon: CalendarCheck, color: 'bg-blue-500' },
-    { label: 'New Service', href: '/admin/services/create', icon: Car, color: 'bg-purple-500' },
-    { label: 'Write Blog', href: '/admin/blogs/create', icon: FileText, color: 'bg-emerald-500' },
-    { label: 'Add Review', href: '/admin/reviews/create', icon: Star, color: 'bg-amber-500' },
-    { label: 'Add FAQ', href: '/admin/faqs/create', icon: HelpCircle, color: 'bg-rose-500' },
-    { label: 'New Area', href: '/admin/areas/create', icon: MapPin, color: 'bg-cyan-500' },
+    { label: 'New Service', href: '/admin/services/create', icon: Car,       color: 'bg-purple-500' },
+    { label: 'Write Blog',  href: '/admin/blogs/create',    icon: FileText,  color: 'bg-emerald-500' },
+    { label: 'Add Review',  href: '/admin/reviews/create',  icon: Star,      color: 'bg-amber-500' },
+    { label: 'Add FAQ',     href: '/admin/faqs/create',     icon: HelpCircle,color: 'bg-rose-500' },
+    { label: 'New Area',    href: '/admin/areas/create',    icon: MapPin,    color: 'bg-cyan-500' },
   ]
 
   const contentStats = [
-    { label: 'Services', published: stats.publishedServices, total: stats.totalServices, href: '/admin/services', icon: Car, color: 'bg-purple-50 text-purple-600' },
-    { label: 'Blog Posts', published: stats.publishedBlogs, total: stats.totalBlogs, href: '/admin/blogs', icon: FileText, color: 'bg-emerald-50 text-emerald-600' },
-    { label: 'FAQs', published: stats.totalFaqs, total: stats.totalFaqs, href: '/admin/faqs', icon: HelpCircle, color: 'bg-rose-50 text-rose-600' },
-    { label: 'Areas', published: stats.totalAreas, total: stats.totalAreas, href: '/admin/areas', icon: MapPin, color: 'bg-cyan-50 text-cyan-600' },
+    { label: 'Services',   published: stats.publishedServices, total: stats.totalServices, href: '/admin/services', icon: Car,       color: 'bg-purple-50 text-purple-600' },
+    { label: 'Blog Posts', published: stats.publishedBlogs,    total: stats.totalBlogs,    href: '/admin/blogs',    icon: FileText,  color: 'bg-emerald-50 text-emerald-600' },
+    { label: 'FAQs',       published: stats.totalFaqs,         total: stats.totalFaqs,     href: '/admin/faqs',     icon: HelpCircle,color: 'bg-rose-50 text-rose-600' },
+    { label: 'Areas',      published: stats.totalAreas,        total: stats.totalAreas,    href: '/admin/areas',    icon: MapPin,    color: 'bg-cyan-50 text-cyan-600' },
   ]
 
-  const bookingFunnel = [
-    { label: 'Pending', value: stats.pendingBookings, total: stats.totalBookings, color: 'bg-amber-400' },
-    { label: 'Confirmed', value: stats.confirmedBookings, total: stats.totalBookings, color: 'bg-blue-400' },
-    { label: 'Completed', value: stats.completedBookings, total: stats.totalBookings, color: 'bg-emerald-400' },
-    { label: 'Cancelled', value: stats.cancelledBookings, total: stats.totalBookings, color: 'bg-red-400' },
+  const contentFunnel = [
+    { label: 'Services',   published: stats.publishedServices, total: stats.totalServices, color: 'bg-purple-400' },
+    { label: 'Blog Posts', published: stats.publishedBlogs,    total: stats.totalBlogs,    color: 'bg-emerald-400' },
+    { label: 'FAQs',       published: stats.totalFaqs,         total: stats.totalFaqs,     color: 'bg-rose-400' },
+    { label: 'Areas',      published: stats.totalAreas,        total: stats.totalAreas,    color: 'bg-cyan-400' },
   ]
 
   const now = new Date()
@@ -103,9 +98,9 @@ export default async function AdminDashboard() {
               <Zap size={14} /> Homepage CMS
             </Button>
           </Link>
-          <Link href="/admin/bookings">
+          <Link href="/admin/contacts">
             <Button size="sm" className="gap-2">
-              <CalendarCheck size={14} /> View All Bookings
+              <Mail size={14} /> View Contacts
             </Button>
           </Link>
         </div>
@@ -113,44 +108,47 @@ export default async function AdminDashboard() {
 
       {/* Primary Stats */}
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard title="Total Bookings" value={stats.totalBookings} icon={CalendarCheck} color="text-blue-600" bg="bg-blue-50" trend="All time" trendUp />
-        <StatCard title="Pending" value={stats.pendingBookings} sub="Requires action" icon={Clock} color="text-amber-600" bg="bg-amber-50" trend="Action needed" />
-        <StatCard title="Total Revenue" value={formatPrice(stats.totalRevenue)} sub="From completed bookings" icon={DollarSign} color="text-emerald-600" bg="bg-emerald-50" trend="Completed only" trendUp />
-        <StatCard title="Total Reviews" value={stats.totalReviews} icon={Star} color="text-purple-600" bg="bg-purple-50" trend="Customer reviews" trendUp />
+        <StatCard title="Total Reviews"    value={stats.totalReviews}        icon={Star}      color="text-purple-600"  bg="bg-purple-50"  trend="Customer reviews" trendUp />
+        <StatCard title="Live Services"    value={stats.publishedServices}   icon={Car}       color="text-blue-600"    bg="bg-blue-50"    trend="Published"        trendUp />
+        <StatCard title="Published Blogs"  value={stats.publishedBlogs}      icon={FileText}  color="text-emerald-600" bg="bg-emerald-50" trend="Published"        trendUp />
+        <StatCard title="Total Contacts"   value={stats.totalContacts}       sub="Form submissions" icon={Mail} color="text-rose-600" bg="bg-rose-50" trend="All time" trendUp />
       </div>
 
       {/* Main Content Grid */}
       <div className="grid gap-6 lg:grid-cols-3">
 
-        {/* Recent Bookings — 2 cols */}
+        {/* Recent Contacts — 2 cols */}
         <Card className="lg:col-span-2 border-none shadow-soft">
           <CardHeader className="flex flex-row items-center justify-between pb-4 border-b border-border">
             <div>
-              <CardTitle className="text-lg font-bold">Recent Bookings</CardTitle>
-              <p className="text-xs text-muted-foreground mt-0.5">Latest 6 customer bookings</p>
+              <CardTitle className="text-lg font-bold">Recent Contacts</CardTitle>
+              <p className="text-xs text-muted-foreground mt-0.5">Latest 5 contact form submissions</p>
             </div>
-            <Link href="/admin/bookings">
+            <Link href="/admin/contacts">
               <Button variant="ghost" size="sm" className="text-primary gap-1 text-sm font-bold">
                 View All <ArrowUpRight size={14} />
               </Button>
             </Link>
           </CardHeader>
           <CardContent className="p-0">
-            {stats.recentBookings.length > 0 ? (
+            {stats.recentContacts.length > 0 ? (
               <div className="divide-y divide-border">
-                {stats.recentBookings.map((booking) => (
-                  <div key={booking.id} className="flex items-center gap-4 px-6 py-4 hover:bg-muted/30 transition-colors">
-                    <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center font-black text-primary text-sm flex-shrink-0">
-                      {booking.customerName.charAt(0).toUpperCase()}
+                {stats.recentContacts.map((contact) => (
+                  <div key={contact.id} className="flex items-center gap-4 px-6 py-4 hover:bg-muted/30 transition-colors">
+                    <div className="h-10 w-10 rounded-full bg-rose-50 flex items-center justify-center font-black text-rose-600 text-sm shrink-0">
+                      {contact.name.charAt(0).toUpperCase()}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="font-bold text-sm truncate">{booking.customerName}</p>
-                      <p className="text-xs text-muted-foreground truncate">{booking.service.title} · {booking.customerPhone}</p>
+                      <p className="font-bold text-sm truncate">{contact.name}</p>
+                      <p className="text-xs text-muted-foreground truncate">{contact.email}</p>
                     </div>
-                    <div className="text-right flex-shrink-0">
-                      <BookingStatusBadge status={booking.status} />
-                      <p className="text-xs text-muted-foreground mt-1">
-                        {new Date(booking.scheduledAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}
+                    <div className="hidden sm:block flex-1 min-w-0 px-2">
+                      <p className="text-sm text-muted-foreground truncate">{contact.subject || '—'}</p>
+                    </div>
+                    <div className="text-right shrink-0 space-y-1">
+                      <ContactStatusBadge status={contact.status} />
+                      <p className="text-xs text-muted-foreground">
+                        {new Date(contact.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}
                       </p>
                     </div>
                   </div>
@@ -158,14 +156,14 @@ export default async function AdminDashboard() {
               </div>
             ) : (
               <div className="flex flex-col items-center justify-center py-16 text-muted-foreground">
-                <CalendarCheck size={40} className="mb-3 opacity-30" />
-                <p className="font-medium">No bookings yet</p>
+                <Mail size={40} className="mb-3 opacity-30" />
+                <p className="font-medium">No contacts yet</p>
               </div>
             )}
           </CardContent>
         </Card>
 
-        {/* Sidebar — Quick Actions + Booking Funnel */}
+        {/* Sidebar */}
         <div className="space-y-6">
 
           {/* Quick Actions */}
@@ -194,21 +192,24 @@ export default async function AdminDashboard() {
             </CardContent>
           </Card>
 
-          {/* Booking Funnel */}
+          {/* Content Status */}
           <Card className="border-none shadow-soft">
             <CardHeader className="pb-3 border-b border-border">
               <CardTitle className="text-lg font-bold flex items-center gap-2">
-                <Activity size={18} className="text-primary" /> Booking Status
+                <Activity size={18} className="text-primary" /> Content Status
               </CardTitle>
             </CardHeader>
-            <CardContent className="p-5 space-y-3">
-              {bookingFunnel.map((item) => {
-                const pct = stats.totalBookings > 0 ? Math.round((item.value / stats.totalBookings) * 100) : 0
+            <CardContent className="p-5 space-y-4">
+              {contentFunnel.map((item) => {
+                const pct = item.total > 0 ? Math.round((item.published / item.total) * 100) : 0
                 return (
                   <div key={item.label}>
                     <div className="flex justify-between text-sm mb-1.5">
                       <span className="font-semibold text-gray-700">{item.label}</span>
-                      <span className="font-black">{item.value} <span className="text-muted-foreground font-normal text-xs">({pct}%)</span></span>
+                      <span className="font-black">
+                        {item.published}<span className="text-muted-foreground font-normal">/{item.total}</span>
+                        <span className="text-muted-foreground font-normal text-xs ml-1">({pct}%)</span>
+                      </span>
                     </div>
                     <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
                       <div
@@ -221,6 +222,7 @@ export default async function AdminDashboard() {
               })}
             </CardContent>
           </Card>
+
         </div>
       </div>
 
@@ -245,7 +247,7 @@ export default async function AdminDashboard() {
               <div className="divide-y divide-border">
                 {stats.latestReviews.map((review) => (
                   <div key={review.id} className="flex items-start gap-4 px-6 py-4 hover:bg-muted/30 transition-colors">
-                    <div className="h-10 w-10 rounded-full bg-gray-100 flex-shrink-0 overflow-hidden relative">
+                    <div className="h-10 w-10 rounded-full bg-gray-100 shrink-0 overflow-hidden relative">
                       {review.avatar ? (
                         <Image src={review.avatar} alt={review.author} fill className="object-cover" />
                       ) : (
@@ -257,14 +259,14 @@ export default async function AdminDashboard() {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between gap-2">
                         <p className="font-bold text-sm">{review.author}</p>
-                        <div className="flex gap-0.5 flex-shrink-0">
+                        <div className="flex gap-0.5 shrink-0">
                           {[...Array(5)].map((_, i) => (
                             <Star key={i} size={12} className={i < review.rating ? 'fill-amber-400 text-amber-400' : 'text-gray-200'} />
                           ))}
                         </div>
                       </div>
                       <p className="text-xs text-muted-foreground mt-0.5">{review.location || 'Dubai'}</p>
-                      <p className="text-sm text-gray-600 mt-1.5 line-clamp-2 italic">"{review.content}"</p>
+                      <p className="text-sm text-gray-600 mt-1.5 line-clamp-2 italic">&ldquo;{review.content}&rdquo;</p>
                     </div>
                   </div>
                 ))}
@@ -293,7 +295,7 @@ export default async function AdminDashboard() {
                 return (
                   <Link key={item.label} href={item.href}>
                     <div className="flex items-center gap-3 p-3 rounded-xl hover:bg-muted/50 transition-all group">
-                      <div className={`h-9 w-9 rounded-xl flex items-center justify-center ${item.color} flex-shrink-0`}>
+                      <div className={`h-9 w-9 rounded-xl flex items-center justify-center ${item.color} shrink-0`}>
                         <Icon size={16} />
                       </div>
                       <div className="flex-1">
@@ -313,7 +315,7 @@ export default async function AdminDashboard() {
 
           {/* Traffic Placeholder */}
           <Card className="border-none shadow-soft overflow-hidden relative">
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-primary/10" />
+            <div className="absolute inset-0 bg-linear-to-br from-primary/5 to-primary/10" />
             <CardContent className="relative p-6 text-center space-y-3">
               <div className="h-12 w-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary mx-auto">
                 <TrendingUp size={22} />
@@ -326,10 +328,10 @@ export default async function AdminDashboard() {
               </div>
               <div className="grid grid-cols-2 gap-2 pt-2">
                 {[
-                  { label: 'Page Views', value: '—' },
-                  { label: 'Unique Visitors', value: '—' },
-                  { label: 'Bounce Rate', value: '—' },
-                  { label: 'Avg. Session', value: '—' },
+                  { label: 'Page Views',       value: '—' },
+                  { label: 'Unique Visitors',  value: '—' },
+                  { label: 'Bounce Rate',      value: '—' },
+                  { label: 'Avg. Session',     value: '—' },
                 ].map(item => (
                   <div key={item.label} className="bg-white/60 rounded-xl p-2.5 text-center">
                     <p className="font-black text-gray-400">{item.value}</p>
@@ -354,10 +356,10 @@ export default async function AdminDashboard() {
               <span className="text-sm font-bold">All Systems Operational</span>
             </div>
             {[
-              { label: 'Database', status: 'Connected' },
-              { label: 'Server', status: 'Healthy' },
+              { label: 'Database',     status: 'Connected' },
+              { label: 'Server',       status: 'Healthy' },
               { label: 'File Storage', status: 'Active' },
-              { label: 'Auth', status: 'Secured' },
+              { label: 'Auth',         status: 'Secured' },
             ].map(item => (
               <div key={item.label} className="flex items-center gap-2 text-sm text-muted-foreground">
                 <span className="font-semibold">{item.label}:</span>

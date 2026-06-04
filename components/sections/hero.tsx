@@ -4,14 +4,11 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { Button } from '@/components/ui/button'
-import { siteConfig } from '@/data/site-config'
 import { Star, Shield, Clock, MousePointer2 } from 'lucide-react'
 
 interface HeroData {
   tagline: string;
   heading: string;
-  headingHighlight?: string;
-  headingLine2?: string;
   subheading: string;
   primaryButtonText: string;
   primaryButtonLink: string;
@@ -51,25 +48,15 @@ export function Hero({ data }: { data: HeroData }) {
             transition={{ duration: 0.6 }}
             className="space-y-4"
           >
-            <div className="inline-flex items-center gap-2 rounded-full bg-white/10 border border-white/20 px-4 py-2 text-white text-sm font-semibold backdrop-blur-sm">
-              <Star className="text-accent shrink-0" fill="currentColor" size={14} />
+            <div className="flex items-center gap-2 text-accent font-bold tracking-widest uppercase text-sm">
+              <span className="h-0.5 w-8 bg-accent" />
               {data.tagline}
             </div>
 
             <h1 className="text-4xl font-extrabold tracking-tighter text-white sm:text-6xl md:text-7xl lg:text-8xl">
-              {data.headingHighlight ? (
-                <>
-                  {data.heading}{' '}
-                  <span className="text-primary italic">{data.headingHighlight}</span>
-                  {data.headingLine2 && (
-                    <><br />{data.headingLine2}</>
-                  )}
-                </>
-              ) : (
-                data.heading
-              )}
+              {data.heading}
             </h1>
-            
+
             <p className="max-w-xl text-lg text-white/80 sm:text-xl md:text-2xl leading-relaxed">
               {data.subheading}
             </p>

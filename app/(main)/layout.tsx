@@ -3,6 +3,7 @@ export const dynamic = 'force-dynamic'
 import { Navbar } from '@/components/layout/navbar'
 import { Footer } from '@/components/layout/footer'
 import { WhatsAppButton } from '@/components/shared/whatsapp-button'
+import { GlobalBookingProvider } from '@/components/sections/home-main/global-booking-provider'
 import prisma from '@/lib/db'
 import { getSiteSettings } from '@/actions/settings-actions'
 import { SITE_SETTINGS_DEFAULTS } from '@/data/site-settings-defaults'
@@ -37,11 +38,13 @@ export default async function MainLayout({
   const whatsappHref = `https://wa.me/${settings.general.whatsapp}`
 
   return (
-    <div className="relative flex min-h-screen flex-col">
-      <Navbar dbServices={services} dbAreas={areas} />
-      <main className="flex-1">{children}</main>
-      <Footer />
-      <WhatsAppButton href={whatsappHref} />
-    </div>
+    <GlobalBookingProvider>
+      <div className="relative flex min-h-screen flex-col">
+        <Navbar dbServices={services} dbAreas={areas} />
+        <main className="flex-1">{children}</main>
+        <Footer />
+        <WhatsAppButton href={whatsappHref} />
+      </div>
+    </GlobalBookingProvider>
   )
 }

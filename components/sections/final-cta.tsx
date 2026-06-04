@@ -33,7 +33,7 @@ export function FinalCTA({ data }: { data: FinalCtaData }) {
             
             <h2 className="text-4xl font-bold tracking-tight sm:text-6xl text-white">
               {data.title} <br />
-              <span className="text-accent">{data.titleHighlight}</span>
+              <span className="text-secondary">{data.titleHighlight}</span>
             </h2>
             
             <p className="text-xl text-white/70">

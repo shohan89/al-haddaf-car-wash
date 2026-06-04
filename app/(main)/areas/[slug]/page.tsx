@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { BookNowButton } from '@/components/shared/book-now-button';
 import Link from 'next/link';
 import { MapPin, CheckCircle2, Phone, ChevronRight } from 'lucide-react';
 import { generateEntityMetadata } from '@/lib/seo';
@@ -88,11 +89,9 @@ export default async function AreaPage({ params }: { params: Promise<{ slug: str
               {area.shortDescription}
             </p>
             <div className="mt-8 flex flex-col sm:flex-row gap-4">
-              <Link href="/book">
-                <Button size="lg" className="text-lg px-8 shadow-premium">
-                  Book Now in {area.title} <ChevronRight className="ml-2 w-5 h-5" />
-                </Button>
-              </Link>
+              <BookNowButton size="lg" className="text-lg px-8 shadow-premium">
+                Book Now in {area.title} <ChevronRight className="ml-2 w-5 h-5" />
+              </BookNowButton>
               <Link href="tel:+971555503288">
                 <Button size="lg" variant="outline" className="text-lg px-8 border-white/50 text-white hover:bg-white/10 backdrop-blur-sm">
                   <Phone className="mr-2 w-5 h-5" /> Call Us
@@ -143,11 +142,9 @@ export default async function AreaPage({ params }: { params: Promise<{ slug: str
                 </ul>
               </div>
 
-              <Link href="/book">
-                <Button size="lg" className="w-full text-lg shadow-premium">
-                  Book a Wash in {area.title}
-                </Button>
-              </Link>
+              <BookNowButton size="lg" className="w-full text-lg shadow-premium">
+                Book a Wash in {area.title}
+              </BookNowButton>
             </div>
           </div>
         </div>
@@ -175,9 +172,7 @@ export default async function AreaPage({ params }: { params: Promise<{ slug: str
                     <span className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded-full">{service.duration}</span>
                   </div>
                   <div className="mt-4 flex gap-2">
-                    <Link href="/book" className="flex-1">
-                      <Button size="sm" className="w-full font-bold shadow-soft">Book Now →</Button>
-                    </Link>
+                    <BookNowButton size="sm" className="w-full font-bold shadow-soft flex-1">Book Now →</BookNowButton>
                     <Link href={`/services/${service.slug}`}>
                       <Button variant="outline" size="sm" className="px-3">Details</Button>
                     </Link>
@@ -197,11 +192,9 @@ export default async function AreaPage({ params }: { params: Promise<{ slug: str
               <p className="font-black text-white text-xl">Ready for a spotless car in {area.title}?</p>
               <p className="text-white/80 text-sm mt-0.5">We arrive within 45 min · Book in under a minute</p>
             </div>
-            <Link href="/book" className="shrink-0">
-              <Button size="lg" className="bg-white text-secondary hover:bg-white/90 font-black px-8 shadow-xl">
-                Book Now in {area.title} →
-              </Button>
-            </Link>
+            <BookNowButton size="lg" className="bg-white text-secondary hover:bg-white/90 font-black px-8 shadow-xl shrink-0">
+              Book Now in {area.title} →
+            </BookNowButton>
           </div>
         </div>
       )}
@@ -243,11 +236,9 @@ export default async function AreaPage({ params }: { params: Promise<{ slug: str
             Book in seconds. We'll handle everything else.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/book">
-              <Button size="lg" variant="secondary" className="text-lg px-10">
-                Book Now <ChevronRight className="ml-2 w-5 h-5" />
-              </Button>
-            </Link>
+            <BookNowButton size="lg" variant="secondary" className="text-lg px-10">
+              Book Now <ChevronRight className="ml-2 w-5 h-5" />
+            </BookNowButton>
           </div>
         </div>
       </section>

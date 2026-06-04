@@ -4,7 +4,6 @@ import {
   MapPin,
   MessageSquare,
   FileText,
-  CalendarCheck,
   Settings,
   HelpCircle,
   LogOut,
@@ -20,7 +19,6 @@ import { cn } from '@/lib/utils'
 const sidebarLinks = [
   { title: 'Dashboard', href: '/admin', icon: LayoutDashboard },
   { title: 'Homepage CMS', href: '/admin/homepage', icon: Home },
-  { title: 'Bookings', href: '/admin/bookings', icon: CalendarCheck },
   { title: 'Contacts', href: '/admin/contacts', icon: Mail },
   { title: 'Services', href: '/admin/services', icon: Car },
   { title: 'Areas', href: '/admin/areas', icon: MapPin },

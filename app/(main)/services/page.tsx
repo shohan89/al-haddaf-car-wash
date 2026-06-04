@@ -2,6 +2,7 @@ import prisma from '@/lib/db'
 import Link from 'next/link'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { BookNowButton } from '@/components/shared/book-now-button'
 import { generatePageMetadata } from '@/lib/seo'
 import { SchemaMarkup } from '@/components/shared/schema-markup'
 import { getPageSeo } from '@/actions/seo-actions'
@@ -143,11 +144,9 @@ export default async function ServicesIndexPage() {
                     Learn More
                   </Button>
                 </Link>
-                <Link href="/book">
-                  <Button size="lg" variant="secondary" className="w-full font-bold px-8">
-                    Grab Bundle Deal →
-                  </Button>
-                </Link>
+                <BookNowButton size="lg" variant="secondary" className="w-full font-bold px-8">
+                  Grab Bundle Deal →
+                </BookNowButton>
               </div>
             </div>
             <div className="absolute top-0 right-0 -translate-y-1/3 translate-x-1/3 w-96 h-96 bg-white/5 rounded-full blur-3xl" />
@@ -165,11 +164,9 @@ export default async function ServicesIndexPage() {
               and your needs.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
-              <Link href="/book">
-                <Button size="lg" variant="secondary" className="font-bold px-8 shadow-xl">
-                  Book a Consultation
-                </Button>
-              </Link>
+              <BookNowButton size="lg" variant="secondary" className="font-bold px-8 shadow-xl">
+                Book a Consultation
+              </BookNowButton>
               <Link href="https://wa.me/971555503288" target="_blank">
                 <Button
                   size="lg"

@@ -2,8 +2,8 @@
 
 import { useState, useRef, useCallback } from 'react'
 import Image from 'next/image'
-import Link from 'next/link'
 import { MoveHorizontal } from 'lucide-react'
+import { useBookingModal } from '@/contexts/BookingContext'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // HOW TO ADD YOUR OWN PHOTOS
@@ -58,6 +58,7 @@ function Placeholder({ label, accent }: { label: string; accent?: boolean }) {
 
 // ─── Individual drag-to-reveal slider card ───────────────────────────────────
 function SliderCard({ item }: { item: (typeof transformations)[0] }) {
+  const { openOptionsModal } = useBookingModal()
   const [position, setPosition] = useState(50)
   const [isDragging, setIsDragging] = useState(false)
   const [beforeError, setBeforeError] = useState(false)
@@ -161,14 +162,27 @@ function SliderCard({ item }: { item: (typeof transformations)[0] }) {
           <p className="font-black text-gray-900 text-sm">{item.title}</p>
           <p className="text-xs text-muted-foreground mt-0.5">{item.service}</p>
         </div>
-        <Link
-          href="/book"
+        <button
+          onClick={() => openOptionsModal()}
           className="rounded-full bg-primary/10 px-3 py-1.5 text-xs font-bold text-primary hover:bg-primary hover:text-white transition-colors"
         >
           Book This →
-        </Link>
+        </button>
       </div>
     </div>
+  )
+}
+
+// ─── Bottom CTA uses context (must be inside GlobalBookingProvider) ──────────
+function BookYourTransformationButton() {
+  const { openOptionsModal } = useBookingModal()
+  return (
+    <button
+      onClick={() => openOptionsModal()}
+      className="inline-flex items-center gap-2 rounded-full bg-primary px-8 py-4 text-sm font-black text-white hover:bg-primary/90 shadow-premium transition-all"
+    >
+      Book Your Transformation →
+    </button>
   )
 }
 
@@ -209,12 +223,7 @@ export function BeforeAfterGallery() {
 
         {/* CTA */}
         <div className="mt-10 text-center">
-          <Link
-            href="/book"
-            className="inline-flex items-center gap-2 rounded-full bg-primary px-8 py-4 text-sm font-black text-white hover:bg-primary/90 shadow-premium transition-all"
-          >
-            Book Your Transformation →
-          </Link>
+          <BookYourTransformationButton />
         </div>
       </div>
     </section>

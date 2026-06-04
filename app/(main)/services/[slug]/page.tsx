@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Badge } from '@/components/ui/badge'
+import { BookNowButton } from '@/components/shared/book-now-button'
 import { Button } from '@/components/ui/button'
 import { SanitizeHTML } from '@/components/shared/sanitize-html'
 import { SchemaMarkup } from '@/components/shared/schema-markup'
@@ -157,11 +158,9 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
                   </Button>
                 </Link>
               ) : (
-                <Link href="/book">
-                  <Button size="lg" className="h-14 px-8 text-base shadow-premium">
-                    Book Now
-                  </Button>
-                </Link>
+                <BookNowButton size="lg" className="h-14 px-8 text-base shadow-premium">
+                  Book Now
+                </BookNowButton>
               )}
               <Link href="https://wa.me/971555503288" target="_blank">
                 <Button
@@ -265,9 +264,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
                   <Button className="font-bold px-6">Chat on WhatsApp →</Button>
                 </Link>
               ) : (
-                <Link href="/book">
-                  <Button className="font-bold px-6 shadow-premium">Book Now — AED {service.price} →</Button>
-                </Link>
+                <BookNowButton className="font-bold px-6 shadow-premium">Book Now — AED {service.price} →</BookNowButton>
               )}
             </div>
           </div>
@@ -370,11 +367,9 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
               </Link>
             ) : (
               <>
-                <Link href="/book">
-                  <Button size="lg" className="font-bold px-8 shadow-premium">
-                    Start My Booking →
-                  </Button>
-                </Link>
+                <BookNowButton size="lg" className="font-bold px-8 shadow-premium">
+                  Start My Booking →
+                </BookNowButton>
                 <Link href="https://wa.me/971555503288" target="_blank">
                   <Button size="lg" variant="outline" className="font-bold px-8">
                     Ask a Question
@@ -428,11 +423,9 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
                     </Button>
                   </Link>
                 ) : (
-                  <Link href="/book">
-                    <Button size="xl" variant="secondary" className="h-14 px-10 text-base font-bold shadow-xl">
-                      Book Now — AED {service.price}
-                    </Button>
-                  </Link>
+                  <BookNowButton size="xl" variant="secondary" className="h-14 px-10 text-base font-bold shadow-xl">
+                    Book Now — AED {service.price}
+                  </BookNowButton>
                 )}
                 <Link href="https://wa.me/971555503288" target="_blank">
                   <Button
