@@ -163,7 +163,12 @@
 
   /* Premium Card Styles */
   .card-luxury {
-    @apply bg-white border border-border shadow-soft transition-all duration-300 hover:shadow-premium hover:-translate-y-1;
+    @apply bg-white border border-border shadow-soft transition-all duration-300;
+  }
+
+  .card-luxury:hover {
+    box-shadow: var(--shadow-premium);
+    transform: translateY(-4px);
   }
 
   .glass-effect {
@@ -185,16 +190,18 @@
   }
 
   .btn-primary {
-    @apply inline-flex items-center justify-center px-8 py-4 text-base font-bold text-white rounded-lg transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-offset-2;
+    @apply inline-flex items-center justify-center px-8 py-4 text-base font-bold text-white rounded-lg transition-all duration-300;
     background-color: hsl(var(--brand-primary));
   }
 
   .btn-primary:hover {
     background-color: hsl(var(--brand-hover));
+    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
   }
 
   .btn-secondary {
-    @apply inline-flex items-center justify-center px-6 py-3 text-base font-semibold bg-transparent rounded-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2;
+    @apply inline-flex items-center justify-center px-6 py-3 text-base font-semibold bg-transparent rounded-lg transition-all duration-300;
     color: hsl(var(--brand-primary));
     border: 2px solid hsl(var(--brand-primary));
   }
@@ -205,12 +212,14 @@
   }
 
   .btn-bundle {
-    @apply inline-flex items-center justify-center px-6 py-3 text-base font-bold text-white rounded-lg shadow-md transition-all duration-300 hover:shadow-xl transform hover:scale-105;
+    @apply inline-flex items-center justify-center px-6 py-3 text-base font-bold text-white rounded-lg shadow-md transition-all duration-300;
     background-color: hsl(var(--brand-primary));
   }
 
   .btn-bundle:hover {
     background-color: hsl(var(--brand-hover));
+    box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+    transform: scale(1.05);
   }
 
   .card-service {
