@@ -13,7 +13,7 @@ import { useBookingModal } from '@/contexts/BookingContext'
 function MobileStickyButton() {
   const { openOptionsModal } = useBookingModal()
   return (
-    <div className="md:hidden fixed bottom-6 right-6 z-50 animate-fade-in">
+    <div className="md:hidden fixed bottom-6 left-6 z-50 animate-fade-in">
       <button
         onClick={() => openOptionsModal()}
         className="flex items-center gap-2 px-6 py-3 bg-[hsl(var(--brand-primary))] text-white font-bold rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all"

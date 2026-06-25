@@ -13,7 +13,7 @@ export function WhatsAppButton({ href }: { href: string }) {
       animate={{ scale: 1, opacity: 1 }}
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.9 }}
-      className="fixed bottom-8 right-8 z-40 flex h-16 w-16 items-center justify-center rounded-full bg-whatsapp text-white shadow-premium transition-colors hover:bg-whatsapp/90"
+      className="fixed bottom-6 right-6 z-40 flex h-16 w-16 items-center justify-center rounded-full bg-whatsapp text-white shadow-premium transition-colors hover:bg-whatsapp/90"
       aria-label="Contact on WhatsApp"
     >
       <MessageCircle size={32} fill="currentColor" />
