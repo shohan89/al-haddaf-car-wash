@@ -3,7 +3,7 @@
 import { Hero } from './hero'
 import { PainPoints } from './pain-points'
 import { Benefits } from './benefits'
-import { Services } from './services'
+import { Services, ServiceCardData } from './services'
 import { LimitedOffer } from './limited-offer'
 import { Testimonials } from './testimonials'
 import { FAQ } from './faq'
@@ -24,13 +24,17 @@ function MobileStickyButton() {
   )
 }
 
-export function HomePageClient() {
+interface HomePageClientProps {
+  services: ServiceCardData[]
+}
+
+export function HomePageClient({ services }: HomePageClientProps) {
   return (
     <div className="min-h-screen bg-white">
       <Hero />
       <PainPoints />
       <Benefits />
-      <Services />
+      <Services services={services} />
       <LimitedOffer />
       <Testimonials />
       <FAQ />

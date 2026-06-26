@@ -18,7 +18,7 @@ export const siteConfig = {
     { title: 'Home', href: '/' },
     { title: 'Services', href: '/services/mobile-car-wash-dubai' },
     { title: 'Areas', href: '/areas/dubai-marina' },
-    { title: 'Pricing', href: '/book' },
+    { title: 'Pricing', href: '/#services' },
     { title: 'About', href: '#about' },
     { title: 'Contact', href: '/contact' },
   ],
