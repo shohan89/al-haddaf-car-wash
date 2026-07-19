@@ -53,7 +53,7 @@ export default async function RootLayout({
     // fall back to defaults
   }
   const { googleAnalyticsId, googleTagManagerId: rawGtmId, facebookPixelId, customHeadScripts, customBodyScripts } = settings.scripts
-  const googleTagManagerId = rawGtmId || 'GTM-T5Z35PVB'
+  const googleTagManagerId = rawGtmId || 'GTM-P9F6GT2N'
 
   return (
     <html lang="en" className="scroll-smooth" suppressHydrationWarning>
