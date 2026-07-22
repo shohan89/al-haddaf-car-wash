@@ -285,11 +285,11 @@
         .then(function (res) { return res.json(); })
         .then(function (data) {
           if (data.success) {
-            showToast('Thanks! We’ll be in touch within 15 minutes.');
             form.reset();
-          } else {
-            showToast('Something went wrong. Please call or WhatsApp us instead.');
+            window.location.href = '/interior-detailing/thank-you.html';
+            return;
           }
+          showToast('Something went wrong. Please call or WhatsApp us instead.');
         })
         .catch(function () {
           showToast('Something went wrong. Please call or WhatsApp us instead.');
