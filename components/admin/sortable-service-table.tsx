@@ -20,6 +20,7 @@ import {
 import { CSS } from '@dnd-kit/utilities';
 import { GripVertical, Edit, Trash2, Eye, EyeOff } from 'lucide-react';
 import Link from 'next/link';
+import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { reorderServices, toggleServicePublish, deleteService } from '@/actions/service-actions';
 import Image from 'next/image';
@@ -137,12 +138,25 @@ export function SortableServiceTable({ initialServices }: TableProps) {
 
   const handleTogglePublish = async (id: string, isPublished: boolean) => {
     setServices(services.map(s => s.id === id ? { ...s, isPublished } : s));
-    await toggleServicePublish(id, isPublished);
+    const result = await toggleServicePublish(id, isPublished);
+    if (!result.success) {
+      setServices(services.map(s => s.id === id ? { ...s, isPublished: !isPublished } : s));
+      toast.error(result.error || 'Failed to update status');
+    } else {
+      toast.success(isPublished ? 'Service published' : 'Service unpublished');
+    }
   };
 
   const handleDelete = async (id: string) => {
+    const prevServices = services;
     setServices(services.filter(s => s.id !== id));
-    await deleteService(id);
+    const result = await deleteService(id);
+    if (!result.success) {
+      setServices(prevServices);
+      toast.error(result.error || 'Failed to delete service');
+    } else {
+      toast.success('Service deleted');
+    }
   };
 
   if (!isMounted) {

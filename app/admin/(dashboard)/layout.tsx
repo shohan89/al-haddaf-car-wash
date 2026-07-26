@@ -3,6 +3,7 @@
 import { AdminSidebar } from '@/components/admin/sidebar'
 import { Bell, Search, User } from 'lucide-react'
 import { Input } from '@/components/ui/input'
+import { Toaster } from 'sonner'
 
 export default function AdminLayout({
   children,
@@ -11,6 +12,7 @@ export default function AdminLayout({
 }) {
   return (
     <div className="min-h-screen bg-muted/30">
+      <Toaster richColors position="top-right" />
       <AdminSidebar />
       
       <div className="pl-64">

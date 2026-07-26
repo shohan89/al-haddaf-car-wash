@@ -2,8 +2,7 @@
 
 import prisma from '@/lib/db';
 import { revalidatePath } from 'next/cache';
-import { writeFile, mkdir } from 'fs/promises';
-import { join } from 'path';
+import { put } from '@vercel/blob';
 import slugify from 'slugify';
 
 // Calculate reading time based on word count (approx 200 words per minute)
@@ -15,18 +14,11 @@ function calculateReadingTime(text: string): number {
 async function uploadImage(file: File | null): Promise<string | null> {
   if (!file || file.size === 0 || file.name === 'undefined') return null;
 
-  const bytes = await file.arrayBuffer();
-  const buffer = Buffer.from(bytes);
-  const uploadsDir = join(process.cwd(), 'public', 'uploads');
-  
-  try { await mkdir(uploadsDir, { recursive: true }); } catch (err) {}
-
   const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
   const filename = `${uniqueSuffix}-${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
-  const filePath = join(uploadsDir, filename);
 
-  await writeFile(filePath, buffer);
-  return `/uploads/${filename}`;
+  const blob = await put(`uploads/${filename}`, file, { access: 'public' });
+  return blob.url;
 }
 
 export async function getAdminBlogs() {

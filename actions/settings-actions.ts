@@ -2,6 +2,7 @@
 
 import prisma from '@/lib/db';
 import { revalidatePath, revalidateTag, unstable_cache } from 'next/cache';
+import { put } from '@vercel/blob';
 import { SITE_SETTINGS_DEFAULTS, type SiteSettingsKey } from '@/data/site-settings-defaults';
 
 const KEY_PREFIX = 'site.';
@@ -62,31 +63,21 @@ export async function uploadSiteLogo(formData: FormData) {
   const file = formData.get('file') as File;
   if (!file) return { success: false, error: 'No file' };
 
-  const bytes = await file.arrayBuffer();
-  const buffer = Buffer.from(bytes);
   const ext = file.name.split('.').pop();
-  const filename = `logo.${ext}`;
-  const path = `public/uploads/${filename}`;
+  const filename = `logo-${Date.now()}.${ext}`;
+  const blob = await put(`uploads/${filename}`, file, { access: 'public' });
 
-  const fs = await import('fs/promises');
-  await fs.writeFile(path, buffer);
-
-  const url = `/uploads/${filename}`;
-  await saveSiteSection('branding', { logoUrl: url });
-  return { success: true, url };
+  await saveSiteSection('branding', { logoUrl: blob.url });
+  return { success: true, url: blob.url };
 }
 
 export async function uploadFavicon(formData: FormData) {
   const file = formData.get('file') as File;
   if (!file) return { success: false, error: 'No file' };
 
-  const bytes = await file.arrayBuffer();
-  const buffer = Buffer.from(bytes);
-  const filename = 'favicon.ico';
-  const path = `public/${filename}`;
+  const filename = `favicon-${Date.now()}.ico`;
+  const blob = await put(`uploads/${filename}`, file, { access: 'public' });
 
-  const fs = await import('fs/promises');
-  await fs.writeFile(path, buffer);
-
-  return { success: true };
+  await saveSiteSection('branding', { faviconUrl: blob.url });
+  return { success: true, url: blob.url };
 }

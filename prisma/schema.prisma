@@ -249,6 +249,14 @@ model Area {
   coveredAreas     String[]  // Sub-areas/neighborhoods covered
   // Hero section
   heroTagline      String?   // e.g. "Dubai's #1 Mobile Car Wash"
+  // Editable CTA copy — null falls back to the page's built-in default text.
+  // Titles/subtitles may include "{area}" as a placeholder for the area name.
+  midCtaTitle      String?
+  midCtaSubtitle   String?
+  midCtaButtonText String?
+  ctaTitle         String?
+  ctaSubtitle      String?
+  ctaButtonText    String?
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
 

@@ -89,6 +89,13 @@ export async function saveArea(formData: FormData) {
     const focusKeyword = formData.get('focusKeyword') as string;
     const schemaMarkup = formData.get('schemaMarkup') as string;
 
+    const midCtaTitle = (formData.get('midCtaTitle') as string | null)?.trim() || null;
+    const midCtaSubtitle = (formData.get('midCtaSubtitle') as string | null)?.trim() || null;
+    const midCtaButtonText = (formData.get('midCtaButtonText') as string | null)?.trim() || null;
+    const ctaTitle = (formData.get('ctaTitle') as string | null)?.trim() || null;
+    const ctaSubtitle = (formData.get('ctaSubtitle') as string | null)?.trim() || null;
+    const ctaButtonText = (formData.get('ctaButtonText') as string | null)?.trim() || null;
+
     const coveredAreasRaw = formData.get('coveredAreas') as string;
     const coveredAreas = coveredAreasRaw ? JSON.parse(coveredAreasRaw) : [];
 
@@ -121,6 +128,12 @@ export async function saveArea(formData: FormData) {
       focusKeyword: focusKeyword || null,
       schemaMarkup: schemaMarkup || null,
       coveredAreas,
+      midCtaTitle,
+      midCtaSubtitle,
+      midCtaButtonText,
+      ctaTitle,
+      ctaSubtitle,
+      ctaButtonText,
     };
 
     if (id) {

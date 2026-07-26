@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -87,7 +88,13 @@ export function SeoEditor({ pageSeo, pageKey, pageLabel, onBack }: SeoEditorProp
     setSaving(true);
     const result = await savePageSeo(data);
     setSaving(false);
-    if (result.success) { setSaved(true); setTimeout(() => setSaved(false), 3000); }
+    if (result.success) {
+      setSaved(true);
+      toast.success('SEO settings saved');
+      setTimeout(() => setSaved(false), 3000);
+    } else {
+      toast.error(result.error || 'Failed to save SEO settings');
+    }
   };
 
   const applySchemaTemplate = (type: string) => {

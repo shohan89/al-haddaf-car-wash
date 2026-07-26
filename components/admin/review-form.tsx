@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -35,9 +36,11 @@ export function ReviewForm({ initialData }: ReviewFormProps) {
     const result = await saveReview(formData);
 
     if (result.success) {
+      toast.success(initialData ? 'Review updated' : 'Review created');
       router.push('/admin/reviews');
     } else {
       setError(result.error || 'Failed to save review');
+      toast.error(result.error || 'Failed to save review');
       setLoading(false);
     }
   };

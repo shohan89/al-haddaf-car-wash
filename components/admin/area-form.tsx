@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -50,9 +51,11 @@ export function AreaForm({ initialData }: AreaFormProps) {
     const result = await saveArea(formData);
 
     if (result.success) {
+      toast.success(initialData ? 'Area updated' : 'Area created');
       router.push('/admin/areas');
     } else {
       setError(result.error || 'Failed to save area');
+      toast.error(result.error || 'Failed to save area');
       setLoading(false);
     }
   };
@@ -150,6 +153,35 @@ export function AreaForm({ initialData }: AreaFormProps) {
             <iframe src={initialData.mapEmbedUrl} width="100%" height="100%" style={{ border: 0 }} allowFullScreen loading="lazy" />
           </div>
         )}
+      </div>
+
+      {/* CTA Sections */}
+      <div className="bg-white p-6 rounded-lg shadow-sm space-y-6">
+        <div>
+          <h3 className="font-semibold text-lg border-b pb-3">Call-to-Action Sections</h3>
+          <p className="text-sm text-gray-500 mt-2">
+            Leave any field blank to use the page&apos;s default text shown in the placeholder. Use{' '}
+            <code className="bg-muted px-1 rounded">{'{area}'}</code> anywhere you want the area name inserted.
+          </p>
+        </div>
+
+        <div className="space-y-3">
+          <h4 className="font-medium text-sm text-gray-700">Mid-Page CTA Strip</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Input name="midCtaTitle" defaultValue={initialData?.midCtaTitle || ''} placeholder="Ready for a spotless car in {area}?" />
+            <Input name="midCtaSubtitle" defaultValue={initialData?.midCtaSubtitle || ''} placeholder="We arrive within 45 min · Book in under a minute" />
+            <Input name="midCtaButtonText" defaultValue={initialData?.midCtaButtonText || ''} placeholder="Book Now in {area} →" />
+          </div>
+        </div>
+
+        <div className="space-y-3">
+          <h4 className="font-medium text-sm text-gray-700">Final CTA Section</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Input name="ctaTitle" defaultValue={initialData?.ctaTitle || ''} placeholder="Ready for a Spotless Car in {area}?" />
+            <Input name="ctaSubtitle" defaultValue={initialData?.ctaSubtitle || ''} placeholder="Book in seconds. We'll handle everything else." />
+            <Input name="ctaButtonText" defaultValue={initialData?.ctaButtonText || ''} placeholder="Book Now" />
+          </div>
+        </div>
       </div>
 
       {/* SEO */}

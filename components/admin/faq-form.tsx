@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -29,9 +30,11 @@ export function FaqForm({ initialData }: FaqFormProps) {
     const result = await saveFaq(formData);
 
     if (result.success) {
+      toast.success(initialData ? 'FAQ updated' : 'FAQ created');
       router.push('/admin/faqs');
     } else {
       setError(result.error || 'Failed to save FAQ');
+      toast.error(result.error || 'Failed to save FAQ');
       setLoading(false);
     }
   };

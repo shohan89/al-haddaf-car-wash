@@ -12,6 +12,10 @@ import { SchemaMarkup } from '@/components/shared/schema-markup';
 
 export const dynamic = 'force-dynamic';
 
+function withArea(text: string, areaName: string): string {
+  return text.replace(/\{area\}/g, areaName);
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   try {
     const { slug } = await params;
@@ -189,11 +193,15 @@ export default async function AreaPage({ params }: { params: Promise<{ slug: str
         <div className="bg-secondary py-7">
           <div className="container-premium flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
             <div>
-              <p className="font-black text-white text-xl">Ready for a spotless car in {area.title}?</p>
-              <p className="text-white/80 text-sm mt-0.5">We arrive within 45 min · Book in under a minute</p>
+              <p className="font-black text-white text-xl">
+                {withArea(area.midCtaTitle || 'Ready for a spotless car in {area}?', area.title)}
+              </p>
+              <p className="text-white/80 text-sm mt-0.5">
+                {withArea(area.midCtaSubtitle || 'We arrive within 45 min · Book in under a minute', area.title)}
+              </p>
             </div>
             <BookNowButton size="lg" className="bg-white text-secondary hover:bg-white/90 font-black px-8 shadow-xl shrink-0">
-              Book Now in {area.title} →
+              {withArea(area.midCtaButtonText || 'Book Now in {area} →', area.title)}
             </BookNowButton>
           </div>
         </div>
@@ -230,14 +238,14 @@ export default async function AreaPage({ params }: { params: Promise<{ slug: str
       <section className="py-20 bg-primary">
         <div className="container-premium text-center">
           <h2 className="text-3xl md:text-4xl font-black text-white">
-            Ready for a Spotless Car in {area.title}?
+            {withArea(area.ctaTitle || 'Ready for a Spotless Car in {area}?', area.title)}
           </h2>
           <p className="mt-4 text-xl text-white/70 max-w-xl mx-auto">
-            Book in seconds. We'll handle everything else.
+            {withArea(area.ctaSubtitle || "Book in seconds. We'll handle everything else.", area.title)}
           </p>
           <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
             <BookNowButton size="lg" variant="secondary" className="text-lg px-10">
-              Book Now <ChevronRight className="ml-2 w-5 h-5" />
+              {withArea(area.ctaButtonText || 'Book Now', area.title)} <ChevronRight className="ml-2 w-5 h-5" />
             </BookNowButton>
           </div>
         </div>

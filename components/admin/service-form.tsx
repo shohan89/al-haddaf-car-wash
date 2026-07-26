@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -71,9 +72,11 @@ export function ServiceForm({ initialData }: ServiceFormProps) {
     const result = await saveService(formData);
 
     if (result.success) {
+      toast.success(initialData ? 'Service updated' : 'Service created');
       router.push('/admin/services');
     } else {
       setError(result.error || 'Failed to save service');
+      toast.error(result.error || 'Failed to save service');
       setLoading(false);
     }
   };

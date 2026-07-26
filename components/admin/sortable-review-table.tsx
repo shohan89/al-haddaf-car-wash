@@ -20,6 +20,7 @@ import {
 import { CSS } from '@dnd-kit/utilities';
 import { GripVertical, Edit, Trash2, Eye, EyeOff, Star, BadgeCheck } from 'lucide-react';
 import Link from 'next/link';
+import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { reorderReviews, toggleReviewStatus, deleteReview } from '@/actions/review-actions';
 import Image from 'next/image';
@@ -126,13 +127,26 @@ export function SortableReviewTable({ initialReviews }: ReviewTableProps) {
 
   const handleToggleStatus = async (id: string, field: 'isPublished' | 'isFeatured' | 'isVerified', value: boolean) => {
     setReviews(reviews.map(s => s.id === id ? { ...s, [field]: value } : s));
-    await toggleReviewStatus(id, field, value);
+    const result = await toggleReviewStatus(id, field, value);
+    if (!result.success) {
+      setReviews(reviews.map(s => s.id === id ? { ...s, [field]: !value } : s));
+      toast.error(result.error || 'Failed to update review');
+    } else {
+      toast.success('Review updated');
+    }
   };
 
   const handleDelete = async (id: string) => {
-    if(confirm('Are you sure you want to delete this review?')) {
+    if (confirm('Are you sure you want to delete this review?')) {
+      const prevReviews = reviews;
       setReviews(reviews.filter(s => s.id !== id));
-      await deleteReview(id);
+      const result = await deleteReview(id);
+      if (!result.success) {
+        setReviews(prevReviews);
+        toast.error(result.error || 'Failed to delete review');
+      } else {
+        toast.success('Review deleted');
+      }
     }
   };
 

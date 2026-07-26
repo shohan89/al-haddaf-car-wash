@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -38,9 +39,11 @@ export function BlogForm({ initialData }: BlogFormProps) {
     const result = await saveBlog(formData);
 
     if (result.success) {
+      toast.success(initialData ? 'Blog post updated' : 'Blog post created');
       router.push('/admin/blogs');
     } else {
       setError(result.error || 'Failed to save blog');
+      toast.error(result.error || 'Failed to save blog');
       setLoading(false);
     }
   };

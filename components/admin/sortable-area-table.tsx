@@ -12,6 +12,7 @@ import {
 import { CSS } from '@dnd-kit/utilities';
 import { GripVertical, Edit, Trash2, Eye, EyeOff } from 'lucide-react';
 import Link from 'next/link';
+import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { reorderAreas, toggleAreaPublish, deleteArea } from '@/actions/area-actions';
 import Image from 'next/image';
@@ -139,8 +140,27 @@ export function SortableAreaTable({ initialAreas }: { initialAreas: Area[] }) {
                 <SortableRow
                   key={area.id}
                   area={area}
-                  onTogglePublish={async (id, v) => { setAreas(areas.map(s => s.id === id ? { ...s, isPublished: v } : s)); await toggleAreaPublish(id, v); }}
-                  onDelete={async (id) => { setAreas(areas.filter(s => s.id !== id)); await deleteArea(id); }}
+                  onTogglePublish={async (id, v) => {
+                    setAreas(areas.map(s => s.id === id ? { ...s, isPublished: v } : s));
+                    const result = await toggleAreaPublish(id, v);
+                    if (!result.success) {
+                      setAreas(areas.map(s => s.id === id ? { ...s, isPublished: !v } : s));
+                      toast.error(result.error || 'Failed to update status');
+                    } else {
+                      toast.success(v ? 'Area published' : 'Area unpublished');
+                    }
+                  }}
+                  onDelete={async (id) => {
+                    const prevAreas = areas;
+                    setAreas(areas.filter(s => s.id !== id));
+                    const result = await deleteArea(id);
+                    if (!result.success) {
+                      setAreas(prevAreas);
+                      toast.error(result.error || 'Failed to delete area');
+                    } else {
+                      toast.success('Area deleted');
+                    }
+                  }}
                 />
               ))}
             </SortableContext>

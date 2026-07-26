@@ -1,10 +1,12 @@
 'use client';
 
 import { useState } from 'react';
+import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { saveSiteSection } from '@/actions/settings-actions';
+import { compressImage } from '@/lib/compress-image';
 import type { SiteSettingsKey } from '@/data/site-settings-defaults';
 import {
   CheckCircle2, Building2, Phone, Mail, Link2, Search,
@@ -68,35 +70,54 @@ export function SiteSettingsEditor({ settings }: SettingsEditorProps) {
     setSaving(null);
     if (result.success) {
       setSaved(section);
+      toast.success('Settings saved');
       setTimeout(() => setSaved(null), 3000);
+    } else {
+      toast.error(result.error || 'Failed to save settings');
     }
   };
 
   const handleLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    setLogoPreview(URL.createObjectURL(file));
     setUploading(true);
-    const fd = new FormData();
-    fd.append('file', file);
-    const { uploadSiteLogo } = await import('@/actions/settings-actions');
-    const result = await uploadSiteLogo(fd);
-    if (result.success && result.url) {
-      setData((prev: any) => ({ ...prev, branding: { ...prev.branding, logoUrl: result.url } }));
+    try {
+      const compressed = await compressImage(file);
+      setLogoPreview(URL.createObjectURL(compressed));
+      const fd = new FormData();
+      fd.append('file', compressed);
+      const { uploadSiteLogo } = await import('@/actions/settings-actions');
+      const result = await uploadSiteLogo(fd);
+      if (result.success && result.url) {
+        setData((prev: any) => ({ ...prev, branding: { ...prev.branding, logoUrl: result.url } }));
+        toast.success('Logo uploaded');
+      } else {
+        toast.error(result.error || 'Failed to upload logo');
+      }
+    } finally {
+      setUploading(false);
     }
-    setUploading(false);
   };
 
   const handleFaviconUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    setFaviconPreview(URL.createObjectURL(file));
     setUploading(true);
-    const fd = new FormData();
-    fd.append('file', file);
-    const { uploadFavicon } = await import('@/actions/settings-actions');
-    await uploadFavicon(fd);
-    setUploading(false);
+    try {
+      const compressed = await compressImage(file);
+      setFaviconPreview(URL.createObjectURL(compressed));
+      const fd = new FormData();
+      fd.append('file', compressed);
+      const { uploadFavicon } = await import('@/actions/settings-actions');
+      const result = await uploadFavicon(fd);
+      if (result.success) {
+        toast.success('Favicon uploaded');
+      } else {
+        toast.error(result.error || 'Failed to upload favicon');
+      }
+    } finally {
+      setUploading(false);
+    }
   };
 
   return (

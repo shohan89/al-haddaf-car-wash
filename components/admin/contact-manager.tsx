@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { toast } from 'sonner'
 import { updateContactStatus, deleteContactSubmission } from '@/actions/contact'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -52,18 +53,33 @@ export function ContactManager({ submissions }: { submissions: Submission[] }) {
   const newCount = submissions.filter((s) => s.status === 'NEW').length
 
   const handleStatus = async (id: string, status: ContactStatus) => {
-    await updateContactStatus(id, status as any)
+    const result = await updateContactStatus(id, status as any)
+    if (result.success) {
+      toast.success('Status updated')
+    } else {
+      toast.error(result.error || 'Failed to update status')
+    }
   }
 
   const handleNoteBlur = async (id: string, status: ContactStatus) => {
-    await updateContactStatus(id, status as any, notes[id])
+    const result = await updateContactStatus(id, status as any, notes[id])
+    if (result.success) {
+      toast.success('Note saved')
+    } else {
+      toast.error(result.error || 'Failed to save note')
+    }
   }
 
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this submission permanently?')) return
     setDeletingId(id)
-    await deleteContactSubmission(id)
+    const result = await deleteContactSubmission(id)
     setDeletingId(null)
+    if (result.success) {
+      toast.success('Submission deleted')
+    } else {
+      toast.error(result.error || 'Failed to delete submission')
+    }
   }
 
   return (

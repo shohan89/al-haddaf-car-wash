@@ -20,6 +20,7 @@ import {
 import { CSS } from '@dnd-kit/utilities';
 import { GripVertical, Edit, Trash2, Eye, EyeOff } from 'lucide-react';
 import Link from 'next/link';
+import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { reorderFaqs, toggleFaqPublish, deleteFaq } from '@/actions/faq-actions';
 
@@ -99,13 +100,26 @@ export function SortableFaqTable({ initialFaqs }: FaqTableProps) {
 
   const handleTogglePublish = async (id: string, isPublished: boolean) => {
     setFaqs(faqs.map(s => s.id === id ? { ...s, isPublished } : s));
-    await toggleFaqPublish(id, isPublished);
+    const result = await toggleFaqPublish(id, isPublished);
+    if (!result.success) {
+      setFaqs(faqs.map(s => s.id === id ? { ...s, isPublished: !isPublished } : s));
+      toast.error(result.error || 'Failed to update status');
+    } else {
+      toast.success(isPublished ? 'FAQ published' : 'FAQ hidden');
+    }
   };
 
   const handleDelete = async (id: string) => {
-    if(confirm('Are you sure you want to delete this FAQ?')) {
+    if (confirm('Are you sure you want to delete this FAQ?')) {
+      const prevFaqs = faqs;
       setFaqs(faqs.filter(s => s.id !== id));
-      await deleteFaq(id);
+      const result = await deleteFaq(id);
+      if (!result.success) {
+        setFaqs(prevFaqs);
+        toast.error(result.error || 'Failed to delete FAQ');
+      } else {
+        toast.success('FAQ deleted');
+      }
     }
   };
 

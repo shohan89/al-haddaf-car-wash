@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -95,7 +96,10 @@ export function HomepageEditor({ settings }: HomepageEditorProps) {
     setSaving(null);
     if (result.success) {
       setSaved(section);
+      toast.success('Section saved');
       setTimeout(() => setSaved(null), 3000);
+    } else {
+      toast.error(result.error || 'Failed to save section');
     }
   };
 

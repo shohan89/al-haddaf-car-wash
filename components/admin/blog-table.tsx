@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Edit, Trash2, Eye, EyeOff } from 'lucide-react';
 import Link from 'next/link';
+import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { toggleBlogPublish, deleteBlog } from '@/actions/blog-actions';
 
@@ -15,13 +16,26 @@ export function BlogTable({ initialBlogs }: BlogTableProps) {
 
   const handleTogglePublish = async (id: string, isPublished: boolean) => {
     setBlogs(blogs.map(b => b.id === id ? { ...b, isPublished } : b));
-    await toggleBlogPublish(id, isPublished);
+    const result = await toggleBlogPublish(id, isPublished);
+    if (!result.success) {
+      setBlogs(blogs.map(b => b.id === id ? { ...b, isPublished: !isPublished } : b));
+      toast.error(result.error || 'Failed to update status');
+    } else {
+      toast.success(isPublished ? 'Post published' : 'Post unpublished');
+    }
   };
 
   const handleDelete = async (id: string) => {
-    if(confirm('Are you sure you want to delete this blog post?')) {
+    if (confirm('Are you sure you want to delete this blog post?')) {
+      const prevBlogs = blogs;
       setBlogs(blogs.filter(b => b.id !== id));
-      await deleteBlog(id);
+      const result = await deleteBlog(id);
+      if (!result.success) {
+        setBlogs(prevBlogs);
+        toast.error(result.error || 'Failed to delete blog post');
+      } else {
+        toast.success('Blog post deleted');
+      }
     }
   };
 
