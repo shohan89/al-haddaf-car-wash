@@ -23,6 +23,9 @@ export function ServiceForm({ initialData }: ServiceFormProps) {
   const [features, setFeatures] = useState<string[]>(initialData?.features || ['']);
   const [benefits, setBenefits] = useState<string[]>(initialData?.benefits || ['']);
   const [fullDescription, setFullDescription] = useState(initialData?.fullDescription || '');
+  const [faqs, setFaqs] = useState<{ question: string; answer: string }[]>(
+    initialData?.faqs?.length ? initialData.faqs.map((f: any) => ({ question: f.question, answer: f.answer })) : []
+  );
 
   const handleArrayChange = (setter: any, items: string[], index: number, value: string) => {
     const newItems = [...items];
@@ -38,6 +41,18 @@ export function ServiceForm({ initialData }: ServiceFormProps) {
     setter(items.filter((_, i) => i !== index));
   };
 
+  const addFaq = () => {
+    setFaqs([...faqs, { question: '', answer: '' }]);
+  };
+
+  const updateFaq = (index: number, field: 'question' | 'answer', value: string) => {
+    setFaqs(faqs.map((faq, i) => (i === index ? { ...faq, [field]: value } : faq)));
+  };
+
+  const removeFaq = (index: number) => {
+    setFaqs(faqs.filter((_, i) => i !== index));
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
@@ -47,6 +62,7 @@ export function ServiceForm({ initialData }: ServiceFormProps) {
     formData.set('fullDescription', fullDescription);
     formData.set('features', JSON.stringify(features.filter(f => f.trim() !== '')));
     formData.set('benefits', JSON.stringify(benefits.filter(b => b.trim() !== '')));
+    formData.set('faqs', JSON.stringify(faqs.filter(f => f.question.trim() !== '' && f.answer.trim() !== '')));
 
     if (initialData?.id) {
       formData.set('id', initialData.id);
@@ -157,6 +173,82 @@ export function ServiceForm({ initialData }: ServiceFormProps) {
               <Plus className="w-4 h-4 mr-2" /> Add Benefit
             </Button>
           </div>
+        </div>
+      </div>
+
+      <div className="border-t pt-6 space-y-4">
+        <h3 className="font-semibold text-lg">Page Content</h3>
+        <p className="text-sm text-gray-500 -mt-2">
+          Leave any field blank to use the page&apos;s default text shown in the placeholder.
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label className="block text-sm font-medium mb-1">&quot;Full Breakdown&quot; Section Title</label>
+            <Input name="breakdownTitle" defaultValue={initialData?.breakdownTitle || ''} placeholder="What's Included" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-1">&quot;Full Breakdown&quot; Section Subtitle</label>
+            <Input name="breakdownSubtitle" defaultValue={initialData?.breakdownSubtitle || ''} placeholder="Every step of this service is carried out by our certified team using professional-grade equipment and products." />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-1">&quot;Benefits&quot; Section Title</label>
+            <Input name="benefitsTitle" defaultValue={initialData?.benefitsTitle || ''} placeholder="Why You'll Love It" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-1">&quot;Benefits&quot; Section Subtitle</label>
+            <Input name="benefitsSubtitle" defaultValue={initialData?.benefitsSubtitle || ''} placeholder="Here is exactly what you gain when you book this service with Al Haddaf." />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-1">FAQ Section Title</label>
+            <Input name="faqTitle" defaultValue={initialData?.faqTitle || ''} placeholder="Frequently Asked Questions" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-1">FAQ Section Subtitle</label>
+            <Input name="faqSubtitle" defaultValue={initialData?.faqSubtitle || ''} placeholder={`Everything you need to know before booking ${initialData?.title || 'this service'}.`} />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-1">Final CTA Title</label>
+            <Input name="ctaTitle" defaultValue={initialData?.ctaTitle || ''} placeholder={`Ready to Book ${initialData?.title || 'this service'}?`} />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-1">Final CTA Subtitle</label>
+            <Input name="ctaSubtitle" defaultValue={initialData?.ctaSubtitle || ''} placeholder="Join hundreds of satisfied customers across Dubai. Professional service, delivered to your door." />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-1">Final CTA Button Text</label>
+            <Input name="ctaButtonText" defaultValue={initialData?.ctaButtonText || ''} placeholder={`Book Now — AED ${initialData?.price ?? '0'}`} />
+          </div>
+        </div>
+      </div>
+
+      <div className="border-t pt-6 space-y-4">
+        <h3 className="font-semibold text-lg">FAQs</h3>
+        <p className="text-sm text-gray-500 -mt-2">Shown in the FAQ section on this service&apos;s page. Add as many as you like.</p>
+        <div className="space-y-4">
+          {faqs.map((faq, i) => (
+            <div key={i} className="border border-border rounded-lg p-4 space-y-2 relative">
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                onClick={() => removeFaq(i)}
+                className="absolute top-2 right-2"
+              >
+                <X className="w-4 h-4 text-red-500" />
+              </Button>
+              <div>
+                <label className="block text-xs font-medium mb-1 text-gray-500">Question</label>
+                <Input value={faq.question} onChange={(e) => updateFaq(i, 'question', e.target.value)} placeholder="e.g. How long does it take?" className="pr-10" />
+              </div>
+              <div>
+                <label className="block text-xs font-medium mb-1 text-gray-500">Answer</label>
+                <Textarea value={faq.answer} onChange={(e) => updateFaq(i, 'answer', e.target.value)} placeholder="Answer shown to customers..." rows={2} />
+              </div>
+            </div>
+          ))}
+          <Button type="button" variant="outline" size="sm" onClick={addFaq}>
+            <Plus className="w-4 h-4 mr-2" /> Add FAQ
+          </Button>
         </div>
       </div>
 

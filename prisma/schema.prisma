@@ -59,12 +59,36 @@ model Service {
   metaDescription  String
   focusKeyword     String?   // Primary SEO keyword
   schemaMarkup     String?   // JSON-LD schema string
+  // Editable page section copy — null falls back to the page's built-in default text
+  breakdownTitle    String?
+  breakdownSubtitle String?
+  benefitsTitle     String?
+  benefitsSubtitle  String?
+  faqTitle          String?
+  faqSubtitle       String?
+  ctaTitle          String?
+  ctaSubtitle       String?
+  ctaButtonText     String?
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
   bookings         Booking[]
+  faqs             ServiceFaq[]
 
   @@index([isPublished])
   @@index([order])
+}
+
+model ServiceFaq {
+  id        String   @id @default(cuid())
+  serviceId String
+  service   Service  @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  question  String
+  answer    String
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([serviceId])
 }
 
 model Booking {

@@ -54,3 +54,5 @@ public/uploads/
 # Cloudflare build outputs
 .open-next/
 .wrangler/
+
+.env*

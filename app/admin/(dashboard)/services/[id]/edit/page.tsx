@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { ChevronLeft } from 'lucide-react';
 import prisma from '@/lib/db';
 import { notFound } from 'next/navigation';
+import { serviceFaqs } from '@/data/service-faqs';
 
 export const metadata = {
   title: 'Edit Service | Admin',
@@ -12,11 +13,16 @@ export default async function EditServicePage({ params }: { params: Promise<{ id
   const { id } = await params;
   const service = await prisma.service.findUnique({
     where: { id },
+    include: { faqs: { orderBy: { order: 'asc' } } },
   });
 
   if (!service) {
     notFound();
   }
+
+  // Pre-fill the FAQ editor with the current live FAQs — DB-saved ones if this
+  // service has been edited before, otherwise the site's built-in static list.
+  const faqs = service.faqs.length > 0 ? service.faqs : (serviceFaqs[service.slug] ?? []);
 
   return (
     <div className="space-y-6">
@@ -30,7 +36,7 @@ export default async function EditServicePage({ params }: { params: Promise<{ id
         </div>
       </div>
 
-      <ServiceForm initialData={service} />
+      <ServiceForm initialData={{ ...service, faqs }} />
     </div>
   );
 }

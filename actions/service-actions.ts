@@ -2,8 +2,7 @@
 
 import prisma from '@/lib/db';
 import { revalidatePath } from 'next/cache';
-import { writeFile, mkdir } from 'fs/promises';
-import { join } from 'path';
+import { put } from '@vercel/blob';
 import slugify from 'slugify';
 
 // Get all services for admin (includes unpublished)
@@ -67,27 +66,21 @@ export async function deleteService(id: string) {
   }
 }
 
-// Upload image and return path
+// Upload image to Vercel Blob and return its public URL
 async function uploadImage(file: File | null): Promise<string | null> {
   if (!file || file.size === 0 || file.name === 'undefined') return null;
 
-  const bytes = await file.arrayBuffer();
-  const buffer = Buffer.from(bytes);
-
-  const uploadsDir = join(process.cwd(), 'public', 'uploads');
-  
-  try {
-    await mkdir(uploadsDir, { recursive: true });
-  } catch (err) {
-    // ignore if exists
-  }
-
   const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
   const filename = `${uniqueSuffix}-${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
-  const filePath = join(uploadsDir, filename);
 
-  await writeFile(filePath, buffer);
-  return `/uploads/${filename}`;
+  const blob = await put(`uploads/${filename}`, file, { access: 'public' });
+  return blob.url;
+}
+
+// Read an optional text field, treating blank input as "use the page default" (null)
+function optionalText(formData: FormData, key: string): string | null {
+  const value = (formData.get(key) as string | null)?.trim();
+  return value ? value : null;
 }
 
 // Create or update service
@@ -106,12 +99,27 @@ export async function saveService(formData: FormData) {
     const metaDescription = formData.get('metaDescription') as string;
     const focusKeyword = formData.get('focusKeyword') as string;
     const schemaMarkup = formData.get('schemaMarkup') as string;
-    
+
+    // Editable page copy — blank means "fall back to the built-in default"
+    const breakdownTitle = optionalText(formData, 'breakdownTitle');
+    const breakdownSubtitle = optionalText(formData, 'breakdownSubtitle');
+    const benefitsTitle = optionalText(formData, 'benefitsTitle');
+    const benefitsSubtitle = optionalText(formData, 'benefitsSubtitle');
+    const faqTitle = optionalText(formData, 'faqTitle');
+    const faqSubtitle = optionalText(formData, 'faqSubtitle');
+    const ctaTitle = optionalText(formData, 'ctaTitle');
+    const ctaSubtitle = optionalText(formData, 'ctaSubtitle');
+    const ctaButtonText = optionalText(formData, 'ctaButtonText');
+
     // Parse JSON arrays
     const featuresStr = formData.get('features') as string;
     const benefitsStr = formData.get('benefits') as string;
     const features = featuresStr ? JSON.parse(featuresStr) : [];
     const benefits = benefitsStr ? JSON.parse(benefitsStr) : [];
+
+    // Parse FAQ list
+    const faqsStr = formData.get('faqs') as string;
+    const faqs: { question: string; answer: string }[] = faqsStr ? JSON.parse(faqsStr) : [];
 
     // Base slug logic
     const requestedSlug = formData.get('slug') as string;
@@ -147,6 +155,19 @@ export async function saveService(formData: FormData) {
           metaDescription,
           focusKeyword,
           schemaMarkup,
+          breakdownTitle,
+          breakdownSubtitle,
+          benefitsTitle,
+          benefitsSubtitle,
+          faqTitle,
+          faqSubtitle,
+          ctaTitle,
+          ctaSubtitle,
+          ctaButtonText,
+          faqs: {
+            deleteMany: {},
+            create: faqs.map((faq, i) => ({ question: faq.question, answer: faq.answer, order: i })),
+          },
         },
       });
     } else {
@@ -174,14 +195,27 @@ export async function saveService(formData: FormData) {
           metaDescription,
           focusKeyword,
           schemaMarkup,
+          breakdownTitle,
+          breakdownSubtitle,
+          benefitsTitle,
+          benefitsSubtitle,
+          faqTitle,
+          faqSubtitle,
+          ctaTitle,
+          ctaSubtitle,
+          ctaButtonText,
           order: nextOrder,
           isPublished: true,
+          faqs: {
+            create: faqs.map((faq, i) => ({ question: faq.question, answer: faq.answer, order: i })),
+          },
         },
       });
     }
 
     revalidatePath('/admin/services');
     revalidatePath('/services');
+    revalidatePath(`/services/${slug}`);
     revalidatePath('/');
     return { success: true };
   } catch (error) {

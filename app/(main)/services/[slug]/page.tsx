@@ -40,7 +40,10 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
 
   let service = null
   try {
-    service = await prisma.service.findUnique({ where: { slug } })
+    service = await prisma.service.findUnique({
+      where: { slug },
+      include: { faqs: { orderBy: { order: 'asc' } } },
+    })
   } catch (error) {
     console.error('Database error in ServicePage:', error)
   }
@@ -53,7 +56,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
       ? service.compareAtPrice - service.price
       : null
 
-  const faqs = serviceFaqs[slug] ?? []
+  const faqs = service.faqs.length > 0 ? service.faqs : (serviceFaqs[slug] ?? [])
 
   const processSteps = [
     {
@@ -228,10 +231,11 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
             <div className="mb-12 text-center">
               <Badge variant="secondary" className="mb-3 px-4 py-1">Full Breakdown</Badge>
               <h2 className="text-3xl font-black text-primary uppercase tracking-tight sm:text-4xl">
-                What&apos;s Included
+                {service.breakdownTitle || "What's Included"}
               </h2>
               <p className="mt-3 text-muted-foreground max-w-xl mx-auto">
-                Every step of this service is carried out by our certified team using professional-grade equipment and products.
+                {service.breakdownSubtitle ||
+                  'Every step of this service is carried out by our certified team using professional-grade equipment and products.'}
               </p>
             </div>
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -278,10 +282,11 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
             <div className="mb-12 text-center">
               <Badge variant="secondary" className="mb-3 px-4 py-1">The Benefits</Badge>
               <h2 className="text-3xl font-black text-primary uppercase tracking-tight sm:text-4xl">
-                Why You&apos;ll Love It
+                {service.benefitsTitle || "Why You'll Love It"}
               </h2>
               <p className="mt-3 text-muted-foreground max-w-xl mx-auto">
-                Here is exactly what you gain when you book this service with Al Haddaf.
+                {service.benefitsSubtitle ||
+                  'Here is exactly what you gain when you book this service with Al Haddaf.'}
               </p>
             </div>
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-2 max-w-3xl mx-auto">
@@ -388,10 +393,10 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
             <div className="mb-12 text-center">
               <Badge variant="secondary" className="mb-3 px-4 py-1">FAQs</Badge>
               <h2 className="text-3xl font-black text-primary uppercase tracking-tight sm:text-4xl">
-                Frequently Asked Questions
+                {service.faqTitle || 'Frequently Asked Questions'}
               </h2>
               <p className="mt-3 text-muted-foreground max-w-xl mx-auto">
-                Everything you need to know before booking {service.title}.
+                {service.faqSubtitle || `Everything you need to know before booking ${service.title}.`}
               </p>
             </div>
             <div className="max-w-3xl mx-auto">
@@ -410,10 +415,11 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
                 Book Today
               </Badge>
               <h2 className="text-3xl font-black sm:text-4xl md:text-5xl text-white">
-                Ready to Book {service.title}?
+                {service.ctaTitle || `Ready to Book ${service.title}?`}
               </h2>
               <p className="text-white/80 text-lg">
-                Join hundreds of satisfied customers across Dubai. Professional service, delivered to your door.
+                {service.ctaSubtitle ||
+                  'Join hundreds of satisfied customers across Dubai. Professional service, delivered to your door.'}
               </p>
               <div className="flex flex-wrap justify-center gap-4 pt-2">
                 {isContactOnly ? (
@@ -424,7 +430,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
                   </Link>
                 ) : (
                   <BookNowButton size="xl" variant="secondary" className="h-14 px-10 text-base font-bold shadow-xl">
-                    Book Now — AED {service.price}
+                    {service.ctaButtonText || `Book Now — AED ${service.price}`}
                   </BookNowButton>
                 )}
                 <Link href="https://wa.me/971555503288" target="_blank">
