@@ -124,7 +124,17 @@ export async function Footer() {
         </div>
 
         <div className="mt-20 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-white/50">
-          <p>© {new Date().getFullYear()} {footer.copyrightText}</p>
+          <p>
+            © {new Date().getFullYear()} {footer.copyrightText} · Design &amp; Developed by{' '}
+            <Link
+              href="https://hellotomarketing.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-white/70 hover:text-white transition-colors"
+            >
+              Hello To Marketing
+            </Link>
+          </p>
           <div className="flex gap-8">
             <Link href={footer.privacyPolicyUrl} className="hover:text-white transition-colors">Privacy Policy</Link>
             <Link href={footer.termsUrl} className="hover:text-white transition-colors">Terms of Service</Link>
