@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
   async rewrites() {
     return [
       { source: "/interior-detailing", destination: "/interior-detailing/index.html" },
+      { source: "/car-wash-dubai", destination: "/car-wash-dubai/index.html" },
     ];
   },
   images: {
