@@ -63,17 +63,19 @@ export function Navbar({
               Services <ChevronDown size={14} className="transition-transform group-hover:rotate-180" />
             </button>
             <div className="absolute top-full left-0 w-64 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-              <div className="bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden flex flex-col p-2">
-                {dbServices.map(service => (
-                  <Link
-                    key={service.slug}
-                    href={`/services/${service.slug}`}
-                    className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary rounded-lg transition-colors"
-                  >
-                    {service.title}
-                  </Link>
-                ))}
-                {dbServices.length === 0 && <span className="px-4 py-2 text-sm text-gray-500">No services yet</span>}
+              <div className="bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden">
+                <div className="flex flex-col p-2 max-h-[60vh] overflow-y-auto">
+                  {dbServices.map(service => (
+                    <Link
+                      key={service.slug}
+                      href={`/services/${service.slug}`}
+                      className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary rounded-lg transition-colors"
+                    >
+                      {service.title}
+                    </Link>
+                  ))}
+                  {dbServices.length === 0 && <span className="px-4 py-2 text-sm text-gray-500">No services yet</span>}
+                </div>
               </div>
             </div>
           </div>
@@ -84,17 +86,19 @@ export function Navbar({
               Areas <ChevronDown size={14} className="transition-transform group-hover:rotate-180" />
             </button>
             <div className="absolute top-full left-0 w-64 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-              <div className="bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden flex flex-col p-2">
-                {dbAreas.map(area => (
-                  <Link
-                    key={area.slug}
-                    href={`/areas/${area.slug}`}
-                    className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary rounded-lg transition-colors"
-                  >
-                    {area.title}
-                  </Link>
-                ))}
-                {dbAreas.length === 0 && <span className="px-4 py-2 text-sm text-gray-500">No areas yet</span>}
+              <div className="bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden">
+                <div className="flex flex-col p-2 max-h-[60vh] overflow-y-auto">
+                  {dbAreas.map(area => (
+                    <Link
+                      key={area.slug}
+                      href={`/areas/${area.slug}`}
+                      className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary rounded-lg transition-colors"
+                    >
+                      {area.title}
+                    </Link>
+                  ))}
+                  {dbAreas.length === 0 && <span className="px-4 py-2 text-sm text-gray-500">No areas yet</span>}
+                </div>
               </div>
             </div>
           </div>
@@ -129,7 +133,7 @@ export function Navbar({
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden overflow-hidden bg-white border-t border-border shadow-xl absolute top-full left-0 w-full"
+            className="lg:hidden overflow-x-hidden overflow-y-auto max-h-[calc(100vh-5rem)] bg-white border-t border-border shadow-xl absolute top-full left-0 w-full"
           >
             <div className="container-premium py-8 flex flex-col gap-4">
               <Link href="/" onClick={() => setIsOpen(false)} className="text-xl font-bold text-foreground hover:text-primary">Home</Link>

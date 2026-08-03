@@ -9,6 +9,7 @@ import { MapPin, CheckCircle2, Phone, ChevronRight } from 'lucide-react';
 import { generateEntityMetadata } from '@/lib/seo';
 import { SanitizeHTML } from '@/components/shared/sanitize-html';
 import { SchemaMarkup } from '@/components/shared/schema-markup';
+import { CoverageBadges } from '@/components/sections/coverage-badges';
 
 export const dynamic = 'force-dynamic';
 
@@ -110,14 +111,7 @@ export default async function AreaPage({ params }: { params: Promise<{ slug: str
       {area.coveredAreas && area.coveredAreas.length > 0 && (
         <section className="bg-primary py-6">
           <div className="container-premium">
-            <div className="flex flex-wrap items-center gap-3">
-              <span className="text-white/70 text-sm font-semibold uppercase tracking-widest mr-2">We Cover:</span>
-              {area.coveredAreas.map((subArea: string, i: number) => (
-                <Badge key={i} className="bg-white/20 text-white border-white/30 hover:bg-white/30 transition-colors px-3 py-1">
-                  <CheckCircle2 className="w-3 h-3 mr-1.5" /> {subArea}
-                </Badge>
-              ))}
-            </div>
+            <CoverageBadges areas={area.coveredAreas} areaTitle={area.title} />
           </div>
         </section>
       )}
