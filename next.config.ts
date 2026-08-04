@@ -7,6 +7,18 @@ const nextConfig: NextConfig = {
       bodySizeLimit: '10mb',
     },
   },
+  // Let OpenNext's Cloudflare-aware bundler (not Next's own webpack build)
+  // resolve @prisma/client — it correctly picks Prisma's lean Workers/edge
+  // build (~180KB) instead of the ~4.8MB base64-inlined WASM fallback that
+  // gets pulled in otherwise, which alone blows the Workers size limit.
+  serverExternalPackages: ['@prisma/client', '.prisma/client'],
+  // Prisma's driver-adapter client loads its query compiler via a runtime
+  // fs.readFile() call, which Next's static file-tracing can't detect as a
+  // dependency — without this, the .wasm file silently never gets copied
+  // into the deployed bundle at all ("no such file or directory" at runtime).
+  outputFileTracingIncludes: {
+    '**/*': ['./node_modules/.prisma/client/*.wasm'],
+  },
   async rewrites() {
     return [
       { source: "/interior-detailing", destination: "/interior-detailing/index.html" },
@@ -44,6 +56,11 @@ const nextConfig: NextConfig = {
 
 // Gives local `next dev` access to Cloudflare bindings (Hyperdrive, R2, etc.)
 // via wrangler's local emulation, matching production behavior under OpenNext.
-initOpenNextCloudflareForDev();
+// Dev-only: calling this during `next build` (CI, `npm run build:cf`, etc.)
+// tries to emulate bindings that only make sense for a live dev server, and
+// throws if a local Hyperdrive connection string isn't configured for it.
+if (process.env.NODE_ENV === 'development') {
+  initOpenNextCloudflareForDev();
+}
 
 export default nextConfig;
