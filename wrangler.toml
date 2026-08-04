@@ -1,5 +1,38 @@
 name = "al-haddaf-car-wash"
-compatibility_date = "2024-09-23"
+compatibility_date = "2026-08-04"
 compatibility_flags = ["nodejs_compat"]
 main = ".open-next/worker.js"
 assets = { directory = ".open-next/assets", binding = "ASSETS" }
+
+# ------------------------------------------------------------------------------
+# Hyperdrive — lets this Worker reach the Supabase Postgres database. Workers
+# can't open raw TCP connections directly; Hyperdrive proxies them over
+# Cloudflare's network so the existing pg + Prisma adapter code keeps working
+# unchanged (see lib/db.ts).
+#
+# Note: `localConnectionString` is intentionally NOT set here — this file is
+# committed to git, and that field would need your real DATABASE_URL (a
+# secret). Plain `next dev` doesn't need it at all (lib/db.ts falls back to
+# DATABASE_URL directly outside a Workers context). If you want to run
+# `wrangler dev` / `npm run preview` locally against the real DB, add
+# `localConnectionString = "<your DATABASE_URL>"` to a local, uncommitted copy
+# of this file rather than committing it.
+# ------------------------------------------------------------------------------
+[[hyperdrive]]
+binding = "HYPERDRIVE"
+id = "1a38e8036de64475963b8d035ce35d41"
+
+# ------------------------------------------------------------------------------
+# R2 — object storage for admin-uploaded images (services, areas, blog covers,
+# reviews, logo, favicon). Replaces the old Vercel Blob storage.
+#
+# Setup:
+#   1. npx wrangler r2 bucket create al-haddaf-car-wash-uploads
+#   2. Enable public access for the bucket (dashboard: R2 > bucket > Settings >
+#      Public Access) and note the public r2.dev URL or your custom domain.
+#   3. Uncomment this block, and set R2_PUBLIC_URL (see .env.example) to that
+#      public URL.
+# ------------------------------------------------------------------------------
+# [[r2_buckets]]
+# binding = "UPLOADS_BUCKET"
+# bucket_name = "al-haddaf-car-wash-uploads"

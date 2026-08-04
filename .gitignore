@@ -56,3 +56,4 @@ public/uploads/
 .wrangler/
 
 .env*
+!.env.example

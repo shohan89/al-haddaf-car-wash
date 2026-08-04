@@ -2,7 +2,7 @@
 
 import prisma from '@/lib/db';
 import { revalidatePath } from 'next/cache';
-import { put } from '@vercel/blob';
+import { uploadImage } from '@/lib/upload-image';
 import slugify from 'slugify';
 
 // Get all services for admin (includes unpublished)
@@ -64,17 +64,6 @@ export async function deleteService(id: string) {
     console.error('Error deleting service:', error);
     return { success: false, error: 'Failed to delete service' };
   }
-}
-
-// Upload image to Vercel Blob and return its public URL
-async function uploadImage(file: File | null): Promise<string | null> {
-  if (!file || file.size === 0 || file.name === 'undefined') return null;
-
-  const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
-  const filename = `${uniqueSuffix}-${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
-
-  const blob = await put(`uploads/${filename}`, file, { access: 'public' });
-  return blob.url;
 }
 
 // Read an optional text field, treating blank input as "use the page default" (null)
