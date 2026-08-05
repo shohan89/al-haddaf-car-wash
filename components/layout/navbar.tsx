@@ -16,6 +16,13 @@ interface NavItem {
   slug: string
 }
 
+// Many area titles already start with "Car Wash in/on ..." (set directly in
+// the admin dashboard); only prefix the ones that don't, to avoid doubling up
+// ("Car Wash in Car Wash in Dubai Marina").
+function areaDisplayName(title: string): string {
+  return /^car wash\b/i.test(title) ? title : `Car Wash in ${title}`
+}
+
 export function Navbar({
   dbServices = [],
   dbAreas = []
@@ -94,7 +101,7 @@ export function Navbar({
                       href={`/areas/${area.slug}`}
                       className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary rounded-lg transition-colors whitespace-nowrap"
                     >
-                      Car Wash in {area.title}
+                      {areaDisplayName(area.title)}
                     </Link>
                   ))}
                   {dbAreas.length === 0 && <span className="px-4 py-2 text-sm text-gray-500">No areas yet</span>}
@@ -164,7 +171,7 @@ export function Navbar({
                     <motion.div initial={{ height: 0 }} animate={{ height: 'auto' }} exit={{ height: 0 }} className="overflow-hidden flex flex-col gap-3 pl-4 mt-3">
                       {dbAreas.map(area => (
                         <Link key={area.slug} href={`/areas/${area.slug}`} onClick={() => setIsOpen(false)} className="text-muted-foreground hover:text-primary">
-                          Car Wash in {area.title}
+                          {areaDisplayName(area.title)}
                         </Link>
                       ))}
                     </motion.div>
