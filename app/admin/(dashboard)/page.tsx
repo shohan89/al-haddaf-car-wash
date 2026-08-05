@@ -323,7 +323,7 @@ export default async function AdminDashboard() {
               <div>
                 <p className="font-black text-lg">Traffic Analytics</p>
                 <p className="text-sm text-muted-foreground mt-1">
-                  Connect Google Analytics or Vercel Analytics to see real-time traffic data.
+                  Connect Google Analytics or Cloudflare Web Analytics to see real-time traffic data.
                 </p>
               </div>
               <div className="grid grid-cols-2 gap-2 pt-2">
