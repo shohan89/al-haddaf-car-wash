@@ -79,8 +79,8 @@ export default async function AreaPage({ params }: { params: Promise<{ slug: str
         )}
 
         <div className="container-premium relative z-10">
-          <div className="max-w-2xl">
-            <div className="flex items-center gap-2 mb-4">
+          <div className="max-w-2xl mx-auto text-center">
+            <div className="flex items-center justify-center gap-2 mb-4">
               <MapPin className="w-5 h-5 text-secondary" />
               <span className="text-secondary font-semibold text-sm uppercase tracking-widest">
                 {area.heroTagline || 'Service Location'}
@@ -90,10 +90,10 @@ export default async function AreaPage({ params }: { params: Promise<{ slug: str
               Car Wash in<br />
               <span className="text-secondary">{area.title}</span>
             </h1>
-            <p className="mt-6 text-xl text-white/80 max-w-xl leading-relaxed">
+            <p className="mt-6 text-xl text-white/80 max-w-xl mx-auto leading-relaxed">
               {area.shortDescription}
             </p>
-            <div className="mt-8 flex flex-col sm:flex-row gap-4">
+            <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
               <BookNowButton size="lg" className="text-lg px-8 shadow-premium">
                 Book Now in {area.title} <ChevronRight className="ml-2 w-5 h-5" />
               </BookNowButton>
@@ -213,16 +213,41 @@ export default async function AreaPage({ params }: { params: Promise<{ slug: str
               </p>
             </div>
 
-            <div className="rounded-3xl overflow-hidden shadow-premium border border-border aspect-video">
-              <iframe
-                src={area.mapEmbedUrl}
-                width="100%"
-                height="100%"
-                style={{ border: 0 }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              />
+            <div className="grid lg:grid-cols-2 gap-10 items-center">
+              <div className="rounded-3xl overflow-hidden shadow-premium border border-border aspect-video">
+                <iframe
+                  src={area.mapEmbedUrl}
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                />
+              </div>
+
+              {/* Our Location */}
+              <div>
+                <Badge variant="secondary" className="mb-4">Our Location</Badge>
+                <h3 className="text-2xl md:text-3xl font-black text-gray-900">
+                  Serving {area.title} & Nearby Communities
+                </h3>
+                <p className="mt-4 text-muted-foreground leading-relaxed">
+                  We proudly bring our mobile car wash and detailing service to {area.title} and the
+                  surrounding neighborhoods. Wherever you are — home, office, or a parking spot —
+                  our certified technicians arrive fully equipped and ready to work, so you never
+                  have to leave your vehicle or your schedule behind.
+                </p>
+                {area.latitude && area.longitude && (
+                  <Link
+                    href={`https://www.google.com/maps/search/?api=1&query=${area.latitude},${area.longitude}`}
+                    target="_blank"
+                    className="mt-6 inline-flex items-center gap-2 text-primary font-bold hover:underline"
+                  >
+                    <MapPin className="w-4 h-4" /> Get Directions
+                  </Link>
+                )}
+              </div>
             </div>
           </div>
         </section>
