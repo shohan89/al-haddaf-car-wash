@@ -90,7 +90,7 @@ export default async function AreaPage({ params }: { params: Promise<{ slug: str
               Car Wash in<br />
               <span className="text-secondary">{area.title}</span>
             </h1>
-            <p className="mt-6 text-xl text-white/80 max-w-xl mx-auto leading-relaxed">
+            <p className="mt-6 text-xl text-white/80 max-w-3xl mx-auto leading-relaxed">
               {area.shortDescription}
             </p>
             <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
