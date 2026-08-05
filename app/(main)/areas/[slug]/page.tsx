@@ -79,7 +79,7 @@ export default async function AreaPage({ params }: { params: Promise<{ slug: str
         )}
 
         <div className="container-premium relative z-10">
-          <div className="max-w-2xl mx-auto text-center">
+          <div className="w-full text-center">
             <div className="flex items-center justify-center gap-2 mb-4">
               <MapPin className="w-5 h-5 text-secondary" />
               <span className="text-secondary font-semibold text-sm uppercase tracking-widest">
@@ -230,13 +230,14 @@ export default async function AreaPage({ params }: { params: Promise<{ slug: str
               <div>
                 <Badge variant="secondary" className="mb-4">Our Location</Badge>
                 <h3 className="text-2xl md:text-3xl font-black text-gray-900">
-                  Serving {area.title} & Nearby Communities
+                  {withArea(area.locationTitle || 'Serving {area} & Nearby Communities', area.title)}
                 </h3>
                 <p className="mt-4 text-muted-foreground leading-relaxed">
-                  We proudly bring our mobile car wash and detailing service to {area.title} and the
-                  surrounding neighborhoods. Wherever you are — home, office, or a parking spot —
-                  our certified technicians arrive fully equipped and ready to work, so you never
-                  have to leave your vehicle or your schedule behind.
+                  {withArea(
+                    area.locationDescription ||
+                      'We proudly bring our mobile car wash and detailing service to {area} and the surrounding neighborhoods. Wherever you are — home, office, or a parking spot — our certified technicians arrive fully equipped and ready to work, so you never have to leave your vehicle or your schedule behind.',
+                    area.title
+                  )}
                 </p>
                 {area.latitude && area.longitude && (
                   <Link

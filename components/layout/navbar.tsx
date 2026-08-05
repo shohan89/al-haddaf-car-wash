@@ -71,7 +71,7 @@ export function Navbar({
             </button>
             <div className="absolute top-full left-0 w-64 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
               <div className="bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden">
-                <div className="flex flex-col p-2 max-h-[60vh] overflow-y-auto">
+                <div className="flex flex-col p-2 max-h-[60vh] overflow-y-auto overflow-x-hidden">
                   {dbServices.map(service => (
                     <Link
                       key={service.slug}
@@ -92,9 +92,9 @@ export function Navbar({
             <button className={cn('flex items-center gap-1 text-sm font-medium transition-colors py-2', scrolled ? 'text-muted-foreground group-hover:text-primary' : 'text-white/90 group-hover:text-white')}>
               Areas <ChevronDown size={14} className="transition-transform group-hover:rotate-180" />
             </button>
-            <div className="absolute top-full left-0 w-80 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+            <div className="absolute top-full left-0 w-max max-w-[95vw] pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
               <div className="bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden">
-                <div className="flex flex-col p-2 max-h-[60vh] overflow-y-auto">
+                <div className="flex flex-col p-2 max-h-[60vh] overflow-y-auto overflow-x-hidden">
                   {dbAreas.map(area => (
                     <Link
                       key={area.slug}

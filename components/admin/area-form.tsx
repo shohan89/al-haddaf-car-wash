@@ -155,6 +155,30 @@ export function AreaForm({ initialData }: AreaFormProps) {
         )}
       </div>
 
+      {/* Our Location Section */}
+      <div className="bg-white p-6 rounded-lg shadow-sm space-y-4">
+        <div>
+          <h3 className="font-semibold text-lg border-b pb-3">&quot;Our Location&quot; Section</h3>
+          <p className="text-sm text-gray-500 mt-2">
+            Shown next to the map on the area page. Leave blank to use the default text. Use{' '}
+            <code className="bg-muted px-1 rounded">{'{area}'}</code> anywhere you want the area name inserted.
+          </p>
+        </div>
+        <div>
+          <label className="block text-sm font-medium mb-1">Title</label>
+          <Input name="locationTitle" defaultValue={initialData?.locationTitle || ''} placeholder="Serving {area} & Nearby Communities" />
+        </div>
+        <div>
+          <label className="block text-sm font-medium mb-1">Description</label>
+          <Textarea
+            name="locationDescription"
+            defaultValue={initialData?.locationDescription || ''}
+            rows={3}
+            placeholder="We proudly bring our mobile car wash and detailing service to {area} and the surrounding neighborhoods. Wherever you are — home, office, or a parking spot — our certified technicians arrive fully equipped and ready to work, so you never have to leave your vehicle or your schedule behind."
+          />
+        </div>
+      </div>
+
       {/* CTA Sections */}
       <div className="bg-white p-6 rounded-lg shadow-sm space-y-6">
         <div>

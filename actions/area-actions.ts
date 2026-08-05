@@ -85,6 +85,8 @@ export async function saveArea(formData: FormData) {
     const ctaTitle = (formData.get('ctaTitle') as string | null)?.trim() || null;
     const ctaSubtitle = (formData.get('ctaSubtitle') as string | null)?.trim() || null;
     const ctaButtonText = (formData.get('ctaButtonText') as string | null)?.trim() || null;
+    const locationTitle = (formData.get('locationTitle') as string | null)?.trim() || null;
+    const locationDescription = (formData.get('locationDescription') as string | null)?.trim() || null;
 
     const coveredAreasRaw = formData.get('coveredAreas') as string;
     const coveredAreas = coveredAreasRaw ? JSON.parse(coveredAreasRaw) : [];
@@ -124,6 +126,8 @@ export async function saveArea(formData: FormData) {
       ctaTitle,
       ctaSubtitle,
       ctaButtonText,
+      locationTitle,
+      locationDescription,
     };
 
     if (id) {

@@ -261,6 +261,9 @@ model Area {
   ctaTitle         String?
   ctaSubtitle      String?
   ctaButtonText    String?
+  // "Our Location" section (next to the map). May include "{area}".
+  locationTitle       String?
+  locationDescription String?
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
 
