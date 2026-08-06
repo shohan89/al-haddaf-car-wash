@@ -20,7 +20,7 @@ A premium, high-performance web application for Al Haddaf Mobile Car Wash, built
 - **ORM:** [Prisma](https://www.prisma.io/) (with `@prisma/adapter-pg`)
 - **Styling:** Tailwind CSS + custom UI components
 - **Auth:** NextAuth.js (v5)
-- **Deployment:** Cloudflare Workers via [OpenNext](https://opennext.js.org/cloudflare), Hyperdrive (DB), R2 (image storage)
+- **Deployment:** Cloudflare Workers via [OpenNext](https://opennext.js.org/cloudflare), Hyperdrive (DB), Cloudinary (image storage)
 
 ## Local Development
 
@@ -65,7 +65,7 @@ Navigate to `http://localhost:3000` to view the app. The admin portal is located
 
 ## Production Deployment (Cloudflare Workers)
 
-This project deploys to Cloudflare Workers via [OpenNext](https://opennext.js.org/cloudflare). Cloudflare Workers can't open raw TCP connections to Postgres or use Vercel-style filesystem storage, so two pieces of Cloudflare infrastructure are required before deploying — Hyperdrive (database) and R2 (image uploads).
+This project deploys to Cloudflare Workers via [OpenNext](https://opennext.js.org/cloudflare). Cloudflare Workers can't open raw TCP connections to Postgres or use Vercel-style filesystem storage, so Hyperdrive (database) and an external image host are required before deploying.
 
 ### 1. Log in to Wrangler
 ```bash
@@ -79,18 +79,14 @@ npx wrangler hyperdrive create al-haddaf-car-wash-db --connection-string="<your 
 ```
 Copy the returned `id` into the `[[hyperdrive]]` block in `wrangler.toml` (uncomment it), and set `localConnectionString` to the same value as your `DATABASE_URL` for local dev.
 
-### 3. Create an R2 bucket (image uploads)
-Replaces the old Vercel Blob storage for service/area/blog/review images and the site logo/favicon:
-```bash
-npx wrangler r2 bucket create al-haddaf-car-wash-uploads
-```
-Enable **Public Access** for the bucket in the Cloudflare dashboard (R2 → bucket → Settings), note its public URL, then:
-- Uncomment the `[[r2_buckets]]` block in `wrangler.toml`
-- Set `R2_PUBLIC_URL` in your environment to that public URL (see `.env.example`)
+### 3. Set up Cloudinary (image uploads)
+Handles service/area/blog/review images and the site logo/favicon (`lib/upload-image.ts`, signed uploads via plain `fetch()` — no SDK). Create a free account at [cloudinary.com](https://cloudinary.com), then grab `Cloud Name`, `API Key`, and `API Secret` from the dashboard (`cloudinary.com/console`) and set them as env vars (see `.env.example`).
+
+An R2-based version of this is also scaffolded in `wrangler.toml` (commented out) as an alternative if you'd rather keep storage entirely on Cloudflare — it needs a one-time R2 activation in the dashboard first (`dash.cloudflare.com` → R2 Object Storage).
 
 ### 4. Set environment variables
 Cloudflare doesn't auto-inject env vars like Vercel did. Set these as Worker secrets/vars (`npx wrangler secret put <NAME>`, or in the Cloudflare dashboard):
-`DATABASE_URL`, `DIRECT_URL`, `AUTH_SECRET`, `AUTH_URL`/`NEXTAUTH_URL`, `ADMIN_EMAIL`, `ADMIN_PASSWORD`, `R2_PUBLIC_URL`, `NEXT_PUBLIC_SITE_URL`.
+`DATABASE_URL`, `DIRECT_URL`, `AUTH_SECRET`, `AUTH_URL`/`NEXTAUTH_URL`, `ADMIN_EMAIL`, `ADMIN_PASSWORD`, `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`, `NEXT_PUBLIC_SITE_URL`.
 
 ### 5. Build and deploy
 ```bash
@@ -102,7 +98,7 @@ npm run preview
 ```
 
 ### Local development
-`npm run dev` (plain `next dev`) works as before — locally it talks to Postgres directly via `DATABASE_URL` rather than through Hyperdrive, since there's no Cloudflare Workers context outside a real deployment or `wrangler dev`/`preview`. Image uploads locally require either the R2 bucket's `localConnectionString`-style local emulation (via `wrangler dev`) or can be tested end-to-end with `npm run preview`.
+`npm run dev` (plain `next dev`) works as before — locally it talks to Postgres directly via `DATABASE_URL` rather than through Hyperdrive, since there's no Cloudflare Workers context outside a real deployment or `wrangler dev`/`preview`. Image uploads work locally too, as long as the Cloudinary env vars are set in `.env`.
 
 ## License
 Private Property of Al Haddaf. All rights reserved.
