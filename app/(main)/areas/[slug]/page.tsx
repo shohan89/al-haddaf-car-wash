@@ -10,6 +10,7 @@ import { generateEntityMetadata } from '@/lib/seo';
 import { SanitizeHTML } from '@/components/shared/sanitize-html';
 import { SchemaMarkup } from '@/components/shared/schema-markup';
 import { CoverageBadges } from '@/components/sections/coverage-badges';
+import { bareAreaName } from '@/lib/area-name';
 
 export const dynamic = 'force-dynamic';
 
@@ -88,14 +89,14 @@ export default async function AreaPage({ params }: { params: Promise<{ slug: str
             </div>
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-black text-white leading-tight tracking-tighter">
               Car Wash in<br />
-              <span className="text-secondary">{area.title}</span>
+              <span className="text-secondary">{bareAreaName(area.title)}</span>
             </h1>
             <p className="mt-6 text-xl text-white/80 max-w-3xl mx-auto leading-relaxed">
               {area.shortDescription}
             </p>
             <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
               <BookNowButton size="lg" className="text-lg px-8 shadow-premium">
-                Book Now in {area.title} <ChevronRight className="ml-2 w-5 h-5" />
+                Book Now in {bareAreaName(area.title)} <ChevronRight className="ml-2 w-5 h-5" />
               </BookNowButton>
               <Link href="tel:+971555503288">
                 <Button size="lg" variant="outline" className="text-lg px-8 border-white/50 text-white hover:bg-white/10 backdrop-blur-sm">
@@ -111,7 +112,7 @@ export default async function AreaPage({ params }: { params: Promise<{ slug: str
       {area.coveredAreas && area.coveredAreas.length > 0 && (
         <section className="bg-primary py-6">
           <div className="container-premium">
-            <CoverageBadges areas={area.coveredAreas} areaTitle={area.title} />
+            <CoverageBadges areas={area.coveredAreas} areaTitle={bareAreaName(area.title)} />
           </div>
         </section>
       )}
@@ -141,7 +142,7 @@ export default async function AreaPage({ params }: { params: Promise<{ slug: str
               </div>
 
               <BookNowButton size="lg" className="w-full text-lg shadow-premium">
-                Book a Wash in {area.title}
+                Book a Wash in {bareAreaName(area.title)}
               </BookNowButton>
             </div>
           </div>
@@ -154,7 +155,7 @@ export default async function AreaPage({ params }: { params: Promise<{ slug: str
           <div className="container-premium">
             <div className="mb-12 text-center">
               <Badge variant="secondary" className="mb-4">Available Services</Badge>
-              <h2 className="text-3xl md:text-4xl font-black">Services Available in {area.title}</h2>
+              <h2 className="text-3xl md:text-4xl font-black">Services Available in {bareAreaName(area.title)}</h2>
               <p className="mt-3 text-lg text-muted-foreground max-w-xl mx-auto">
                 Choose the perfect car wash package, and we'll come directly to you.
               </p>
@@ -188,14 +189,14 @@ export default async function AreaPage({ params }: { params: Promise<{ slug: str
           <div className="container-premium flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
             <div>
               <p className="font-black text-white text-xl">
-                {withArea(area.midCtaTitle || 'Ready for a spotless car in {area}?', area.title)}
+                {withArea(area.midCtaTitle || 'Ready for a spotless car in {area}?', bareAreaName(area.title))}
               </p>
               <p className="text-white/80 text-sm mt-0.5">
-                {withArea(area.midCtaSubtitle || 'We arrive within 45 min · Book in under a minute', area.title)}
+                {withArea(area.midCtaSubtitle || 'We arrive within 45 min · Book in under a minute', bareAreaName(area.title))}
               </p>
             </div>
             <BookNowButton size="lg" className="bg-white text-secondary hover:bg-white/90 font-black px-8 shadow-xl shrink-0">
-              {withArea(area.midCtaButtonText || 'Book Now in {area} →', area.title)}
+              {withArea(area.midCtaButtonText || 'Book Now in {area} →', bareAreaName(area.title))}
             </BookNowButton>
           </div>
         </div>
@@ -207,7 +208,7 @@ export default async function AreaPage({ params }: { params: Promise<{ slug: str
           <div className="container-premium">
             <div className="mb-10 text-center">
               <Badge variant="secondary" className="mb-4">Find Us</Badge>
-              <h2 className="text-3xl md:text-4xl font-black">We Serve {area.title}</h2>
+              <h2 className="text-3xl md:text-4xl font-black">We Serve {bareAreaName(area.title)}</h2>
               <p className="mt-3 text-lg text-muted-foreground">
                 Book online and we'll come directly to your location within this area.
               </p>
@@ -230,13 +231,13 @@ export default async function AreaPage({ params }: { params: Promise<{ slug: str
               <div>
                 <Badge variant="secondary" className="mb-4">Our Location</Badge>
                 <h3 className="text-2xl md:text-3xl font-black text-gray-900">
-                  {withArea(area.locationTitle || 'Serving {area} & Nearby Communities', area.title)}
+                  {withArea(area.locationTitle || 'Serving {area} & Nearby Communities', bareAreaName(area.title))}
                 </h3>
                 <p className="mt-4 text-muted-foreground leading-relaxed">
                   {withArea(
                     area.locationDescription ||
                       'We proudly bring our mobile car wash and detailing service to {area} and the surrounding neighborhoods. Wherever you are — home, office, or a parking spot — our certified technicians arrive fully equipped and ready to work, so you never have to leave your vehicle or your schedule behind.',
-                    area.title
+                    bareAreaName(area.title)
                   )}
                 </p>
                 {area.latitude && area.longitude && (
@@ -258,14 +259,14 @@ export default async function AreaPage({ params }: { params: Promise<{ slug: str
       <section className="py-20 bg-primary">
         <div className="container-premium text-center">
           <h2 className="text-3xl md:text-4xl font-black text-white">
-            {withArea(area.ctaTitle || 'Ready for a Spotless Car in {area}?', area.title)}
+            {withArea(area.ctaTitle || 'Ready for a Spotless Car in {area}?', bareAreaName(area.title))}
           </h2>
           <p className="mt-4 text-xl text-white/70 max-w-xl mx-auto">
-            {withArea(area.ctaSubtitle || "Book in seconds. We'll handle everything else.", area.title)}
+            {withArea(area.ctaSubtitle || "Book in seconds. We'll handle everything else.", bareAreaName(area.title))}
           </p>
           <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
             <BookNowButton size="lg" variant="secondary" className="text-lg px-10">
-              {withArea(area.ctaButtonText || 'Book Now', area.title)} <ChevronRight className="ml-2 w-5 h-5" />
+              {withArea(area.ctaButtonText || 'Book Now', bareAreaName(area.title))} <ChevronRight className="ml-2 w-5 h-5" />
             </BookNowButton>
           </div>
         </div>
