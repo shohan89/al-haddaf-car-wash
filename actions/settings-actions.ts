@@ -2,7 +2,6 @@
 
 import prisma from '@/lib/db';
 import { revalidatePath, revalidateTag, unstable_cache } from 'next/cache';
-import { uploadImage } from '@/lib/upload-image';
 import { SITE_SETTINGS_DEFAULTS, type SiteSettingsKey } from '@/data/site-settings-defaults';
 
 const KEY_PREFIX = 'site.';
@@ -57,26 +56,4 @@ export async function saveSiteSection(section: SiteSettingsKey, value: any) {
     console.error('Error saving site setting:', error);
     return { success: false, error: 'Failed to save settings' };
   }
-}
-
-export async function uploadSiteLogo(formData: FormData) {
-  const file = formData.get('file') as File;
-  if (!file) return { success: false, error: 'No file' };
-
-  const url = await uploadImage(file, 'uploads');
-  if (!url) return { success: false, error: 'Upload failed' };
-
-  await saveSiteSection('branding', { logoUrl: url });
-  return { success: true, url };
-}
-
-export async function uploadFavicon(formData: FormData) {
-  const file = formData.get('file') as File;
-  if (!file) return { success: false, error: 'No file' };
-
-  const url = await uploadImage(file, 'uploads');
-  if (!url) return { success: false, error: 'Upload failed' };
-
-  await saveSiteSection('branding', { faviconUrl: url });
-  return { success: true, url };
 }

@@ -2,7 +2,6 @@
 
 import prisma from '@/lib/db';
 import { revalidatePath } from 'next/cache';
-import { uploadImage } from '@/lib/upload-image';
 import slugify from 'slugify';
 
 // Calculate reading time based on word count (approx 200 words per minute)
@@ -66,14 +65,7 @@ export async function saveBlog(formData: FormData) {
 
     const readingTime = calculateReadingTime(content || '');
 
-    const imageFile = formData.get('imageFile') as File | null;
-    const existingImage = formData.get('existingImage') as string | null;
-    
-    let imageUrl = existingImage || '';
-    if (imageFile && imageFile.size > 0 && imageFile.name !== 'undefined') {
-      const newPath = await uploadImage(imageFile);
-      if (newPath) imageUrl = newPath;
-    }
+    const imageUrl = (formData.get('image') as string | null) || '';
 
     // Handle Category
     let categoryId = null;

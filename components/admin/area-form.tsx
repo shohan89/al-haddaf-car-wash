@@ -19,6 +19,7 @@ interface AreaFormProps {
 export function AreaForm({ initialData }: AreaFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [imageUploading, setImageUploading] = useState(false);
   const [error, setError] = useState('');
   const [fullDescription, setFullDescription] = useState(initialData?.fullDescription || '');
   const [coveredAreas, setCoveredAreas] = useState<string[]>(initialData?.coveredAreas || []);
@@ -37,6 +38,10 @@ export function AreaForm({ initialData }: AreaFormProps) {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (imageUploading) {
+      toast.error('Please wait for the image to finish uploading');
+      return;
+    }
     setLoading(true);
     setError('');
 
@@ -90,7 +95,7 @@ export function AreaForm({ initialData }: AreaFormProps) {
       {/* Hero Image */}
       <div className="bg-white p-6 rounded-lg shadow-sm space-y-4">
         <h3 className="font-semibold text-lg border-b pb-3">Hero Image</h3>
-        <ImageUpload value={initialData?.image || ''} onChange={() => {}} />
+        <ImageUpload value={initialData?.image || ''} onChange={() => {}} onUploadingChange={setImageUploading} />
         <p className="text-xs text-gray-500">This image appears in the area hero section and on the map card.</p>
       </div>
 
@@ -235,8 +240,8 @@ export function AreaForm({ initialData }: AreaFormProps) {
         <Button type="button" variant="outline" onClick={() => router.push('/admin/areas')} disabled={loading}>
           Cancel
         </Button>
-        <Button type="submit" disabled={loading} className="px-8">
-          {loading ? 'Saving...' : initialData ? 'Update Area' : 'Create Area'}
+        <Button type="submit" disabled={loading || imageUploading} className="px-8">
+          {loading ? 'Saving...' : imageUploading ? 'Uploading image...' : initialData ? 'Update Area' : 'Create Area'}
         </Button>
       </div>
     </form>

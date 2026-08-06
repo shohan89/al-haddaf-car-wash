@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { saveSiteSection } from '@/actions/settings-actions';
 import { compressImage } from '@/lib/compress-image';
+import { uploadToCloudinary } from '@/lib/upload-to-cloudinary';
 import type { SiteSettingsKey } from '@/data/site-settings-defaults';
 import {
   CheckCircle2, Building2, Phone, Mail, Link2, Search,
@@ -84,16 +85,17 @@ export function SiteSettingsEditor({ settings }: SettingsEditorProps) {
     try {
       const compressed = await compressImage(file);
       setLogoPreview(URL.createObjectURL(compressed));
-      const fd = new FormData();
-      fd.append('file', compressed);
-      const { uploadSiteLogo } = await import('@/actions/settings-actions');
-      const result = await uploadSiteLogo(fd);
-      if (result.success && result.url) {
-        setData((prev: any) => ({ ...prev, branding: { ...prev.branding, logoUrl: result.url } }));
+      const url = await uploadToCloudinary(compressed, 'uploads');
+      const nextBranding = { ...data.branding, logoUrl: url };
+      setData((prev: any) => ({ ...prev, branding: nextBranding }));
+      const result = await saveSiteSection('branding', nextBranding);
+      if (result.success) {
         toast.success('Logo uploaded');
       } else {
-        toast.error(result.error || 'Failed to upload logo');
+        toast.error(result.error || 'Failed to save logo');
       }
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Failed to upload logo');
     } finally {
       setUploading(false);
     }
@@ -106,15 +108,17 @@ export function SiteSettingsEditor({ settings }: SettingsEditorProps) {
     try {
       const compressed = await compressImage(file);
       setFaviconPreview(URL.createObjectURL(compressed));
-      const fd = new FormData();
-      fd.append('file', compressed);
-      const { uploadFavicon } = await import('@/actions/settings-actions');
-      const result = await uploadFavicon(fd);
+      const url = await uploadToCloudinary(compressed, 'uploads');
+      const nextBranding = { ...data.branding, faviconUrl: url };
+      setData((prev: any) => ({ ...prev, branding: nextBranding }));
+      const result = await saveSiteSection('branding', nextBranding);
       if (result.success) {
         toast.success('Favicon uploaded');
       } else {
-        toast.error(result.error || 'Failed to upload favicon');
+        toast.error(result.error || 'Failed to save favicon');
       }
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Failed to upload favicon');
     } finally {
       setUploading(false);
     }

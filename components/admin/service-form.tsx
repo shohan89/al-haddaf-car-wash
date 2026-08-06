@@ -19,6 +19,7 @@ interface ServiceFormProps {
 export function ServiceForm({ initialData }: ServiceFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [imageUploading, setImageUploading] = useState(false);
   const [error, setError] = useState('');
 
   const [features, setFeatures] = useState<string[]>(initialData?.features || ['']);
@@ -56,6 +57,10 @@ export function ServiceForm({ initialData }: ServiceFormProps) {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (imageUploading) {
+      toast.error('Please wait for the image to finish uploading');
+      return;
+    }
     setLoading(true);
     setError('');
 
@@ -130,9 +135,10 @@ export function ServiceForm({ initialData }: ServiceFormProps) {
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium mb-1">Service Image</label>
-            <ImageUpload 
-              value={initialData?.image || ''} 
-              onChange={() => {}} // Form input file handles state inherently
+            <ImageUpload
+              value={initialData?.image || ''}
+              onChange={() => {}}
+              onUploadingChange={setImageUploading}
             />
           </div>
         </div>
@@ -281,8 +287,8 @@ export function ServiceForm({ initialData }: ServiceFormProps) {
         <Button type="button" variant="outline" onClick={() => router.push('/admin/services')} disabled={loading}>
           Cancel
         </Button>
-        <Button type="submit" disabled={loading}>
-          {loading ? 'Saving...' : initialData ? 'Update Service' : 'Create Service'}
+        <Button type="submit" disabled={loading || imageUploading}>
+          {loading ? 'Saving...' : imageUploading ? 'Uploading image...' : initialData ? 'Update Service' : 'Create Service'}
         </Button>
       </div>
     </form>

@@ -18,11 +18,16 @@ interface ReviewFormProps {
 export function ReviewForm({ initialData }: ReviewFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [imageUploading, setImageUploading] = useState(false);
   const [error, setError] = useState('');
   const [rating, setRating] = useState(initialData?.rating || 5);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (imageUploading) {
+      toast.error('Please wait for the image to finish uploading');
+      return;
+    }
     setLoading(true);
     setError('');
 
@@ -87,15 +92,15 @@ export function ReviewForm({ initialData }: ReviewFormProps) {
 
       <div>
         <label className="block text-sm font-medium mb-1">Customer Avatar</label>
-        <ImageUpload value={initialData?.avatar || ''} onChange={() => {}} />
+        <ImageUpload value={initialData?.avatar || ''} onChange={() => {}} onUploadingChange={setImageUploading} />
       </div>
 
       <div className="flex justify-end gap-4 pt-6">
         <Button type="button" variant="outline" onClick={() => router.push('/admin/reviews')} disabled={loading}>
           Cancel
         </Button>
-        <Button type="submit" disabled={loading}>
-          {loading ? 'Saving...' : initialData ? 'Update Review' : 'Add Review'}
+        <Button type="submit" disabled={loading || imageUploading}>
+          {loading ? 'Saving...' : imageUploading ? 'Uploading image...' : initialData ? 'Update Review' : 'Add Review'}
         </Button>
       </div>
     </form>

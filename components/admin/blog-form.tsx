@@ -18,6 +18,7 @@ interface BlogFormProps {
 export function BlogForm({ initialData }: BlogFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [imageUploading, setImageUploading] = useState(false);
   const [error, setError] = useState('');
   const [content, setContent] = useState(initialData?.content || '');
   
@@ -26,6 +27,10 @@ export function BlogForm({ initialData }: BlogFormProps) {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (imageUploading) {
+      toast.error('Please wait for the image to finish uploading');
+      return;
+    }
     setLoading(true);
     setError('');
 
@@ -87,9 +92,10 @@ export function BlogForm({ initialData }: BlogFormProps) {
 
           <div className="bg-gray-50 p-4 rounded-lg border space-y-4">
             <h3 className="font-semibold border-b pb-2">Featured Image</h3>
-            <ImageUpload 
-              value={initialData?.coverImage || ''} 
-              onChange={() => {}} 
+            <ImageUpload
+              value={initialData?.coverImage || ''}
+              onChange={() => {}}
+              onUploadingChange={setImageUploading}
             />
           </div>
 
@@ -119,8 +125,8 @@ export function BlogForm({ initialData }: BlogFormProps) {
         <Button type="button" variant="outline" onClick={() => router.push('/admin/blogs')} disabled={loading}>
           Cancel
         </Button>
-        <Button type="submit" disabled={loading}>
-          {loading ? 'Saving...' : initialData ? 'Update Post' : 'Publish Post'}
+        <Button type="submit" disabled={loading || imageUploading}>
+          {loading ? 'Saving...' : imageUploading ? 'Uploading image...' : initialData ? 'Update Post' : 'Publish Post'}
         </Button>
       </div>
     </form>

@@ -2,7 +2,6 @@
 
 import prisma from '@/lib/db';
 import { revalidatePath } from 'next/cache';
-import { uploadImage } from '@/lib/upload-image';
 import slugify from 'slugify';
 
 // Get all services for admin (includes unpublished)
@@ -114,15 +113,7 @@ export async function saveService(formData: FormData) {
     const requestedSlug = formData.get('slug') as string;
     const slug = requestedSlug ? slugify(requestedSlug, { lower: true, strict: true }) : slugify(title, { lower: true, strict: true });
 
-    // Handle image upload
-    const imageFile = formData.get('imageFile') as File | null;
-    const existingImage = formData.get('existingImage') as string | null;
-    
-    let imageUrl = existingImage || '';
-    if (imageFile && imageFile.size > 0 && imageFile.name !== 'undefined') {
-      const newPath = await uploadImage(imageFile);
-      if (newPath) imageUrl = newPath;
-    }
+    const imageUrl = (formData.get('image') as string | null) || '';
 
     if (id) {
       // Update

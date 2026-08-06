@@ -2,7 +2,6 @@
 
 import prisma from '@/lib/db';
 import { revalidatePath } from 'next/cache';
-import { uploadImage } from '@/lib/upload-image';
 
 export async function getAdminReviews() {
   return await prisma.review.findMany({
@@ -59,14 +58,7 @@ export async function saveReview(formData: FormData) {
     const content = formData.get('content') as string;
     const rating = parseInt(formData.get('rating') as string) || 5;
 
-    const imageFile = formData.get('imageFile') as File | null;
-    const existingImage = formData.get('existingImage') as string | null;
-    
-    let avatarUrl = existingImage || null;
-    if (imageFile && imageFile.size > 0 && imageFile.name !== 'undefined') {
-      const newPath = await uploadImage(imageFile);
-      if (newPath) avatarUrl = newPath;
-    }
+    const avatarUrl = (formData.get('image') as string | null) || null;
 
     if (id) {
       await prisma.review.update({
