@@ -30,8 +30,14 @@ export async function uploadImage(file: File | null, prefix = 'uploads'): Promis
       .join('&') + apiSecret
   const signature = await sha1Hex(toSign)
 
+  // Re-wrap as a fresh Blob before forwarding: passing the incoming request's
+  // File object straight into a new outbound fetch() can hang indefinitely on
+  // Workers, since its underlying stream is still tied to the original request.
+  const fileBuffer = await file.arrayBuffer()
+  const fileBlob = new Blob([fileBuffer], { type: file.type })
+
   const body = new FormData()
-  body.append('file', file)
+  body.append('file', fileBlob, file.name)
   body.append('public_id', publicId)
   body.append('timestamp', String(timestamp))
   body.append('api_key', apiKey)
