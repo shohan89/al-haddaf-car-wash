@@ -15,6 +15,8 @@ export async function uploadImage(file: File | null, prefix = 'uploads'): Promis
     )
   }
 
+  console.log(`[uploadImage] start name=${file.name} size=${file.size} type=${file.type}`)
+
   const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`
   const baseName = file.name.replace(/\.[^./\\]+$/, '').replace(/[^a-zA-Z0-9.-]/g, '_')
   const publicId = `${prefix}/${uniqueSuffix}-${baseName}`
@@ -29,12 +31,14 @@ export async function uploadImage(file: File | null, prefix = 'uploads'): Promis
       .map((k) => `${k}=${paramsToSign[k as keyof typeof paramsToSign]}`)
       .join('&') + apiSecret
   const signature = await sha1Hex(toSign)
+  console.log('[uploadImage] signed, buffering file')
 
   // Re-wrap as a fresh Blob before forwarding: passing the incoming request's
   // File object straight into a new outbound fetch() can hang indefinitely on
   // Workers, since its underlying stream is still tied to the original request.
   const fileBuffer = await file.arrayBuffer()
   const fileBlob = new Blob([fileBuffer], { type: file.type })
+  console.log(`[uploadImage] buffered ${fileBuffer.byteLength} bytes, uploading to cloudinary`)
 
   const body = new FormData()
   body.append('file', fileBlob, file.name)
@@ -43,10 +47,27 @@ export async function uploadImage(file: File | null, prefix = 'uploads'): Promis
   body.append('api_key', apiKey)
   body.append('signature', signature)
 
-  const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
-    method: 'POST',
-    body,
-  })
+  const controller = new AbortController()
+  const timeoutId = setTimeout(() => controller.abort(), 25000)
+  let res: Response
+  try {
+    res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
+      method: 'POST',
+      body,
+      signal: controller.signal,
+    })
+  } catch (err) {
+    console.error('[uploadImage] cloudinary fetch failed/timed out', err)
+    throw new Error(
+      err instanceof Error && err.name === 'AbortError'
+        ? 'Cloudinary upload timed out after 25s'
+        : `Cloudinary upload network error: ${err instanceof Error ? err.message : String(err)}`
+    )
+  } finally {
+    clearTimeout(timeoutId)
+  }
+
+  console.log(`[uploadImage] cloudinary responded status=${res.status}`)
 
   if (!res.ok) {
     const text = await res.text().catch(() => '');
@@ -57,6 +78,7 @@ export async function uploadImage(file: File | null, prefix = 'uploads'): Promis
   if (!data.secure_url) {
     throw new Error('Cloudinary upload succeeded but returned no secure_url.')
   }
+  console.log(`[uploadImage] done url=${data.secure_url}`)
   return data.secure_url
 }
 

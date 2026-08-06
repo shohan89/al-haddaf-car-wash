@@ -99,11 +99,15 @@ export async function saveArea(formData: FormData) {
     const imageFile = formData.get('imageFile') as File | null;
     const existingImage = formData.get('existingImage') as string | null;
 
+    console.log(`[saveArea] start id=${id || '(new)'} hasImageFile=${!!(imageFile && imageFile.size > 0)}`);
+
     let imageUrl = existingImage || null;
     if (imageFile && imageFile.size > 0 && imageFile.name !== 'undefined') {
       const newPath = await uploadImage(imageFile);
       if (newPath) imageUrl = newPath;
     }
+
+    console.log('[saveArea] image step done, writing to db');
 
     const areaData = {
       title,
@@ -140,9 +144,13 @@ export async function saveArea(formData: FormData) {
       });
     }
 
+    console.log('[saveArea] db write done, revalidating');
+
     revalidatePath('/admin/areas');
     revalidatePath('/');
     revalidatePath(`/areas/${slug}`);
+
+    console.log('[saveArea] success');
     return { success: true };
   } catch (error: any) {
     console.error('Error saving area:', error);
