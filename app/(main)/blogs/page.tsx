@@ -45,7 +45,7 @@ export default async function BlogsPage() {
                 />
                 {post.category && (
                   <div className="absolute top-4 left-4">
-                    <Badge variant="default" className="bg-primary/90 backdrop-blur-sm shadow-sm">{post.category.name}</Badge>
+                    <Badge variant="default" className="bg-primary text-white backdrop-blur-sm shadow-md">{post.category.name}</Badge>
                   </div>
                 )}
               </div>
