@@ -151,6 +151,13 @@
   p {
     @apply leading-relaxed text-muted-foreground;
   }
+
+  /* Rich-text content tables can be wider than the viewport on mobile —
+     scroll the table itself instead of letting it force page-wide overflow. */
+  .prose table {
+    display: block;
+    overflow-x: auto;
+  }
 }
 
 @layer components {
