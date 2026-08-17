@@ -2,6 +2,7 @@
 
 import * as React from 'react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { useScroll } from '@/hooks/use-scroll'
 import { cn } from '@/lib/utils'
 import { siteConfig } from '@/data/site-config'
@@ -31,6 +32,13 @@ export function Navbar({
   dbAreas?: NavItem[]
 }) {
   const scrolled = useScroll(20)
+  const pathname = usePathname()
+  // Only the homepage and area/service detail pages have a full-bleed dark
+  // hero for the navbar to sit on transparently — everywhere else (listing
+  // pages, blog posts, contact, etc.) has light content right at the top, so
+  // white nav text there would be unreadable until the user scrolls.
+  const hasHero = pathname === '/' || pathname === '/contact' || /^\/(areas|services)\/[^/]+$/.test(pathname)
+  const solid = scrolled || !hasHero
   const [isOpen, setIsOpen] = React.useState(false)
   const [servicesOpen, setServicesOpen] = React.useState(false)
   const [areasOpen, setAreasOpen] = React.useState(false)
@@ -40,11 +48,11 @@ export function Navbar({
     <header
       className={cn(
         'fixed top-0 z-50 w-full transition-all duration-300',
-        scrolled
+        solid
           ? 'bg-white/85 shadow-sm py-3 border-b border-gray-200'
           : 'bg-transparent py-5'
       )}
-      style={scrolled ? { backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)' } : {}}
+      style={solid ? { backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)' } : {}}
     >
       <div className="container-premium flex items-center justify-between">
         {/* Logo */}
@@ -54,7 +62,7 @@ export function Navbar({
               src="/logo.svg"
               alt={siteConfig.name}
               fill
-              className={cn('object-contain transition-all duration-300', !scrolled && 'brightness-0 invert')}
+              className={cn('object-contain transition-all duration-300', !solid && 'brightness-0 invert')}
               priority
             />
           </div>
@@ -62,11 +70,11 @@ export function Navbar({
 
         {/* Desktop Nav */}
         <nav className="hidden lg:flex items-center gap-8">
-          <Link href="/" className={cn('text-sm font-medium transition-colors', scrolled ? 'text-muted-foreground hover:text-primary' : 'text-white/90 hover:text-white')}>Home</Link>
+          <Link href="/" className={cn('text-sm font-medium transition-colors', solid ? 'text-muted-foreground hover:text-primary' : 'text-white/90 hover:text-white')}>Home</Link>
 
           {/* Services Dropdown */}
           <div className="relative group">
-            <button className={cn('flex items-center gap-1 text-sm font-medium transition-colors py-2', scrolled ? 'text-muted-foreground group-hover:text-primary' : 'text-white/90 group-hover:text-white')}>
+            <button className={cn('flex items-center gap-1 text-sm font-medium transition-colors py-2', solid ? 'text-muted-foreground group-hover:text-primary' : 'text-white/90 group-hover:text-white')}>
               Services <ChevronDown size={14} className="transition-transform group-hover:rotate-180" />
             </button>
             <div className="absolute top-full left-0 w-64 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
@@ -89,7 +97,7 @@ export function Navbar({
 
           {/* Areas Dropdown */}
           <div className="relative group">
-            <button className={cn('flex items-center gap-1 text-sm font-medium transition-colors py-2', scrolled ? 'text-muted-foreground group-hover:text-primary' : 'text-white/90 group-hover:text-white')}>
+            <button className={cn('flex items-center gap-1 text-sm font-medium transition-colors py-2', solid ? 'text-muted-foreground group-hover:text-primary' : 'text-white/90 group-hover:text-white')}>
               Areas <ChevronDown size={14} className="transition-transform group-hover:rotate-180" />
             </button>
             <div className="absolute top-full left-0 w-max max-w-[95vw] pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
@@ -110,14 +118,14 @@ export function Navbar({
             </div>
           </div>
 
-          <Link href="/blogs" className={cn('text-sm font-medium transition-colors', scrolled ? 'text-muted-foreground hover:text-primary' : 'text-white/90 hover:text-white')}>Blog</Link>
-          <Link href="/#about" className={cn('text-sm font-medium transition-colors', scrolled ? 'text-muted-foreground hover:text-primary' : 'text-white/90 hover:text-white')}>Why Us</Link>
-          <Link href="/contact" className={cn('text-sm font-medium transition-colors', scrolled ? 'text-muted-foreground hover:text-primary' : 'text-white/90 hover:text-white')}>Contact</Link>
+          <Link href="/blogs" className={cn('text-sm font-medium transition-colors', solid ? 'text-muted-foreground hover:text-primary' : 'text-white/90 hover:text-white')}>Blog</Link>
+          <Link href="/#about" className={cn('text-sm font-medium transition-colors', solid ? 'text-muted-foreground hover:text-primary' : 'text-white/90 hover:text-white')}>Why Us</Link>
+          <Link href="/contact" className={cn('text-sm font-medium transition-colors', solid ? 'text-muted-foreground hover:text-primary' : 'text-white/90 hover:text-white')}>Contact</Link>
         </nav>
 
         {/* Desktop Actions */}
         <div className="hidden lg:flex items-center gap-4">
-          <Link href={`tel:${siteConfig.phone}`} className={cn('flex items-center gap-2 text-sm font-bold transition-colors', scrolled ? 'text-primary' : 'text-white')}>
+          <Link href={`tel:${siteConfig.phone}`} className={cn('flex items-center gap-2 text-sm font-bold transition-colors', solid ? 'text-primary' : 'text-white')}>
             <Phone size={16} />
             {siteConfig.phone}
           </Link>

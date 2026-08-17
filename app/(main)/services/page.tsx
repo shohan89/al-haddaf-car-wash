@@ -8,6 +8,8 @@ import { SchemaMarkup } from '@/components/shared/schema-markup'
 import { getPageSeo } from '@/actions/seo-actions'
 import { CheckCircle2, ArrowRight } from 'lucide-react'
 
+export const dynamic = 'force-dynamic'
+
 export const generateMetadata = () => generatePageMetadata('page:services')
 
 export default async function ServicesIndexPage() {

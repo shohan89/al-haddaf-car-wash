@@ -1,11 +1,13 @@
 import prisma from '@/lib/db';
 import Link from 'next/link';
-import Image from 'next/image';
+import { FallbackImage } from '@/components/shared/fallback-image';
 import { Badge } from '@/components/ui/badge';
 import { Calendar, Clock, User } from 'lucide-react';
 import { generatePageMetadata } from '@/lib/seo';
 import { SchemaMarkup } from '@/components/shared/schema-markup';
 import { getPageSeo } from '@/actions/seo-actions';
+
+export const dynamic = 'force-dynamic';
 
 export const generateMetadata = () => generatePageMetadata('page:blog');
 
@@ -35,11 +37,12 @@ export default async function BlogsPage() {
           {posts.map((post) => (
             <Link key={post.id} href={`/blogs/${post.slug}`} className="group flex flex-col bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-premium border border-border/50 transition-all duration-300">
               <div className="relative h-60 w-full overflow-hidden bg-gray-100">
-                {post.coverImage ? (
-                  <Image src={post.coverImage} alt={post.title} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
-                ) : (
-                  <div className="absolute inset-0 flex items-center justify-center text-gray-400">No Image</div>
-                )}
+                <FallbackImage
+                  src={post.coverImage}
+                  alt={post.title}
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                />
                 {post.category && (
                   <div className="absolute top-4 left-4">
                     <Badge variant="default" className="bg-primary/90 backdrop-blur-sm shadow-sm">{post.category.name}</Badge>

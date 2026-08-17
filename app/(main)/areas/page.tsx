@@ -8,6 +8,8 @@ import { SchemaMarkup } from '@/components/shared/schema-markup';
 import { getPageSeo } from '@/actions/seo-actions';
 import { MapPin, ArrowRight, CheckCircle2 } from 'lucide-react';
 
+export const dynamic = 'force-dynamic';
+
 export const generateMetadata = () => generatePageMetadata('page:areas');
 
 export default async function AreasIndexPage() {

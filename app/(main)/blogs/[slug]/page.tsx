@@ -1,12 +1,12 @@
 import prisma from '@/lib/db';
 import { notFound } from 'next/navigation';
-import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
 import { Calendar, Clock, ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
 import { generateEntityMetadata } from '@/lib/seo';
 import { SanitizeHTML } from '@/components/shared/sanitize-html';
 import { SchemaMarkup } from '@/components/shared/schema-markup';
+import { BlogCoverImage } from '@/components/shared/blog-cover-image';
 
 export const dynamic = 'force-dynamic';
 
@@ -65,13 +65,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         </div>
       </div>
 
-      {post.coverImage && (
-        <div className="container-premium max-w-5xl mb-16">
-          <div className="relative aspect-[21/9] w-full rounded-3xl overflow-hidden shadow-premium">
-            <Image src={post.coverImage} alt={post.title} fill className="object-cover" priority />
-          </div>
-        </div>
-      )}
+      {post.coverImage && <BlogCoverImage src={post.coverImage} alt={post.title} />}
 
       <div className="container-premium max-w-3xl">
         <SanitizeHTML 
