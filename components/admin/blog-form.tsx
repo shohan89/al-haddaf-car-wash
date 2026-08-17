@@ -22,6 +22,7 @@ export function BlogForm({ initialData }: BlogFormProps) {
   const [contentUploading, setContentUploading] = useState(false);
   const [error, setError] = useState('');
   const [content, setContent] = useState(initialData?.content || '');
+  const [isPublished, setIsPublished] = useState(initialData ? !!initialData.isPublished : false);
   const uploading = imageUploading || contentUploading;
   
   // Format tags for display if editing
@@ -38,6 +39,7 @@ export function BlogForm({ initialData }: BlogFormProps) {
 
     const formData = new FormData(e.currentTarget);
     formData.set('content', content);
+    formData.set('isPublished', String(isPublished));
 
     if (initialData?.id) {
       formData.set('id', initialData.id);
@@ -78,6 +80,20 @@ export function BlogForm({ initialData }: BlogFormProps) {
         <div className="space-y-6">
           <div className="bg-gray-50 p-4 rounded-lg border space-y-4">
             <h3 className="font-semibold border-b pb-2">Publish Settings</h3>
+            <div>
+              <label className="block text-sm font-medium mb-1">Status</label>
+              <select
+                value={isPublished ? 'true' : 'false'}
+                onChange={(e) => setIsPublished(e.target.value === 'true')}
+                className="flex h-12 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 md:text-base"
+              >
+                <option value="false">Draft</option>
+                <option value="true">Published</option>
+              </select>
+              <p className="text-xs text-gray-500 mt-1">
+                Drafts are saved but stay hidden from the public blog until you switch this to Published.
+              </p>
+            </div>
             <div>
               <label className="block text-sm font-medium mb-1">Slug</label>
               <Input name="slug" defaultValue={initialData?.slug} placeholder="Auto-generated if empty" />
@@ -128,7 +144,13 @@ export function BlogForm({ initialData }: BlogFormProps) {
           Cancel
         </Button>
         <Button type="submit" disabled={loading || uploading}>
-          {loading ? 'Saving...' : uploading ? 'Uploading image...' : initialData ? 'Update Post' : 'Publish Post'}
+          {loading
+            ? 'Saving...'
+            : uploading
+            ? 'Uploading image...'
+            : isPublished
+            ? initialData ? 'Update & Publish' : 'Publish Post'
+            : 'Save Draft'}
         </Button>
       </div>
     </form>

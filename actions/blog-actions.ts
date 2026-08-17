@@ -66,6 +66,7 @@ export async function saveBlog(formData: FormData) {
     const readingTime = calculateReadingTime(content || '');
 
     const imageUrl = (formData.get('image') as string | null) || '';
+    const isPublished = formData.get('isPublished') === 'true';
 
     // Handle Category
     let categoryId = null;
@@ -94,8 +95,8 @@ export async function saveBlog(formData: FormData) {
       await prisma.post.update({
         where: { id },
         data: {
-          title, slug, excerpt, content, coverImage: imageUrl, metaTitle, metaDescription, 
-          focusKeyword, schemaMarkup, readingTime,
+          title, slug, excerpt, content, coverImage: imageUrl, metaTitle, metaDescription,
+          focusKeyword, schemaMarkup, readingTime, isPublished,
           categoryId,
           tags: { set: tagConnections }
         },
@@ -103,9 +104,8 @@ export async function saveBlog(formData: FormData) {
     } else {
       await prisma.post.create({
         data: {
-          title, slug, excerpt, content, coverImage: imageUrl, metaTitle, metaDescription, 
-          focusKeyword, schemaMarkup, readingTime,
-          isPublished: true,
+          title, slug, excerpt, content, coverImage: imageUrl, metaTitle, metaDescription,
+          focusKeyword, schemaMarkup, readingTime, isPublished,
           categoryId,
           tags: { connect: tagConnections }
         },
