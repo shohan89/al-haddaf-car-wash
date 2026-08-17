@@ -20,7 +20,9 @@ export function ServiceForm({ initialData }: ServiceFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [imageUploading, setImageUploading] = useState(false);
+  const [contentUploading, setContentUploading] = useState(false);
   const [error, setError] = useState('');
+  const uploading = imageUploading || contentUploading;
 
   const [features, setFeatures] = useState<string[]>(initialData?.features || ['']);
   const [benefits, setBenefits] = useState<string[]>(initialData?.benefits || ['']);
@@ -57,7 +59,7 @@ export function ServiceForm({ initialData }: ServiceFormProps) {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (imageUploading) {
+    if (uploading) {
       toast.error('Please wait for the image to finish uploading');
       return;
     }
@@ -146,7 +148,7 @@ export function ServiceForm({ initialData }: ServiceFormProps) {
 
       <div className="space-y-4">
         <label className="block text-sm font-medium mb-1">Full Description</label>
-        <RichTextEditor value={fullDescription} onChange={setFullDescription} />
+        <RichTextEditor value={fullDescription} onChange={setFullDescription} onUploadingChange={setContentUploading} />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -287,8 +289,8 @@ export function ServiceForm({ initialData }: ServiceFormProps) {
         <Button type="button" variant="outline" onClick={() => router.push('/admin/services')} disabled={loading}>
           Cancel
         </Button>
-        <Button type="submit" disabled={loading || imageUploading}>
-          {loading ? 'Saving...' : imageUploading ? 'Uploading image...' : initialData ? 'Update Service' : 'Create Service'}
+        <Button type="submit" disabled={loading || uploading}>
+          {loading ? 'Saving...' : uploading ? 'Uploading image...' : initialData ? 'Update Service' : 'Create Service'}
         </Button>
       </div>
     </form>

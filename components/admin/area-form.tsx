@@ -20,8 +20,10 @@ export function AreaForm({ initialData }: AreaFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [imageUploading, setImageUploading] = useState(false);
+  const [contentUploading, setContentUploading] = useState(false);
   const [error, setError] = useState('');
   const [fullDescription, setFullDescription] = useState(initialData?.fullDescription || '');
+  const uploading = imageUploading || contentUploading;
   const [coveredAreas, setCoveredAreas] = useState<string[]>(initialData?.coveredAreas || []);
   const [newCoveredArea, setNewCoveredArea] = useState('');
 
@@ -38,7 +40,7 @@ export function AreaForm({ initialData }: AreaFormProps) {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (imageUploading) {
+    if (uploading) {
       toast.error('Please wait for the image to finish uploading');
       return;
     }
@@ -103,7 +105,7 @@ export function AreaForm({ initialData }: AreaFormProps) {
       <div className="bg-white p-6 rounded-lg shadow-sm space-y-4">
         <h3 className="font-semibold text-lg border-b pb-3">Local Content</h3>
         <p className="text-sm text-gray-500">Write area-specific content — mention local landmarks, neighborhoods, and why you're the best service in this area.</p>
-        <RichTextEditor value={fullDescription} onChange={setFullDescription} />
+        <RichTextEditor value={fullDescription} onChange={setFullDescription} onUploadingChange={setContentUploading} />
       </div>
 
       {/* Service Coverage */}
@@ -240,8 +242,8 @@ export function AreaForm({ initialData }: AreaFormProps) {
         <Button type="button" variant="outline" onClick={() => router.push('/admin/areas')} disabled={loading}>
           Cancel
         </Button>
-        <Button type="submit" disabled={loading || imageUploading} className="px-8">
-          {loading ? 'Saving...' : imageUploading ? 'Uploading image...' : initialData ? 'Update Area' : 'Create Area'}
+        <Button type="submit" disabled={loading || uploading} className="px-8">
+          {loading ? 'Saving...' : uploading ? 'Uploading image...' : initialData ? 'Update Area' : 'Create Area'}
         </Button>
       </div>
     </form>

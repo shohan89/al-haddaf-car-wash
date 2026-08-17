@@ -19,15 +19,17 @@ export function BlogForm({ initialData }: BlogFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [imageUploading, setImageUploading] = useState(false);
+  const [contentUploading, setContentUploading] = useState(false);
   const [error, setError] = useState('');
   const [content, setContent] = useState(initialData?.content || '');
+  const uploading = imageUploading || contentUploading;
   
   // Format tags for display if editing
   const initialTags = initialData?.tags?.map((t: any) => t.name).join(', ') || '';
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (imageUploading) {
+    if (uploading) {
       toast.error('Please wait for the image to finish uploading');
       return;
     }
@@ -69,7 +71,7 @@ export function BlogForm({ initialData }: BlogFormProps) {
           </div>
           <div className="space-y-4">
             <label className="block text-sm font-medium mb-1">Content *</label>
-            <RichTextEditor value={content} onChange={setContent} />
+            <RichTextEditor value={content} onChange={setContent} onUploadingChange={setContentUploading} />
           </div>
         </div>
 
@@ -125,8 +127,8 @@ export function BlogForm({ initialData }: BlogFormProps) {
         <Button type="button" variant="outline" onClick={() => router.push('/admin/blogs')} disabled={loading}>
           Cancel
         </Button>
-        <Button type="submit" disabled={loading || imageUploading}>
-          {loading ? 'Saving...' : imageUploading ? 'Uploading image...' : initialData ? 'Update Post' : 'Publish Post'}
+        <Button type="submit" disabled={loading || uploading}>
+          {loading ? 'Saving...' : uploading ? 'Uploading image...' : initialData ? 'Update Post' : 'Publish Post'}
         </Button>
       </div>
     </form>
