@@ -3,11 +3,11 @@
 import { useRef, useState } from 'react';
 import Image from 'next/image';
 import { toast } from 'sonner';
-import { X, Copy, Trash2, ImageOff, Check, Upload, Loader2 } from 'lucide-react';
+import { X, Copy, Trash2, ImageOff, Check, Upload, Loader2, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { updateMediaAsset, deleteMediaAsset } from '@/actions/media-actions';
+import { updateMediaAsset, deleteMediaAsset, syncMediaLibraryFromCloudinary } from '@/actions/media-actions';
 import { compressImage } from '@/lib/compress-image';
 import { uploadToCloudinaryAndRecord } from '@/lib/upload-to-cloudinary';
 
@@ -41,6 +41,7 @@ export function MediaLibrary({ initialAssets }: { initialAssets: MediaAsset[] })
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [syncing, setSyncing] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const openEditor = (asset: MediaAsset) => {
@@ -109,11 +110,31 @@ export function MediaLibrary({ initialAssets }: { initialAssets: MediaAsset[] })
     }
   };
 
+  const handleSync = async () => {
+    setSyncing(true);
+    const result = await syncMediaLibraryFromCloudinary();
+    setSyncing(false);
+    if (result.success) {
+      const added = result.added ?? 0;
+      setAssets(result.assets ?? []);
+      toast.success(added > 0 ? `Added ${added} image${added === 1 ? '' : 's'} from Cloudinary` : 'Already up to date');
+    } else {
+      toast.error(result.error || 'Sync failed');
+    }
+  };
+
   return (
     <div>
       <input type="file" ref={fileInputRef} onChange={handleFileSelected} accept="image/*" className="hidden" />
 
-      <div className="mb-4 flex justify-end">
+      <div className="mb-4 flex justify-end gap-2">
+        <Button type="button" variant="outline" onClick={handleSync} disabled={syncing}>
+          {syncing ? (
+            <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Syncing...</>
+          ) : (
+            <><RefreshCw className="w-4 h-4 mr-2" /> Sync from Cloudinary</>
+          )}
+        </Button>
         <Button type="button" onClick={handleUploadClick} disabled={uploading}>
           {uploading ? (
             <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Uploading...</>
@@ -128,8 +149,9 @@ export function MediaLibrary({ initialAssets }: { initialAssets: MediaAsset[] })
           <ImageOff className="w-10 h-10 mx-auto mb-3 text-gray-300" />
           <p className="font-medium">No media yet</p>
           <p className="text-sm mt-1">
-            Upload an image above, or it'll appear here automatically once you upload one from Services, Areas,
-            Blogs, Reviews, or Settings.
+            Upload an image above, click "Sync from Cloudinary" to pull in everything uploaded before this page
+            existed, or it'll appear here automatically once you upload one from Services, Areas, Blogs, Reviews,
+            or Settings.
           </p>
         </div>
       ) : (

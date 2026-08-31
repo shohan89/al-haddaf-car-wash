@@ -75,3 +75,43 @@ export async function deleteCloudinaryAsset(publicId: string): Promise<void> {
     throw new Error(`Cloudinary delete failed (${res.status}): ${text || res.statusText}`);
   }
 }
+
+export interface CloudinaryResource {
+  public_id: string;
+  format: string;
+  secure_url: string;
+  bytes: number;
+  width: number;
+  height: number;
+  created_at: string;
+}
+
+// Lists every image ever uploaded to this Cloudinary account (Admin API),
+// one page at a time — used to backfill the Media Library with images
+// uploaded before it existed, including ones no longer referenced anywhere.
+// Server-only — needs the API secret for Basic Auth.
+export async function listCloudinaryImages(
+  nextCursor?: string
+): Promise<{ resources: CloudinaryResource[]; nextCursor?: string }> {
+  const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
+  const apiKey = process.env.CLOUDINARY_API_KEY;
+  const apiSecret = process.env.CLOUDINARY_API_SECRET;
+  if (!cloudName || !apiKey || !apiSecret) {
+    throw new Error('Cloudinary is not configured.');
+  }
+
+  const auth = btoa(`${apiKey}:${apiSecret}`);
+  const params = new URLSearchParams({ max_results: '500' });
+  if (nextCursor) params.set('next_cursor', nextCursor);
+
+  const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/resources/image/upload?${params}`, {
+    headers: { Authorization: `Basic ${auth}` },
+  });
+  if (!res.ok) {
+    const text = await res.text().catch(() => '');
+    throw new Error(`Cloudinary list failed (${res.status}): ${text || res.statusText}`);
+  }
+
+  const data = (await res.json()) as { resources: CloudinaryResource[]; next_cursor?: string };
+  return { resources: data.resources, nextCursor: data.next_cursor };
+}
