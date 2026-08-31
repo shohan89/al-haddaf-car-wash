@@ -260,8 +260,16 @@
    they reliably win over the plugin's own generated styles regardless of
    layer ordering. */
 .prose p {
-  margin-top: 0.85em;
-  margin-bottom: 0.85em;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4 {
+  margin-top: 1em;
+  margin-bottom: 0.4em;
 }
 
 .prose table {
@@ -274,8 +282,14 @@
 
 .prose table :where(th, td) {
   border: 1px solid #e2e8f0;
-  padding: 0.65em 1em;
+  padding: 0.5em 1em;
   text-align: left;
+}
+
+/* Table cell content is often wrapped in its own <p> — don't stack that
+   paragraph's margin on top of the cell's own padding. */
+.prose table p {
+  margin: 0;
 }
 
 .prose table th {
