@@ -11,6 +11,7 @@ import {
   Home,
   Search,
   Mail,
+  Images,
 } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -24,6 +25,7 @@ const sidebarLinks = [
   { title: 'Areas', href: '/admin/areas', icon: MapPin },
   { title: 'Reviews', href: '/admin/reviews', icon: MessageSquare },
   { title: 'Blogs', href: '/admin/blogs', icon: FileText },
+  { title: 'Media Library', href: '/admin/media', icon: Images },
   { title: 'FAQs', href: '/admin/faqs', icon: HelpCircle },
   { title: 'SEO Manager', href: '/admin/seo', icon: Search },
   { title: 'Settings', href: '/admin/settings', icon: Settings },

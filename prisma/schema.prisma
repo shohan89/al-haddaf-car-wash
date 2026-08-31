@@ -232,6 +232,24 @@ model PageSeo {
   createdAt        DateTime @default(now())
 }
 
+model MediaAsset {
+  id          String   @id @default(cuid())
+  url         String   @unique
+  publicId    String   // Cloudinary public_id, needed to delete the asset there too
+  filename    String   // original uploaded filename
+  mimeType    String?
+  width       Int?
+  height      Int?
+  size        Int?     // bytes
+  title       String?
+  altText     String?
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([createdAt])
+}
+
 model Area {
   id               String    @id @default(cuid())
   slug             String    @unique

@@ -278,7 +278,7 @@
   text-align: left;
 }
 
-.prose table thead th {
+.prose table th {
   background-color: #f1f5f9;
   color: var(--color-primary);
   font-weight: 700;
