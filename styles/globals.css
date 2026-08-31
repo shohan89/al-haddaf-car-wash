@@ -151,13 +151,6 @@
   p {
     @apply leading-relaxed text-muted-foreground;
   }
-
-  /* Rich-text content tables can be wider than the viewport on mobile —
-     scroll the table itself instead of letting it force page-wide overflow. */
-  .prose table {
-    display: block;
-    overflow-x: auto;
-  }
 }
 
 @layer components {
@@ -260,4 +253,37 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* Rich-text content (blog posts, service/area descriptions) overrides for
+   @tailwindcss/typography's defaults. Left unlayered (outside @layer) so
+   they reliably win over the plugin's own generated styles regardless of
+   layer ordering. */
+.prose p {
+  margin-top: 0.85em;
+  margin-bottom: 0.85em;
+}
+
+.prose table {
+  display: block;
+  overflow-x: auto;
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1.5em 0;
+}
+
+.prose table :where(th, td) {
+  border: 1px solid #e2e8f0;
+  padding: 0.65em 1em;
+  text-align: left;
+}
+
+.prose table thead th {
+  background-color: #f1f5f9;
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.prose table tbody tr:nth-child(even) {
+  background-color: #f8fafc;
 }
