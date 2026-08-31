@@ -65,8 +65,8 @@ export default async function AreaPage({ params }: { params: Promise<{ slug: str
           <>
             <div className="absolute inset-0 z-0">
               <Image 
-                src={area.image} 
-                alt={area.title} 
+                src={area.image}
+                alt={area.imageAltText || area.title}
                 fill 
                 className="object-cover" 
                 priority 

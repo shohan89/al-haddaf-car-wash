@@ -52,6 +52,7 @@ model Service {
   price            Float
   duration         String
   image            String
+  imageAltText     String?
   features         String[]
   benefits         String[]
   isPopular        Boolean   @default(false)
@@ -151,6 +152,7 @@ model Post {
   content         String
   excerpt         String
   coverImage      String?
+  coverImageAltText String?
   authorName      String   @default("Admin")
   isPublished     Boolean  @default(false)
   readingTime     Int      @default(5)
@@ -257,6 +259,7 @@ model Area {
   shortDescription String
   fullDescription  String
   image            String?
+  imageAltText     String?
   isPublished      Boolean   @default(true)
   order            Int       @default(0)
   metaTitle        String?

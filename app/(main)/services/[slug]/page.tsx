@@ -98,7 +98,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
         {service.image ? (
           <Image
             src={service.image}
-            alt={service.title}
+            alt={service.imageAltText || service.title}
             fill
             priority
             sizes="100vw"

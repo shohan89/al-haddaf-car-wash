@@ -65,7 +65,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         </div>
       </div>
 
-      {post.coverImage && <BlogCoverImage src={post.coverImage} alt={post.title} />}
+      {post.coverImage && <BlogCoverImage src={post.coverImage} alt={post.coverImageAltText || post.title} />}
 
       <div className="container-premium max-w-3xl">
         <SanitizeHTML 

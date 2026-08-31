@@ -114,6 +114,7 @@ export async function saveService(formData: FormData) {
     const slug = requestedSlug ? slugify(requestedSlug, { lower: true, strict: true }) : slugify(title, { lower: true, strict: true });
 
     const imageUrl = (formData.get('image') as string | null) || '';
+    const imageAltText = (formData.get('imageAltText') as string | null)?.trim() || null;
 
     if (id) {
       // Update
@@ -129,6 +130,7 @@ export async function saveService(formData: FormData) {
           isBundle,
           duration,
           image: imageUrl,
+          imageAltText,
           features,
           benefits,
           metaTitle,
@@ -169,6 +171,7 @@ export async function saveService(formData: FormData) {
           isBundle,
           duration,
           image: imageUrl,
+          imageAltText,
           features,
           benefits,
           metaTitle,

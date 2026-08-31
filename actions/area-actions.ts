@@ -96,6 +96,7 @@ export async function saveArea(formData: FormData) {
       : slugify(title, { lower: true, strict: true });
 
     const imageUrl = (formData.get('image') as string | null) || null;
+    const imageAltText = (formData.get('imageAltText') as string | null)?.trim() || null;
 
     const areaData = {
       title,
@@ -103,6 +104,7 @@ export async function saveArea(formData: FormData) {
       shortDescription,
       fullDescription,
       image: imageUrl,
+      imageAltText,
       metaTitle: metaTitle || null,
       metaDescription: metaDescription || null,
       heroTagline: heroTagline || null,

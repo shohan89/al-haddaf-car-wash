@@ -114,6 +114,8 @@ export function BlogForm({ initialData }: BlogFormProps) {
               value={initialData?.coverImage || ''}
               onChange={() => {}}
               onUploadingChange={setImageUploading}
+              altTextFieldName="coverImageAltText"
+              altTextValue={initialData?.coverImageAltText || ''}
             />
           </div>
 

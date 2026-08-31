@@ -39,7 +39,7 @@ export default async function BlogsPage() {
               <div className="relative h-60 w-full overflow-hidden bg-gray-100">
                 <FallbackImage
                   src={post.coverImage}
-                  alt={post.title}
+                  alt={post.coverImageAltText || post.title}
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-500"
                 />

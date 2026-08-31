@@ -141,6 +141,8 @@ export function ServiceForm({ initialData }: ServiceFormProps) {
               value={initialData?.image || ''}
               onChange={() => {}}
               onUploadingChange={setImageUploading}
+              altTextFieldName="imageAltText"
+              altTextValue={initialData?.imageAltText || ''}
             />
           </div>
         </div>

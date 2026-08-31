@@ -76,7 +76,8 @@ export function RichTextEditor({ value, onChange, onUploadingChange }: RichTextE
     try {
       const compressed = await compressImage(file);
       const url = await uploadToCloudinary(compressed, 'blog-content');
-      editor?.chain().focus().setImage({ src: url }).run();
+      const alt = window.prompt('Alt text for this image (for SEO/accessibility) — leave blank to skip:', '');
+      editor?.chain().focus().setImage({ src: url, alt: alt || undefined }).run();
     } catch (err) {
       toast.error(err instanceof Error ? err.message : 'Image upload failed');
     } finally {

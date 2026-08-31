@@ -5,17 +5,29 @@ import { UploadCloud, X, Loader2, AlertCircle } from 'lucide-react';
 import Image from 'next/image';
 import { compressImage } from '@/lib/compress-image';
 import { uploadToCloudinary } from '@/lib/upload-to-cloudinary';
+import { Input } from '@/components/ui/input';
 
 interface ImageUploadProps {
   value: string;
   onChange: (url: string) => void;
   onUploadingChange?: (uploading: boolean) => void;
   prefix?: string;
+  /** Shows an Alt Text field under the preview, submitted as a hidden input under this name. */
+  altTextFieldName?: string;
+  altTextValue?: string;
 }
 
-export function ImageUpload({ value, onChange, onUploadingChange, prefix = 'uploads' }: ImageUploadProps) {
+export function ImageUpload({
+  value,
+  onChange,
+  onUploadingChange,
+  prefix = 'uploads',
+  altTextFieldName,
+  altTextValue,
+}: ImageUploadProps) {
   const [preview, setPreview] = useState<string>(value);
   const [imageUrl, setImageUrl] = useState<string>(value);
+  const [altText, setAltText] = useState(altTextValue || '');
   const [status, setStatus] = useState<'idle' | 'compressing' | 'uploading'>('idle');
   const [error, setError] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -68,6 +80,7 @@ export function ImageUpload({ value, onChange, onUploadingChange, prefix = 'uplo
         className="hidden"
       />
       <input type="hidden" name="image" value={imageUrl} />
+      {altTextFieldName && <input type="hidden" name={altTextFieldName} value={altText} />}
 
       {error && (
         <div className="mb-2 flex items-center gap-2 text-sm text-red-600">
@@ -107,6 +120,20 @@ export function ImageUpload({ value, onChange, onUploadingChange, prefix = 'uplo
             {status === 'compressing' ? 'Compressing...' : status === 'uploading' ? 'Uploading...' : 'Click to upload an image'}
           </span>
           <span className="text-xs text-gray-400 mt-1">PNG, JPG up to 5MB — auto-compressed before upload</span>
+        </div>
+      )}
+
+      {altTextFieldName && preview && (
+        <div className="mt-3 max-w-md">
+          <label className="block text-sm font-medium mb-1">Alt Text</label>
+          <Input
+            value={altText}
+            onChange={(e) => setAltText(e.target.value)}
+            placeholder="Describe this image for search engines and screen readers"
+          />
+          <p className="text-xs text-gray-500 mt-1">
+            The most important field for image SEO — describe what's actually in the photo.
+          </p>
         </div>
       )}
     </div>

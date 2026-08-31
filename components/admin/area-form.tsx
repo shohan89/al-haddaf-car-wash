@@ -97,7 +97,13 @@ export function AreaForm({ initialData }: AreaFormProps) {
       {/* Hero Image */}
       <div className="bg-white p-6 rounded-lg shadow-sm space-y-4">
         <h3 className="font-semibold text-lg border-b pb-3">Hero Image</h3>
-        <ImageUpload value={initialData?.image || ''} onChange={() => {}} onUploadingChange={setImageUploading} />
+        <ImageUpload
+          value={initialData?.image || ''}
+          onChange={() => {}}
+          onUploadingChange={setImageUploading}
+          altTextFieldName="imageAltText"
+          altTextValue={initialData?.imageAltText || ''}
+        />
         <p className="text-xs text-gray-500">This image appears in the area hero section and on the map card.</p>
       </div>
 
