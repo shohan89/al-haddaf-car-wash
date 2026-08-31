@@ -10,6 +10,9 @@ import { Textarea } from '@/components/ui/textarea';
 import { updateMediaAsset, deleteMediaAsset, syncMediaLibraryFromCloudinary } from '@/actions/media-actions';
 import { compressImage } from '@/lib/compress-image';
 import { uploadToCloudinaryAndRecord } from '@/lib/upload-to-cloudinary';
+import { cloudinaryThumb } from '@/lib/cloudinary-thumbnail';
+
+const PAGE_SIZE = 24;
 
 interface MediaAsset {
   id: string;
@@ -42,6 +45,7 @@ export function MediaLibrary({ initialAssets }: { initialAssets: MediaAsset[] })
   const [deleting, setDeleting] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [syncing, setSyncing] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const openEditor = (asset: MediaAsset) => {
@@ -155,29 +159,47 @@ export function MediaLibrary({ initialAssets }: { initialAssets: MediaAsset[] })
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-          {assets.map((asset) => (
-            <button
-              key={asset.id}
-              type="button"
-              onClick={() => openEditor(asset)}
-              className="group text-left bg-white rounded-lg border shadow-sm overflow-hidden hover:shadow-md hover:border-primary/40 transition-all"
-            >
-              <div className="relative aspect-square w-full bg-gray-100">
-                <Image src={asset.url} alt={asset.altText || asset.filename} fill className="object-cover" />
-                {!asset.altText && (
-                  <span className="absolute top-2 left-2 bg-amber-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow">
-                    No Alt Text
-                  </span>
-                )}
-              </div>
-              <div className="p-2">
-                <p className="text-xs font-medium text-gray-900 truncate">{asset.title || asset.filename}</p>
-                <p className="text-[11px] text-gray-400">{new Date(asset.createdAt).toLocaleDateString()}</p>
-              </div>
-            </button>
-          ))}
-        </div>
+        <>
+          <p className="text-sm text-gray-500 mb-3">
+            Showing {Math.min(visibleCount, assets.length)} of {assets.length}
+          </p>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+            {assets.slice(0, visibleCount).map((asset) => (
+              <button
+                key={asset.id}
+                type="button"
+                onClick={() => openEditor(asset)}
+                className="group text-left bg-white rounded-lg border shadow-sm overflow-hidden hover:shadow-md hover:border-primary/40 transition-all"
+              >
+                <div className="relative aspect-square w-full bg-gray-100">
+                  <Image
+                    src={cloudinaryThumb(asset.url, 300)}
+                    alt={asset.altText || asset.filename}
+                    fill
+                    unoptimized
+                    className="object-cover"
+                  />
+                  {!asset.altText && (
+                    <span className="absolute top-2 left-2 bg-amber-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow">
+                      No Alt Text
+                    </span>
+                  )}
+                </div>
+                <div className="p-2">
+                  <p className="text-xs font-medium text-gray-900 truncate">{asset.title || asset.filename}</p>
+                  <p className="text-[11px] text-gray-400">{new Date(asset.createdAt).toLocaleDateString()}</p>
+                </div>
+              </button>
+            ))}
+          </div>
+          {visibleCount < assets.length && (
+            <div className="flex justify-center mt-6">
+              <Button type="button" variant="outline" onClick={() => setVisibleCount((c) => c + PAGE_SIZE)}>
+                Load more ({assets.length - visibleCount} remaining)
+              </Button>
+            </div>
+          )}
+        </>
       )}
 
       {selected && (
