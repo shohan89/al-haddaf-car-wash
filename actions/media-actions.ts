@@ -22,14 +22,16 @@ export async function recordMediaAsset(data: {
   size?: number;
 }) {
   try {
-    await prisma.mediaAsset.upsert({
+    const asset = await prisma.mediaAsset.upsert({
       where: { url: data.url },
       update: {},
       create: data,
     });
     revalidatePath('/admin/media');
+    return asset;
   } catch (error) {
     console.error('Error recording media asset:', error);
+    return null;
   }
 }
 

@@ -1,13 +1,15 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import Image from 'next/image';
 import { toast } from 'sonner';
-import { X, Copy, Trash2, ImageOff, Check } from 'lucide-react';
+import { X, Copy, Trash2, ImageOff, Check, Upload, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { updateMediaAsset, deleteMediaAsset } from '@/actions/media-actions';
+import { compressImage } from '@/lib/compress-image';
+import { uploadToCloudinaryAndRecord } from '@/lib/upload-to-cloudinary';
 
 interface MediaAsset {
   id: string;
@@ -38,6 +40,8 @@ export function MediaLibrary({ initialAssets }: { initialAssets: MediaAsset[] })
   const [description, setDescription] = useState('');
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const openEditor = (asset: MediaAsset) => {
     setSelected(asset);
@@ -84,14 +88,48 @@ export function MediaLibrary({ initialAssets }: { initialAssets: MediaAsset[] })
     toast.success('URL copied');
   };
 
+  const handleUploadClick = () => fileInputRef.current?.click();
+
+  const handleFileSelected = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.target.value = '';
+    if (!file) return;
+
+    setUploading(true);
+    try {
+      const compressed = await compressImage(file);
+      const asset = await uploadToCloudinaryAndRecord(compressed, 'media-library');
+      setAssets((prev) => [asset, ...prev]);
+      toast.success('Image uploaded');
+      openEditor(asset);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Upload failed');
+    } finally {
+      setUploading(false);
+    }
+  };
+
   return (
     <div>
+      <input type="file" ref={fileInputRef} onChange={handleFileSelected} accept="image/*" className="hidden" />
+
+      <div className="mb-4 flex justify-end">
+        <Button type="button" onClick={handleUploadClick} disabled={uploading}>
+          {uploading ? (
+            <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Uploading...</>
+          ) : (
+            <><Upload className="w-4 h-4 mr-2" /> Upload Image</>
+          )}
+        </Button>
+      </div>
+
       {assets.length === 0 ? (
         <div className="bg-white rounded-lg border shadow-sm p-16 text-center text-gray-500">
           <ImageOff className="w-10 h-10 mx-auto mb-3 text-gray-300" />
           <p className="font-medium">No media yet</p>
           <p className="text-sm mt-1">
-            Images you upload from Services, Areas, Blogs, Reviews, or Settings will start appearing here.
+            Upload an image above, or it'll appear here automatically once you upload one from Services, Areas,
+            Blogs, Reviews, or Settings.
           </p>
         </div>
       ) : (

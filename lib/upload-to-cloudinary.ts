@@ -12,9 +12,7 @@ interface CloudinaryUploadResponse {
   bytes?: number;
 }
 
-// Uploads straight from the browser to Cloudinary using a short-lived signature
-// from the server. The image bytes never pass through our Cloudflare Worker.
-export async function uploadToCloudinary(file: File, prefix = 'uploads'): Promise<string> {
+async function uploadFile(file: File, prefix: string): Promise<CloudinaryUploadResponse & { secure_url: string }> {
   const sig = await getUploadSignature(file.name, prefix);
 
   const body = new FormData();
@@ -32,6 +30,15 @@ export async function uploadToCloudinary(file: File, prefix = 'uploads'): Promis
 
   const data = (await res.json()) as CloudinaryUploadResponse;
   if (!data.secure_url) throw new Error('Upload succeeded but no URL was returned');
+  return data as CloudinaryUploadResponse & { secure_url: string };
+}
+
+// Uploads straight from the browser to Cloudinary using a short-lived signature
+// from the server. The image bytes never pass through our Cloudflare Worker.
+// Records a Media Library entry in the background (fire-and-forget) so a slow
+// or failed DB write never blocks the actual image save.
+export async function uploadToCloudinary(file: File, prefix = 'uploads'): Promise<string> {
+  const data = await uploadFile(file, prefix);
 
   if (data.public_id) {
     recordMediaAsset({
@@ -46,4 +53,28 @@ export async function uploadToCloudinary(file: File, prefix = 'uploads'): Promis
   }
 
   return data.secure_url;
+}
+
+// Same as uploadToCloudinary, but waits for the Media Library entry to be
+// created and returns it — used by the Media Library's own upload button so
+// the SEO editor can open immediately for the new asset.
+export async function uploadToCloudinaryAndRecord(file: File, prefix = 'uploads') {
+  const data = await uploadFile(file, prefix);
+
+  if (!data.public_id) {
+    throw new Error('Upload succeeded but Cloudinary returned no public_id');
+  }
+
+  const asset = await recordMediaAsset({
+    url: data.secure_url,
+    publicId: data.public_id,
+    filename: file.name,
+    mimeType: file.type || undefined,
+    width: data.width,
+    height: data.height,
+    size: data.bytes,
+  });
+
+  if (!asset) throw new Error('Uploaded to Cloudinary, but failed to save it to the Media Library');
+  return asset;
 }
