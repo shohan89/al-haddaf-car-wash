@@ -66,14 +66,19 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   return (
     <div className="min-h-screen pt-32 pb-24 bg-white">
       <SchemaMarkup json={post.schemaMarkup} />
-      <div className="container-premium max-w-6xl grid gap-10 lg:grid-cols-[minmax(0,1fr)_260px]">
-        <div className="min-w-0">
-        <Link href="/blogs" className="inline-flex items-center text-sm font-semibold text-muted-foreground hover:text-primary transition-colors mb-8">
+      <div className="container-premium max-w-6xl">
+        <Link href="/blogs" className="inline-flex items-center text-sm font-semibold text-muted-foreground hover:text-primary transition-colors mb-6">
           <ChevronLeft size={16} className="mr-1" /> Back to all articles
         </Link>
+        {post.category && (
+          <div className="mb-4">
+            <Badge variant="secondary" className="px-3 py-1">{post.category.name}</Badge>
+          </div>
+        )}
 
+        <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_260px]">
+        <div className="min-w-0">
         <div className="space-y-6 mb-10">
-          {post.category && <Badge variant="secondary" className="px-3 py-1">{post.category.name}</Badge>}
           <h1 className="text-2xl md:text-3xl lg:text-4xl font-black tracking-tight leading-tight text-gray-900">
             {post.title}
           </h1>
@@ -107,6 +112,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         </div>
 
         <BlogSidebar categories={categories} recentPosts={recentPosts} activeCategorySlug={post.category?.slug} />
+        </div>
       </div>
     </div>
   );
