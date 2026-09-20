@@ -66,7 +66,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   return (
     <div className="min-h-screen pt-32 pb-24 bg-white">
       <SchemaMarkup json={post.schemaMarkup} />
-      <div className="container-premium max-w-6xl grid gap-12 lg:grid-cols-[minmax(0,1fr)_320px]">
+      <div className="container-premium max-w-6xl grid gap-10 lg:grid-cols-[minmax(0,1fr)_260px]">
         <div className="min-w-0">
         <Link href="/blogs" className="inline-flex items-center text-sm font-semibold text-muted-foreground hover:text-primary transition-colors mb-8">
           <ChevronLeft size={16} className="mr-1" /> Back to all articles
