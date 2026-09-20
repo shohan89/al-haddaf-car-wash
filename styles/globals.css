@@ -272,6 +272,27 @@
   margin-bottom: 0.4em;
 }
 
+/* Blog post headings: smaller than typography's prose-lg/xl defaults. */
+.prose.blog-prose h1 {
+  font-size: 1.75rem;
+  line-height: 1.25;
+}
+
+.prose.blog-prose h2 {
+  font-size: 1.5rem;
+  line-height: 1.3;
+}
+
+.prose.blog-prose h3 {
+  font-size: 1.25rem;
+  line-height: 1.35;
+}
+
+.prose.blog-prose h4 {
+  font-size: 1.125rem;
+  line-height: 1.4;
+}
+
 .prose table {
   display: block;
   overflow-x: auto;

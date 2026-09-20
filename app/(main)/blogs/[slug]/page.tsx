@@ -49,7 +49,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         
         <div className="space-y-6 mb-12">
           {post.category && <Badge variant="secondary" className="px-3 py-1">{post.category.name}</Badge>}
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-tight text-gray-900">
+          <h1 className="text-2xl md:text-3xl lg:text-4xl font-black tracking-tight leading-tight text-gray-900">
             {post.title}
           </h1>
           <div className="flex flex-wrap items-center gap-6 text-sm text-muted-foreground">
@@ -69,7 +69,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
       <div className="container-premium max-w-3xl">
         <SanitizeHTML 
-          className="prose prose-lg md:prose-xl max-w-none prose-headings:font-black prose-a:text-primary hover:prose-a:text-primary/80 prose-img:rounded-2xl" 
+          className="prose blog-prose prose-lg md:prose-xl max-w-none prose-headings:font-black prose-a:text-primary hover:prose-a:text-primary/80 prose-img:rounded-2xl" 
           html={post.content} 
         />
         
