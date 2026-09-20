@@ -18,6 +18,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { updateBookingStatus } from '@/actions/admin-actions';
 import { useRouter } from 'next/navigation';
+import type { BookingStatus } from '@prisma/client';
 
 interface BookingManagerProps {
   bookings: any[];
@@ -47,7 +48,7 @@ export function BookingManager({ bookings }: BookingManagerProps) {
     ? bookings 
     : bookings.filter(b => b.status === filter);
 
-  const handleStatusUpdate = async (id: string, status: any) => {
+  const handleStatusUpdate = async (id: string, status: BookingStatus) => {
     await updateBookingStatus(id, status);
     router.refresh();
   };

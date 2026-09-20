@@ -1,6 +1,19 @@
 'use server'
 
 import prisma from '@/lib/db'
+import { revalidatePath } from 'next/cache'
+import type { BookingStatus } from '@prisma/client'
+
+export async function updateBookingStatus(id: string, status: BookingStatus) {
+  try {
+    await prisma.booking.update({ where: { id }, data: { status } })
+    revalidatePath('/admin/bookings')
+    return { success: true }
+  } catch (error) {
+    console.error('Error updating booking status:', error)
+    return { success: false, error: 'Failed to update booking status.' }
+  }
+}
 
 export async function getDashboardStats() {
   const [

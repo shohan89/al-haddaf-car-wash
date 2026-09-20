@@ -50,7 +50,7 @@ export async function saveSiteSection(section: SiteSettingsKey, value: any) {
     });
     revalidatePath('/');
     revalidatePath('/admin/settings');
-    revalidateTag('settings', 'max');
+    revalidateTag('settings');
     return { success: true };
   } catch (error) {
     console.error('Error saving site setting:', error);
