@@ -11,14 +11,21 @@ export const dynamic = 'force-dynamic';
 
 export const generateMetadata = () => generatePageMetadata('page:blog');
 
-export default async function BlogsPage() {
-  const [posts, pageSeo] = await Promise.all([
+export default async function BlogsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ category?: string }>;
+}) {
+  const { category: categorySlug } = await searchParams;
+
+  const [posts, pageSeo, activeCategory] = await Promise.all([
     prisma.post.findMany({
-      where: { isPublished: true },
+      where: { isPublished: true, ...(categorySlug ? { category: { slug: categorySlug } } : {}) },
       orderBy: { createdAt: 'desc' },
       include: { category: true },
     }),
-    getPageSeo('page:blog')
+    getPageSeo('page:blog'),
+    categorySlug ? prisma.category.findUnique({ where: { slug: categorySlug } }) : Promise.resolve(null),
   ]);
 
   return (
@@ -31,6 +38,13 @@ export default async function BlogsPage() {
           <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
             Discover expert tips, latest trends, and comprehensive guides to keep your vehicle in pristine condition.
           </p>
+          {categorySlug && (
+            <p className="mt-6 text-sm text-muted-foreground">
+              Showing posts in <span className="font-bold text-gray-900">{activeCategory?.name ?? categorySlug}</span>
+              {' · '}
+              <Link href="/blogs" className="font-semibold text-primary hover:underline">Clear filter</Link>
+            </p>
+          )}
         </div>
 
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">

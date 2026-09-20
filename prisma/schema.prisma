@@ -153,7 +153,7 @@ model Post {
   excerpt         String
   coverImage      String?
   coverImageAltText String?
-  authorName      String   @default("Admin")
+  authorName      String   @default("Al Haddaf Car Wash")
   isPublished     Boolean  @default(false)
   readingTime     Int      @default(5)
   metaTitle       String?

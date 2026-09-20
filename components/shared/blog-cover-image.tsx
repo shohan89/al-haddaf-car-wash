@@ -11,7 +11,7 @@ export function BlogCoverImage({ src, alt }: { src: string; alt: string }) {
   if (broken) return null;
 
   return (
-    <div className="container-premium max-w-5xl mb-16">
+    <div className="mb-10">
       <div className="relative aspect-video w-full rounded-3xl overflow-hidden shadow-premium">
         <Image src={src} alt={alt} fill className="object-cover" priority onError={() => setBroken(true)} />
       </div>
