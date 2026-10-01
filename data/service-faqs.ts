@@ -198,7 +198,7 @@ export const serviceFaqs: Record<string, ServiceFaq[]> = {
     {
       question: 'Why is the bundle price lower than booking the two services separately?',
       answer:
-        'When booked together, we save on travel time, setup, and resource allocation — and we pass those savings directly to you. You get both services for AED 700 instead of AED 798 (AED 299 + AED 499).',
+        'When booked together, we save on travel time, setup, and resource allocation — and we pass those savings directly to you. You get both services for AED 700 instead of AED 848 (AED 349 + AED 499).',
     },
     {
       question: 'Is this the best service to book before selling my car?',

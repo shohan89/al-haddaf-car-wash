@@ -21,9 +21,9 @@ type FormValues = z.infer<typeof formSchema>
 
 const services = [
   'Quick Car Wash (AED 79)',
-  'Premium Car Wash (AED 129)',
+  'Premium Car Wash (AED 149)',
   'Prestige Car Wash (AED 199)',
-  'Interior Detailing (AED 299)',
+  'Interior Detailing (AED 349)',
   'Full Detailing + Polishing (AED 700)',
   'Exterior Car Polishing (AED 499)',
   'Custom Package',
@@ -36,7 +36,7 @@ export function BookingModal() {
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: { name: '', phone: '', address: '', serviceType: 'Interior Detailing (AED 299)', carModel: '' },
+    defaultValues: { name: '', phone: '', address: '', serviceType: 'Interior Detailing (AED 349)', carModel: '' },
   })
 
   useEffect(() => {

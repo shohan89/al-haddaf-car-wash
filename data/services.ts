@@ -37,7 +37,7 @@ export const services: Service[] = [
     shortDescription: 'Deep wash with a crystal-clear finish.',
     fullDescription: `<p>The Premium Car Wash goes beyond a standard rinse. We thoroughly clean both the exterior and the interior cabin, leaving your car with a crystal-clear finish that looks and feels freshly detailed.</p>
 <p>Using premium foam products, tire dressing, and streak-free window cleaning inside and out, this service delivers exceptional value for car owners who want more than the basics. A popular choice for weekly maintenance in Dubai.</p>`,
-    price: 129,
+    price: 149,
     duration: '45–60 Mins',
     image: '/images/services/premium-wash.jpg',
     features: [
@@ -55,9 +55,9 @@ export const services: Service[] = [
     ],
     isPopular: false,
     isBundle: false,
-    metaTitle: 'Premium Car Wash Dubai | AED 129 | Al Haddaf',
+    metaTitle: 'Premium Car Wash Dubai | AED 149 | Al Haddaf',
     metaDescription:
-      'Premium car wash service in Dubai for AED 129. Interior vacuum, window clean, tire dressing, and a crystal-clear exterior finish. Book now.',
+      'Premium car wash service in Dubai for AED 149. Interior vacuum, window clean, tire dressing, and a crystal-clear exterior finish. Book now.',
   },
   {
     id: 'prestige-car-wash',
@@ -95,7 +95,7 @@ export const services: Service[] = [
     shortDescription: 'Complete interior & exterior detailing for a luxury feel.',
     fullDescription: `<p>Our Interior Detailing service is the most popular choice for car owners who want their cabin to feel brand new. Using professional steam technology, premium conditioners, and extraction equipment, every inch of your interior is restored to its best condition.</p>
 <p>From steam-sanitized seats and deep-cleaned carpets to conditioned leather and UV-protected dashboards, this service eliminates bacteria, odors, and stains while protecting interior surfaces from Dubai's intense heat. Loved by families, professionals, and luxury car enthusiasts alike.</p>`,
-    price: 299,
+    price: 349,
     duration: '2–3 Hours',
     image: '/images/services/interior-detailing.jpg',
     features: [
@@ -113,9 +113,9 @@ export const services: Service[] = [
     ],
     isPopular: true,
     isBundle: false,
-    metaTitle: 'Interior Car Detailing Dubai | AED 299 | Al Haddaf',
+    metaTitle: 'Interior Car Detailing Dubai | AED 349 | Al Haddaf',
     metaDescription:
-      'Professional interior car detailing in Dubai for AED 299. Steam sanitation, leather conditioning, carpet extraction, and UV protection. Book now.',
+      'Professional interior car detailing in Dubai for AED 349. Steam sanitation, leather conditioning, carpet extraction, and UV protection. Book now.',
   },
   {
     id: 'exterior-car-polishing',
