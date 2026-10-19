@@ -99,11 +99,11 @@ export function SeoEditor({ pageSeo, pageKey, pageLabel, onBack }: SeoEditorProp
 
   const applySchemaTemplate = (type: string) => {
     let json = '';
-    if (type === 'LocalBusiness') json = SCHEMA_TEMPLATES.LocalBusiness('Al Haddaf Car Wash', '+971 55 550 3288', 'Dubai, UAE', 'https://alhaddafcarwash.ae');
-    else if (type === 'Service') json = SCHEMA_TEMPLATES.Service('Mobile Car Wash Dubai', 'Premium mobile car wash at your doorstep', '99', 'https://alhaddafcarwash.ae/services');
+    if (type === 'LocalBusiness') json = SCHEMA_TEMPLATES.LocalBusiness('Al Haddaf Car Wash', '+971 55 550 3288', 'Dubai, UAE', 'https://alhaddafcarwash.com');
+    else if (type === 'Service') json = SCHEMA_TEMPLATES.Service('Mobile Car Wash Dubai', 'Premium mobile car wash at your doorstep', '99', 'https://alhaddafcarwash.com/services');
     else if (type === 'Article') json = SCHEMA_TEMPLATES.Article('Article Title', 'Article description', 'Admin', new Date().toISOString(), '');
     else if (type === 'FAQPage') json = SCHEMA_TEMPLATES.FAQPage([{ question: 'How long does a wash take?', answer: '30–60 minutes depending on the package.' }]);
-    else if (type === 'BreadcrumbList') json = SCHEMA_TEMPLATES.BreadcrumbList([{ name: 'Home', url: 'https://alhaddafcarwash.ae' }, { name: pageLabel, url: '' }]);
+    else if (type === 'BreadcrumbList') json = SCHEMA_TEMPLATES.BreadcrumbList([{ name: 'Home', url: 'https://alhaddafcarwash.com' }, { name: pageLabel, url: '' }]);
     else json = '{\n  "@context": "https://schema.org",\n  "@type": "WebPage"\n}';
     set('schemaMarkup', json);
   };
@@ -111,7 +111,7 @@ export function SeoEditor({ pageSeo, pageKey, pageLabel, onBack }: SeoEditorProp
   // SERP preview
   const serpTitle = data.metaTitle || 'Page Title';
   const serpDesc = data.metaDescription || 'Meta description will appear here. Aim for 150–160 characters.';
-  const serpUrl = data.canonicalUrl || 'https://alhaddafcarwash.ae';
+  const serpUrl = data.canonicalUrl || 'https://alhaddafcarwash.com';
 
   return (
     <div className="space-y-6">
@@ -186,7 +186,7 @@ export function SeoEditor({ pageSeo, pageKey, pageLabel, onBack }: SeoEditorProp
                 <Textarea value={data.metaDescription || ''} onChange={e => set('metaDescription', e.target.value)} rows={3} placeholder="Describe this page in 150–160 characters…" />
               </Field>
               <Field label="Canonical URL" hint="Leave blank to use the page's default URL. Set explicitly to avoid duplicate content issues.">
-                <Input value={data.canonicalUrl || ''} onChange={e => set('canonicalUrl', e.target.value)} placeholder="https://alhaddafcarwash.ae/page" />
+                <Input value={data.canonicalUrl || ''} onChange={e => set('canonicalUrl', e.target.value)} placeholder="https://alhaddafcarwash.com/page" />
               </Field>
             </>
           )}

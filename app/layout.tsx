@@ -30,7 +30,7 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     description: settings.seo.defaultDescription,
     keywords: settings.seo.keywords,
-    metadataBase: new URL(settings.seo.canonicalUrl || 'https://alhaddafcarwash.ae'),
+    metadataBase: new URL(settings.seo.canonicalUrl || 'https://alhaddafcarwash.com'),
     openGraph: {
       type: 'website',
       title: settings.seo.defaultTitle,

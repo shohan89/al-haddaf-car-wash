@@ -24,7 +24,7 @@ export const SITE_SETTINGS_DEFAULTS = {
     titleTemplate: '%s | Al Haddaf Car Wash',
     defaultDescription: 'Premium Mobile Car Wash Services in Dubai. Professional detailing, steam cleaning, and ceramic coating at your doorstep.',
     ogImage: '/og-image.jpg',
-    canonicalUrl: 'https://alhaddafcarwash.ae',
+    canonicalUrl: 'https://alhaddafcarwash.com',
     keywords: 'car wash dubai, mobile car wash, car detailing dubai, steam car wash',
   },
   scripts: {

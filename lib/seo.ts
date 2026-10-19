@@ -26,7 +26,7 @@ export async function generatePageMetadata(pageKey: string, overrides?: {
   }
 
   const defaults = siteSettings.seo;
-  const baseUrl = defaults.canonicalUrl || 'https://alhaddafcarwash.ae';
+  const baseUrl = defaults.canonicalUrl || 'https://alhaddafcarwash.com';
 
   const title = overrides?.title || pageSeo?.metaTitle || defaults.defaultTitle;
   const description = overrides?.description || pageSeo?.metaDescription || defaults.defaultDescription;
@@ -82,7 +82,7 @@ export async function generateEntityMetadata(entity: {
     // fall through to defaults
   }
   const defaults = siteSettings.seo;
-  const baseUrl = defaults.canonicalUrl || 'https://alhaddafcarwash.ae';
+  const baseUrl = defaults.canonicalUrl || 'https://alhaddafcarwash.com';
 
   const title = entity.metaTitle || entity.title || defaults.defaultTitle;
   const description = entity.metaDescription || entity.shortDescription || entity.excerpt || defaults.defaultDescription;

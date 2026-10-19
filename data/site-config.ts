@@ -1,8 +1,8 @@
 export const siteConfig = {
   name: 'Al Haddaf Car Wash',
   description: 'Premium Mobile Car Wash Services in Dubai. Professional detailing, steam cleaning, and ceramic coating at your doorstep.',
-  url: 'https://alhaddafcarwash.ae',
-  ogImage: 'https://alhaddafcarwash.ae/og-image.jpg',
+  url: 'https://alhaddafcarwash.com',
+  ogImage: 'https://alhaddafcarwash.com/og-image.jpg',
   links: {
     instagram: 'https://instagram.com/alhaddafcarwash',
     whatsapp: 'https://wa.me/971555503288',

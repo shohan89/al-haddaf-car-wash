@@ -6,7 +6,7 @@ export const dynamic = 'force-dynamic';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const settings = await getSiteSettings();
-  const baseUrl = settings.seo.canonicalUrl || 'https://alhaddafcarwash.ae';
+  const baseUrl = settings.seo.canonicalUrl || 'https://alhaddafcarwash.com';
 
   // Static routes
   const staticRoutes = [
