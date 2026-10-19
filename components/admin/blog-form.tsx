@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
@@ -15,8 +15,12 @@ interface BlogFormProps {
   initialData?: any;
 }
 
+const TEXT_FIELD_NAMES = ['title', 'excerpt', 'slug', 'category', 'tags', 'metaTitle', 'metaDescription', 'focusKeyword', 'schemaMarkup'];
+const AUTOSAVE_INTERVAL_MS = 20_000;
+
 export function BlogForm({ initialData }: BlogFormProps) {
   const router = useRouter();
+  const formRef = useRef<HTMLFormElement>(null);
   const [loading, setLoading] = useState(false);
   const [imageUploading, setImageUploading] = useState(false);
   const [contentUploading, setContentUploading] = useState(false);
@@ -24,9 +28,83 @@ export function BlogForm({ initialData }: BlogFormProps) {
   const [content, setContent] = useState(initialData?.content || '');
   const [isPublished, setIsPublished] = useState(initialData ? !!initialData.isPublished : false);
   const uploading = imageUploading || contentUploading;
-  
+
   // Format tags for display if editing
   const initialTags = initialData?.tags?.map((t: any) => t.name).join(', ') || '';
+
+  const draftKey = `al-haddaf-blog-draft-${initialData?.id || 'new'}`;
+
+  // Autosave: periodically snapshot the form into localStorage so a failed
+  // save (or a closed tab) doesn't lose what was written. Offer to restore
+  // it once on mount if a newer draft than the loaded data exists.
+  useEffect(() => {
+    let raw: string | null = null;
+    try {
+      raw = localStorage.getItem(draftKey);
+    } catch {
+      return;
+    }
+    if (!raw) return;
+
+    let draft: { savedAt: number; fields: Record<string, string>; content: string; isPublished: boolean };
+    try {
+      draft = JSON.parse(raw);
+    } catch {
+      return;
+    }
+
+    toast('Unsaved draft found', {
+      description: `Autosaved ${new Date(draft.savedAt).toLocaleString()}. Restore it?`,
+      duration: 15_000,
+      action: {
+        label: 'Restore',
+        onClick: () => {
+          const form = formRef.current;
+          if (form) {
+            for (const [name, value] of Object.entries(draft.fields)) {
+              const field = form.elements.namedItem(name) as HTMLInputElement | HTMLTextAreaElement | null;
+              if (field) field.value = value;
+            }
+          }
+          setContent(draft.content);
+          setIsPublished(draft.isPublished);
+          toast.success('Draft restored');
+        },
+      },
+    });
+    // Only check once, on mount.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    const saveSnapshot = () => {
+      const form = formRef.current;
+      if (!form) return;
+      const fields: Record<string, string> = {};
+      for (const name of TEXT_FIELD_NAMES) {
+        const field = form.elements.namedItem(name) as HTMLInputElement | HTMLTextAreaElement | null;
+        if (field) fields[name] = field.value;
+      }
+      // Don't bother persisting an effectively-empty form.
+      if (!fields.title && !content) return;
+      try {
+        localStorage.setItem(draftKey, JSON.stringify({ savedAt: Date.now(), fields, content, isPublished }));
+      } catch {
+        // Storage full or unavailable — autosave is best-effort only.
+      }
+    };
+
+    const interval = setInterval(saveSnapshot, AUTOSAVE_INTERVAL_MS);
+    return () => clearInterval(interval);
+  }, [content, isPublished, draftKey]);
+
+  const clearDraft = () => {
+    try {
+      localStorage.removeItem(draftKey);
+    } catch {
+      // ignore
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -48,9 +126,11 @@ export function BlogForm({ initialData }: BlogFormProps) {
     const result = await saveBlog(formData);
 
     if (result.success) {
+      clearDraft();
       toast.success(initialData ? 'Blog post updated' : 'Blog post created');
       router.push('/admin/blogs');
     } else {
+      // Keep the autosaved draft — this is exactly the situation it's for.
       setError(result.error || 'Failed to save blog');
       toast.error(result.error || 'Failed to save blog');
       setLoading(false);
@@ -58,9 +138,9 @@ export function BlogForm({ initialData }: BlogFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8 max-w-5xl bg-white p-6 rounded-lg shadow-sm">
+    <form ref={formRef} onSubmit={handleSubmit} className="space-y-8 max-w-5xl bg-white p-6 rounded-lg shadow-sm">
       {error && <div className="p-3 bg-red-100 text-red-600 rounded-md">{error}</div>}
-      
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         <div className="md:col-span-2 space-y-6">
           <div>

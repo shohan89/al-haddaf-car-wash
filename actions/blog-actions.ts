@@ -81,16 +81,19 @@ export async function saveBlog(formData: FormData) {
       categoryId = category.id;
     }
 
-    // Handle Tags
-    const tagConnections = await Promise.all(tagNames.map(async (tagName) => {
+    // Handle Tags — sequentially, not Promise.all: this project's DB connection
+    // (Cloudflare Hyperdrive via a 2-connection pg pool) doesn't hold up well
+    // under several concurrent queries in one request.
+    const tagConnections: { id: string }[] = [];
+    for (const tagName of tagNames) {
       const tagSlug = slugify(tagName, { lower: true, strict: true });
       const tag = await prisma.tag.upsert({
         where: { slug: tagSlug },
         update: {},
         create: { name: tagName, slug: tagSlug }
       });
-      return { id: tag.id };
-    }));
+      tagConnections.push({ id: tag.id });
+    }
 
     if (id) {
       await prisma.post.update({
@@ -103,24 +106,50 @@ export async function saveBlog(formData: FormData) {
         },
       });
     } else {
-      await prisma.post.create({
-        data: {
-          title, slug, excerpt, content, coverImage: imageUrl, coverImageAltText, metaTitle, metaDescription,
-          focusKeyword, schemaMarkup, readingTime, isPublished,
-          categoryId,
-          tags: { connect: tagConnections }
-        },
-      });
+      try {
+        await prisma.post.create({
+          data: {
+            title, slug, excerpt, content, coverImage: imageUrl, coverImageAltText, metaTitle, metaDescription,
+            focusKeyword, schemaMarkup, readingTime, isPublished,
+            categoryId,
+            tags: { connect: tagConnections }
+          },
+        });
+      } catch (createError: any) {
+        // If this exact slug was just created (e.g. a prior click actually went
+        // through but the response was lost — a known Hyperdrive edge case),
+        // treat a near-immediate duplicate as a success instead of an error.
+        if (isUniqueSlugViolation(createError)) {
+          const existing = await prisma.post.findUnique({ where: { slug } });
+          if (existing && Date.now() - existing.createdAt.getTime() < 2 * 60 * 1000) {
+            revalidatePath('/admin/blogs');
+            revalidatePath('/blogs');
+            return { success: true };
+          }
+        }
+        throw createError;
+      }
     }
 
     revalidatePath('/admin/blogs');
     revalidatePath('/blogs');
     return { success: true };
   } catch (error: any) {
-    console.error('Error saving blog:', error);
-    if (error.code === 'P2002' && error.meta?.target?.includes('slug')) {
+    console.error('Error saving blog:', error, JSON.stringify(error?.meta));
+    if (isUniqueSlugViolation(error)) {
       return { success: false, error: 'A post with this slug or title already exists.' };
     }
     return { success: false, error: 'Failed to save blog' };
   }
+}
+
+// Driver-adapter Prisma errors (required on Cloudflare Workers) report unique
+// violations as error.meta.driverAdapterError.cause.constraint.fields, not
+// the plain error.meta.target array the native engine uses — checking only
+// `target` silently missed every real slug collision.
+function isUniqueSlugViolation(error: any): boolean {
+  if (error?.code !== 'P2002') return false;
+  const fields: string[] =
+    error.meta?.target ?? error.meta?.driverAdapterError?.cause?.constraint?.fields ?? [];
+  return Array.isArray(fields) && fields.includes('slug');
 }
