@@ -6,14 +6,6 @@ export const authConfig = {
   },
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
-      // Canonical host is the bare domain — www is live with its own 200s
-      // (no redirect), which lets Google index either, splitting signals.
-      if (nextUrl.hostname === "www.alhaddafcarwash.com") {
-        const canonical = nextUrl.clone()
-        canonical.hostname = "alhaddafcarwash.com"
-        return Response.redirect(canonical, 308)
-      }
-
       const isLoggedIn = !!auth?.user
       const isOnAdmin = nextUrl.pathname.startsWith("/admin")
       const isLogin = nextUrl.pathname === "/admin/login"
