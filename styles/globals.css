@@ -293,12 +293,18 @@
   line-height: 1.4;
 }
 
-.prose table {
-  display: block;
+/* Wraps each <table> (see components/shared/sanitize-html.tsx) so overly
+   wide tables scroll horizontally without breaking the table itself out of
+   normal table layout — that's what keeps each column's authored/resized
+   width intact instead of being stretched or losing a column's borders. */
+.table-scroll {
   overflow-x: auto;
-  border-collapse: collapse;
-  width: 100%;
   margin: 1.5em 0;
+}
+
+.prose table {
+  border-collapse: collapse;
+  margin: 0;
 }
 
 .prose table :where(th, td) {

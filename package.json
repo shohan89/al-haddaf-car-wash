@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "postinstall": "prisma generate",
-    "build:cf": "npx opennextjs-cloudflare build",
+    "build:cf": "npx opennextjs-cloudflare build --dangerouslyUseUnsupportedNextVersion",
     "preview": "npx opennextjs-cloudflare build && npx opennextjs-cloudflare preview",
     "deploy": "npx opennextjs-cloudflare build && npx opennextjs-cloudflare deploy"
   },
