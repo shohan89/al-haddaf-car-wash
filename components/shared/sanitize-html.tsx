@@ -12,7 +12,14 @@ interface SanitizeHTMLProps {
 // "resize a column" feature) get ignored and replaced with a stretched,
 // phantom-extra-column mess on the public page.
 function wrapTablesForScroll(html: string): string {
-  return html.replace(/<table(?![^>]*data-wrapped)[\s\S]*?<\/table>/gi, (table) => `<div class="table-scroll">${table}</div>`)
+  return html.replace(/<table(?![^>]*data-wrapped)[\s\S]*?<\/table>/gi, (table) => {
+    // The editor also writes an inline style="width:Npx" on <table> itself
+    // (its authored total width). Inline styles beat any stylesheet rule,
+    // including our width:100%, so it has to go — the <col> widths inside
+    // still drive each column's relative proportion under table-layout:fixed.
+    const withoutInlineWidth = table.replace(/^(<table\b[^>]*?)\s+style="[^"]*"([^>]*>)/i, '$1$2');
+    return `<div class="table-scroll">${withoutInlineWidth}</div>`;
+  })
 }
 
 // Every link in rich-text content should open in a new tab, without losing
