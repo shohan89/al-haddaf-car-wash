@@ -25,6 +25,35 @@ const nextConfig: NextConfig = {
       { source: "/car-wash-dubai", destination: "/car-wash-dubai/index.html" },
     ];
   },
+  // Added after a confirmed incident (2026-11-11): a compromised admin login
+  // was used to paste a <script src="https://jso.defacer.id/..."> tag into
+  // the Settings > Custom Head/Body Scripts fields, which render unescaped
+  // site-wide. This won't stop someone who already has valid admin
+  // credentials from editing site content, but it does stop the browser from
+  // ever executing a <script> tag pointing anywhere except our own origin
+  // and the specific analytics domains the site actually uses — so the exact
+  // payload used in that incident can't run again even if it gets pasted
+  // back in. (script-src keeps 'unsafe-inline' because Next's own hydration
+  // bootstrap script needs it; a nonce-based CSP would close that gap too
+  // but needs a larger middleware change.)
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'Content-Security-Policy',
+            value: [
+              "default-src 'self'",
+              "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://connect.facebook.net",
+              "object-src 'none'",
+              "base-uri 'self'",
+            ].join('; '),
+          },
+        ],
+      },
+    ];
+  },
   images: {
     // OpenNext's Cloudflare adapter doesn't run Next's built-in Node image
     // optimizer. Uploaded images are already compressed/resized client-side
