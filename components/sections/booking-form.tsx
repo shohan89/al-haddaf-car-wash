@@ -12,7 +12,6 @@ import { Textarea } from '@/components/ui/textarea'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { CheckCircle2, Loader2, MessageSquare, Phone, MapPin, Calendar, Clock, Car } from 'lucide-react'
-import { siteConfig } from '@/data/site-config'
 import { Service } from '@/types'
 
 interface BookingFormProps {
@@ -57,10 +56,6 @@ export function BookingForm({ services }: BookingFormProps) {
       })
       setIsSuccess(true)
       reset()
-
-      // WhatsApp Redirect
-      const message = `Hello Al Haddaf! I'd like to book a service.%0A%0A*Details:*%0A- Name: ${data.customerName}%0A- Service ID: ${data.serviceId}%0A- Area: ${data.location}%0A- Date: ${data.date}%0A- Time: ${data.time}%0A- Car: ${data.carModel}%0A%0A_Please confirm my booking._`
-      window.open(`https://wa.me/${siteConfig.phone.replace(/\D/g, '')}?text=${message}`, '_blank')
     } else {
       setError(result.error || 'Something went wrong')
     }
@@ -78,7 +73,7 @@ export function BookingForm({ services }: BookingFormProps) {
           <div className="space-y-2">
             <h3 className="text-3xl font-black">Booking Received!</h3>
             <p className="text-muted-foreground text-lg">
-              We've received your request. Redirecting you to WhatsApp for instant confirmation...
+              We've received your request. Our team will contact you shortly to confirm.
             </p>
           </div>
           <Button onClick={() => setIsSuccess(false)} variant="outline">Book Another Service</Button>

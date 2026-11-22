@@ -54,12 +54,8 @@ export function BookingModal() {
         service: values.serviceType,
         carModel: values.carModel,
       })
-      const msg = `*New Booking Request from Website*%0A%0A*Name:* ${values.name}%0A*Phone:* ${values.phone}%0A*Address:* ${values.address}%0A*Service:* ${values.serviceType}%0A*Car Model:* ${values.carModel}%0A%0A_Sent from Website Booking Form_`
-      setIsSubmitted(true)
-      setTimeout(() => window.open(`https://wa.me/971555503288?text=${msg}`, '_blank'), 2000)
-    } catch {
-      setIsSubmitted(true)
     } finally {
+      setIsSubmitted(true)
       setIsLoading(false)
     }
   }
@@ -175,25 +171,14 @@ export function BookingModal() {
             </div>
             <h2 className="text-2xl font-bold text-[#333232] mb-2">Booking Received!</h2>
             <p className="text-gray-600 mb-6">
-              Thank you, {form.getValues('name')}! We&apos;re redirecting you to WhatsApp to confirm your time slot.
+              Thank you, {form.getValues('name')}! Our team has received your request and will contact you shortly.
             </p>
-            <div className="w-full bg-gray-100 h-1.5 rounded-full overflow-hidden">
-              <div className="bg-[#2388C7] h-full" style={{ width: '100%', animation: 'progress 2s ease-in-out' }} />
-            </div>
-            <Button
-              className="mt-8 bg-[#25D366] hover:bg-[#128C7E] text-white w-full"
-              onClick={() => {
-                const v = form.getValues()
-                const msg = `*New Booking Request from Website*%0A%0A*Name:* ${v.name}%0A*Phone:* ${v.phone}%0A*Address:* ${v.address}%0A*Service:* ${v.serviceType}%0A*Car Model:* ${v.carModel}%0A%0A_Sent from Website Booking Form_`
-                window.open(`https://wa.me/971555503288?text=${msg}`, '_blank')
-              }}
-            >
-              Open WhatsApp Now
+            <Button className="w-full bg-[#2388C7] hover:bg-[#1a6ba3] text-white" onClick={handleClose}>
+              Done
             </Button>
           </div>
         )}
       </div>
-      <style>{`@keyframes progress { 0% { width: 0% } 100% { width: 100% } }`}</style>
     </div>
   )
 }
