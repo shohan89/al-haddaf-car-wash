@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { bookingSchema, type BookingInput } from '@/lib/validations'
 import { createBooking } from '@/actions/db-actions'
+import { notifyByEmail } from '@/lib/web3forms-client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -43,9 +44,20 @@ export function BookingForm({ services }: BookingFormProps) {
     const result = await createBooking(data)
     
     if (result.success) {
+      notifyByEmail(`New Booking: ${result.data?.serviceName ?? 'Service'}`, {
+        service: result.data?.serviceName ?? data.serviceId,
+        customerName: data.customerName,
+        customerEmail: data.customerEmail,
+        customerPhone: data.customerPhone,
+        carModel: data.carModel,
+        location: data.location,
+        date: data.date,
+        time: data.time,
+        notes: data.notes || '',
+      })
       setIsSuccess(true)
       reset()
-      
+
       // WhatsApp Redirect
       const message = `Hello Al Haddaf! I'd like to book a service.%0A%0A*Details:*%0A- Name: ${data.customerName}%0A- Service ID: ${data.serviceId}%0A- Area: ${data.location}%0A- Date: ${data.date}%0A- Time: ${data.time}%0A- Car: ${data.carModel}%0A%0A_Please confirm my booking._`
       window.open(`https://wa.me/${siteConfig.phone.replace(/\D/g, '')}?text=${message}`, '_blank')

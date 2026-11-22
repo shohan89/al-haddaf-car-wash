@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { contactSchema, ContactInput } from '@/lib/validations'
 import { createContactSubmission } from '@/actions/contact'
+import { notifyByEmail } from '@/lib/web3forms-client'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
@@ -36,6 +37,13 @@ export function ContactForm() {
     setServerError('')
     const result = await createContactSubmission(data)
     if (result.success) {
+      notifyByEmail(`New Contact Form Submission: ${data.subject}`, {
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        subject: data.subject,
+        message: data.message,
+      })
       setSuccess(true)
       reset()
     } else {

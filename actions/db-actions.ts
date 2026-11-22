@@ -30,8 +30,8 @@ export async function createBooking(data: any) {
     })
     
     revalidatePath('/admin/bookings') // Revalidate for admin dashboard
-    
-    return { 
+
+    return {
       success: true, 
       data: {
         id: booking.id,

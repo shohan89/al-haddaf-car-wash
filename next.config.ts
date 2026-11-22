@@ -49,7 +49,7 @@ const nextConfig: NextConfig = {
               "style-src 'self' 'unsafe-inline'",
               "img-src 'self' data: blob: https://res.cloudinary.com https://i.pravatar.cc https://*.r2.dev",
               "font-src 'self' data:",
-              "connect-src 'self' https://api.cloudinary.com https://www.google-analytics.com https://region1.google-analytics.com https://connect.facebook.net",
+              "connect-src 'self' https://api.cloudinary.com https://api.web3forms.com https://www.google-analytics.com https://region1.google-analytics.com https://connect.facebook.net",
               "frame-src 'self' https://www.google.com https://www.googletagmanager.com",
               "object-src 'none'",
               "base-uri 'self'",
