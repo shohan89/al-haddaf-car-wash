@@ -7,6 +7,7 @@ import * as z from 'zod'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { useBookingModal } from '@/contexts/BookingContext'
+import { notifyByEmail } from '@/lib/web3forms-client'
 import { CheckCircle2, MapPin, Car, Phone, User, Sparkles, ArrowLeft, X } from 'lucide-react'
 
 const formSchema = z.object({
@@ -46,10 +47,12 @@ export function BookingModal() {
   const onSubmit = async (values: FormValues) => {
     setIsLoading(true)
     try {
-      await fetch('https://formsubmit.co/ajax/Manikhossainhridoy@gmail.com', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({ ...values, _subject: `New Car Wash Booking: ${values.name}`, _template: 'table', _captcha: 'false' }),
+      await notifyByEmail(`New Car Wash Booking: ${values.name}`, {
+        name: values.name,
+        phone: values.phone,
+        address: values.address,
+        service: values.serviceType,
+        carModel: values.carModel,
       })
       const msg = `*New Booking Request from Website*%0A%0A*Name:* ${values.name}%0A*Phone:* ${values.phone}%0A*Address:* ${values.address}%0A*Service:* ${values.serviceType}%0A*Car Model:* ${values.carModel}%0A%0A_Sent from Website Booking Form_`
       setIsSubmitted(true)
