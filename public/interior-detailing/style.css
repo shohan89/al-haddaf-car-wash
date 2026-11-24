@@ -504,6 +504,9 @@ section { position: relative; }
   gap: var(--space-md);
   text-align: left;
 }
+.quote-form button[type="submit"] { background: #dd5c00; }
+.quote-form button[type="submit"]:hover { background: #c05100; }
+
 .quote-form__privacy {
   font-size: 0.72rem;
   color: rgba(255, 255, 255, 0.65);
