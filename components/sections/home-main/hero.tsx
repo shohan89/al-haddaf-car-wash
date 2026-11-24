@@ -22,7 +22,7 @@ export function Hero() {
   }, [])
 
   return (
-    <section className="relative h-[100dvh] min-h-[600px] flex items-center overflow-hidden pt-24">
+    <section className="relative min-h-[max(100dvh,600px)] flex items-center overflow-hidden py-28 lg:pt-24 lg:pb-12">
       {/* Background Image Slider */}
       {heroImages.map((image, index) => (
         <div
@@ -39,20 +39,20 @@ export function Hero() {
       <div className="container-custom relative z-10 text-white">
         <div className="max-w-3xl">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-[hsl(var(--brand-primary))]/20 backdrop-blur-sm border border-[hsl(var(--brand-primary))]/30 rounded-full text-sm font-medium text-white mb-6 animate-fade-in shadow-sm">
-            <Star className="w-4 h-4 fill-[hsl(var(--brand-primary))] text-[hsl(var(--brand-primary))]" />
+          <div className="inline-flex flex-wrap items-center gap-2 px-4 py-2 bg-[hsl(var(--brand-primary))]/20 backdrop-blur-sm border border-[hsl(var(--brand-primary))]/30 rounded-2xl sm:rounded-full text-xs sm:text-sm font-medium text-white mb-6 animate-fade-in shadow-sm">
+            <Star className="w-4 h-4 shrink-0 fill-[hsl(var(--brand-primary))] text-[hsl(var(--brand-primary))]" />
             <span>#1 Mobile Car Wash in Dubai – Trusted by Over 1,200 Car Owners</span>
           </div>
 
           {/* Headline */}
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold italic leading-tight mb-6 animate-fade-in-up drop-shadow-lg text-white">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-6xl xl:text-7xl font-bold italic leading-tight mb-6 animate-fade-in-up drop-shadow-lg text-white">
             Every Wash is a <span className="text-[hsl(var(--brand-primary))]">Masterpiece</span>.<br />
             Delivered to Your Doorstep.
           </h1>
 
           {/* Subheadline */}
           <p
-            className="text-xl md:text-2xl text-gray-200 mb-8 animate-fade-in-up drop-shadow-md bg-black/10 backdrop-blur-[1px] rounded-lg p-2 inline-block"
+            className="text-lg sm:text-xl md:text-2xl text-gray-200 mb-8 animate-fade-in-up drop-shadow-md bg-black/10 backdrop-blur-[1px] rounded-lg p-2 inline-block"
             style={{ animationDelay: '0.2s' }}
           >
             Skip the heat and the queues. We bring Dubai&apos;s #1 mobile detailing service to your home or office.
