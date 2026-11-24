@@ -287,16 +287,31 @@ section { position: relative; }
   height: var(--header-height);
   display: flex;
   align-items: center;
-  background: rgba(248, 249, 250, 0.88);
-  backdrop-filter: blur(14px) saturate(160%);
-  -webkit-backdrop-filter: blur(14px) saturate(160%);
-  border-bottom: 1px solid rgba(26, 84, 144, 0.10);
-  transition: background var(--transition-base), box-shadow var(--transition-base);
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition: background var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base);
 }
 
 .site-header.is-scrolled {
   background: rgba(255, 255, 255, 0.97);
+  backdrop-filter: blur(14px) saturate(160%);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  border-bottom: 1px solid rgba(26, 84, 144, 0.10);
   box-shadow: var(--shadow-sm);
+}
+
+/* Transparent state overlays the dark hero photo — flip the logo and the
+   outline button to light so they stay readable before the page scrolls. */
+.brand__logo { transition: filter var(--transition-base); }
+.site-header:not(.is-scrolled) .brand__logo { filter: brightness(0) invert(1); }
+.site-header:not(.is-scrolled) .btn--outline-dark {
+  color: var(--color-white);
+  border-color: rgba(255, 255, 255, 0.55);
+}
+.site-header:not(.is-scrolled) .btn--outline-dark:hover {
+  background: var(--color-white);
+  color: var(--color-primary-dark);
+  border-color: var(--color-white);
 }
 
 .site-header__inner {
@@ -330,11 +345,15 @@ section { position: relative; }
 }
 
 .hero__bg-img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0.62;
+  opacity: 0;
+  transition: opacity 1.2s ease;
 }
+.hero__bg-img.is-active { opacity: 0.62; }
 
 .hero__overlay {
   position: absolute;
@@ -504,12 +523,12 @@ section { position: relative; }
 /* ==========================================================================
    9. STATS BAR
    ========================================================================== */
-.stats { background: var(--color-surface-alt); padding-block: var(--space-lg); }
+.stats { background: var(--color-surface-alt); padding-block: 1.1rem; }
 
 .stats__grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: var(--space-md);
+  gap: var(--space-sm);
   text-align: center;
 }
 
@@ -527,7 +546,7 @@ section { position: relative; }
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--color-ink-soft);
-  margin-top: 0.25rem;
+  margin-top: 0.15rem;
 }
 
 /* ==========================================================================
@@ -973,6 +992,22 @@ section { position: relative; }
 .fab--call { background: var(--color-primary); }
 .fab--whatsapp { background: var(--color-whatsapp); animation: pulseGlow 2.4s ease infinite; }
 
+/* Mobile sticky Call/Book bar — replaces the header on phones (see the
+   mobile media query, where .site-header is hidden below 640px). */
+.mobile-cta-bar {
+  display: none;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 95;
+  gap: 0.75rem;
+  padding: 0.6rem var(--space-md) calc(0.6rem + env(safe-area-inset-bottom, 0px));
+  background: var(--color-white);
+  box-shadow: 0 -8px 24px rgba(14, 44, 77, 0.14);
+}
+.mobile-cta-bar .btn { flex: 1; }
+
 .toast {
   position: fixed;
   left: 50%;
@@ -1066,6 +1101,14 @@ section { position: relative; }
     --container-pad: 1.1rem;
   }
 
+  /* No room for a header on phones — swap it for the fixed Call/Book bar. */
+  .site-header { display: none; }
+  .mobile-cta-bar { display: flex; }
+  .fab-group { display: none !important; }
+  body { padding-bottom: 76px; }
+
+  .stats { padding-block: 0.75rem; }
+
   .hero { padding-block: var(--space-xl); }
   /* The eyebrow just restates the h1 on a narrow screen. */
   .hero__eyebrow { display: none; }
@@ -1118,6 +1161,7 @@ section { position: relative; }
   .form-group textarea { font-size: 16px; }
 
   .site-footer__inner { gap: var(--space-sm); padding-block: var(--space-md); }
+  .site-footer__bottom { padding-bottom: var(--space-md); }
 
   .fab { width: 50px; height: 50px; }
   .fab-group { right: 0.85rem; gap: 0.6rem; }

@@ -12,6 +12,7 @@
   function init() {
     setFooterYear();
     initHeaderScroll();
+    initHeroSlider();
     initFabVisibility();
     initCarousels();
     initFaqAccordion();
@@ -20,12 +21,28 @@
       formId: 'quoteForm',
       nameId: 'qName',
       phoneId: 'qPhone',
-      emailId: 'qEmail',
+      addressId: 'qAddress',
       serviceId: 'qService',
       nameErrorId: 'qNameError',
       phoneErrorId: 'qPhoneError',
-      emailErrorId: 'qEmailError'
+      addressErrorId: 'qAddressError'
     });
+  }
+
+  /* ------------------------------------------------------------------------
+     Hero background slider — same three photos/crossfade as the main site's
+     homepage hero, reimplemented here in vanilla JS for the static page.
+  ------------------------------------------------------------------------ */
+  function initHeroSlider() {
+    var slides = document.querySelectorAll('#heroSlider .hero__bg-img');
+    if (slides.length < 2) return;
+
+    var current = 0;
+    setInterval(function () {
+      slides[current].classList.remove('is-active');
+      current = (current + 1) % slides.length;
+      slides[current].classList.add('is-active');
+    }, 5000);
   }
 
   /* ------------------------------------------------------------------------
@@ -243,7 +260,7 @@
 
     var nameField = document.getElementById(config.nameId);
     var phoneField = document.getElementById(config.phoneId);
-    var emailField = document.getElementById(config.emailId);
+    var addressField = document.getElementById(config.addressId);
     var submitBtn = form.querySelector('button[type="submit"]');
 
     form.addEventListener('submit', function (e) {
@@ -263,9 +280,8 @@
         isValid = false;
       }
 
-      var emailValue = emailField ? emailField.value.trim() : '';
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue)) {
-        showError(config.emailId, config.emailErrorId, 'Please enter a valid email address.');
+      if (addressField && !addressField.value.trim()) {
+        showError(config.addressId, config.addressErrorId, 'Please enter your address.');
         isValid = false;
       }
 
