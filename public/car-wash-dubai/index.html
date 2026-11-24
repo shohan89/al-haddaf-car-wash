@@ -124,8 +124,8 @@
           <span class="btn__label-full">Call Now</span>
         </a>
         <a href="https://wa.me/971555503288?text=Hi%20Al%20Haddaf%2C%20I%27d%20like%20a%20free%20quote." target="_blank" rel="noopener" class="btn btn--accent btn--sm site-header__quote">
-          <span class="btn__label-full">Get Free Quote</span>
-          <span class="btn__label-short" aria-hidden="true">Free Quote</span>
+          <span class="btn__label-full">Book Now</span>
+          <span class="btn__label-short" aria-hidden="true">Book Now</span>
         </a>
       </div>
 
@@ -139,8 +139,10 @@
          free-quote lead form on the right
     ============================================= -->
     <section class="hero" id="hero" aria-label="Introduction">
-      <div class="hero__media" aria-hidden="true">
-        <img src="/car-wash-dubai/images/hero/hero-bg.jpg" alt="" class="hero__bg-img" width="1920" height="1080" fetchpriority="high">
+      <div class="hero__media" aria-hidden="true" id="heroSlider">
+        <img src="/Alhaddafcarwash-1.jpg" alt="" class="hero__bg-img is-active" width="1920" height="1080" fetchpriority="high">
+        <img src="/Alhaddafcarwash-2.jpg" alt="" class="hero__bg-img" width="1920" height="1080">
+        <img src="/Alhaddafcarwash-3.jpg" alt="" class="hero__bg-img" width="1920" height="1080">
         <div class="hero__overlay"></div>
         <div class="hero__glow"></div>
       </div>
@@ -214,9 +216,9 @@
             </div>
 
             <div class="form-group">
-              <label for="qEmail">Email Address</label>
-              <input type="email" id="qEmail" name="email" placeholder="you@email.com" required autocomplete="email" inputmode="email">
-              <span class="form-error" id="qEmailError"></span>
+              <label for="qAddress">Address</label>
+              <input type="text" id="qAddress" name="address" placeholder="Area, Building, Flat No." required autocomplete="street-address">
+              <span class="form-error" id="qAddressError"></span>
             </div>
 
             <div class="form-group form-group--full">
@@ -228,7 +230,7 @@
             </div>
 
             <div class="form-group form-group--full">
-              <button type="submit" class="btn btn--dark btn--block btn--lg">Get Free Quote &rarr;</button>
+              <button type="submit" class="btn btn--dark btn--block btn--lg">Book Now &rarr;</button>
               <p class="quote-form__privacy"><span aria-hidden="true">&#128274;</span> Your details stay private. We reply within 15 minutes.</p>
             </div>
           </form>
@@ -257,6 +259,50 @@
         <div class="stats__item reveal">
           <p class="stats__number">100%</p>
           <p class="stats__label">Satisfaction</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         SERVICES — Quick Car Wash, Premium Car Wash (featured)
+    ============================================= -->
+    <section class="services" id="services" aria-label="Our services">
+      <div class="container">
+        <div class="section-head">
+          <span class="pill-badge pill-badge--center reveal">Our Services</span>
+          <h2 class="section-head__title reveal">Choose Your Car Wash</h2>
+          <p class="section-head__desc reveal">From a quick exterior refresh to a full deep-clean wash, at your door.</p>
+        </div>
+
+        <div class="services__grid services__grid--duo">
+
+          <article class="service-card reveal">
+            <h3 class="service-card__title">Quick Car Wash</h3>
+            <p class="service-card__price">From AED 79</p>
+            <ul class="service-card__list">
+              <li>Fast exterior wash &amp; dry</li>
+              <li>Wheel &amp; tire clean</li>
+              <li>Window cleaning</li>
+              <li>Everyday shine, in minutes</li>
+              <li>~30 minutes</li>
+            </ul>
+            <a href="https://wa.me/971555503288?text=Hi%20Al%20Haddaf%2C%20I%27d%20like%20to%20book%20a%20Quick%20Car%20Wash." target="_blank" rel="noopener" class="btn btn--dark btn--block">Book Quick Car Wash</a>
+          </article>
+
+          <article class="service-card service-card--featured reveal">
+            <span class="pill-badge pill-badge--accent">&#11088; Most Popular</span>
+            <h3 class="service-card__title">Premium Car Wash</h3>
+            <p class="service-card__price">From AED 149</p>
+            <ul class="service-card__list">
+              <li>Deep exterior hand wash</li>
+              <li>Wheels, tires &amp; rims</li>
+              <li>Interior vacuum &amp; wipe-down</li>
+              <li>Crystal-clear glass finish</li>
+              <li>45&ndash;60 minutes</li>
+            </ul>
+            <a href="https://wa.me/971555503288?text=Hi%20Al%20Haddaf%2C%20I%27d%20like%20to%20book%20a%20Premium%20Car%20Wash." target="_blank" rel="noopener" class="btn btn--accent btn--block">Book Premium Car Wash</a>
+          </article>
+
         </div>
       </div>
     </section>
@@ -303,50 +349,6 @@
             <h3 class="feature-card__title">Fast, Doorstep Service</h3>
             <p class="feature-card__desc">We come to your home, office or parking spot across Dubai.</p>
           </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============================================
-         SERVICES — Quick Car Wash, Premium Car Wash (featured)
-    ============================================= -->
-    <section class="services" id="services" aria-label="Our services">
-      <div class="container">
-        <div class="section-head">
-          <span class="pill-badge pill-badge--center reveal">Our Services</span>
-          <h2 class="section-head__title reveal">Choose Your Car Wash</h2>
-          <p class="section-head__desc reveal">From a quick exterior refresh to a full deep-clean wash, at your door.</p>
-        </div>
-
-        <div class="services__grid services__grid--duo">
-
-          <article class="service-card reveal">
-            <h3 class="service-card__title">Quick Car Wash</h3>
-            <p class="service-card__price">From AED 79</p>
-            <ul class="service-card__list">
-              <li>Fast exterior wash &amp; dry</li>
-              <li>Wheel &amp; tire clean</li>
-              <li>Window cleaning</li>
-              <li>Everyday shine, in minutes</li>
-              <li>~30 minutes</li>
-            </ul>
-            <a href="https://wa.me/971555503288?text=Hi%20Al%20Haddaf%2C%20I%27d%20like%20to%20book%20a%20Quick%20Car%20Wash." target="_blank" rel="noopener" class="btn btn--dark btn--block">Book Quick Car Wash</a>
-          </article>
-
-          <article class="service-card service-card--featured reveal">
-            <span class="pill-badge pill-badge--accent">&#11088; Most Popular</span>
-            <h3 class="service-card__title">Premium Car Wash</h3>
-            <p class="service-card__price">From AED 149</p>
-            <ul class="service-card__list">
-              <li>Deep exterior hand wash</li>
-              <li>Wheels, tires &amp; rims</li>
-              <li>Interior vacuum &amp; wipe-down</li>
-              <li>Crystal-clear glass finish</li>
-              <li>45&ndash;60 minutes</li>
-            </ul>
-            <a href="https://wa.me/971555503288?text=Hi%20Al%20Haddaf%2C%20I%27d%20like%20to%20book%20a%20Premium%20Car%20Wash." target="_blank" rel="noopener" class="btn btn--accent btn--block">Book Premium Car Wash</a>
-          </article>
-
         </div>
       </div>
     </section>
@@ -638,6 +640,14 @@
     <a href="https://wa.me/971555503288?text=Hi%20Al%20Haddaf%2C%20I%27d%20like%20to%20book%20a%20car%20wash." target="_blank" rel="noopener" class="fab fab--whatsapp" aria-label="Chat on WhatsApp">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2Zm0 18.2c-1.6 0-3.1-.4-4.4-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.4-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.2-.6.8-.8 1-.1.2-.3.2-.5.1-1.4-.7-2.3-1.3-3.2-2.9-.2-.4.2-.4.6-1.2.1-.2 0-.4 0-.5-.1-.1-.6-1.5-.8-2-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.2-.9.9-.9 2.3s1 2.7 1.1 2.9c.1.2 2 3 4.8 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.4-.6 1.6-1.1.2-.5.2-1 .1-1.1-.1-.1-.2-.2-.4-.3Z" fill="currentColor"/></svg>
     </a>
+  </div>
+
+  <!-- ============================================
+       MOBILE STICKY CTA BAR — replaces the header on phones
+  ============================================= -->
+  <div class="mobile-cta-bar" role="group" aria-label="Call or book now">
+    <a href="tel:+971555503288" class="btn btn--outline-dark btn--lg">Call Now</a>
+    <a href="https://wa.me/971555503288?text=Hi%20Al%20Haddaf%2C%20I%27d%20like%20to%20book%20a%20car%20wash." target="_blank" rel="noopener" class="btn btn--accent btn--lg">Book Now</a>
   </div>
 
   <!-- Toast for form submission feedback -->
