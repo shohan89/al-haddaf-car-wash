@@ -281,8 +281,10 @@ section { position: relative; }
    7. HEADER
    ========================================================================== */
 .site-header {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  width: 100%;
   z-index: 100;
   height: var(--header-height);
   display: flex;
@@ -335,6 +337,9 @@ section { position: relative; }
   color: var(--color-white);
   overflow: hidden;
   padding-block: var(--space-xl);
+  /* Header is fixed and transparent over the hero, so push the content
+     (not the background) down by its height to clear the logo/CTAs. */
+  padding-top: calc(var(--header-height) + var(--space-lg));
 }
 
 .hero__media {
@@ -353,14 +358,14 @@ section { position: relative; }
   opacity: 0;
   transition: opacity 1.2s ease;
 }
-.hero__bg-img.is-active { opacity: 0.62; }
+.hero__bg-img.is-active { opacity: 0.85; }
 
 .hero__overlay {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(100deg, rgba(14, 44, 77, 0.78) 0%, rgba(14, 44, 77, 0.42) 48%, rgba(14, 44, 77, 0.22) 100%),
-    linear-gradient(180deg, rgba(14, 44, 77, 0) 0%, rgba(14, 44, 77, 0.5) 78%, var(--color-dark) 100%);
+    linear-gradient(100deg, rgba(14, 44, 77, 0.55) 0%, rgba(14, 44, 77, 0.3) 48%, rgba(14, 44, 77, 0.12) 100%),
+    linear-gradient(180deg, rgba(14, 44, 77, 0) 0%, rgba(14, 44, 77, 0.42) 78%, var(--color-dark) 100%);
 }
 
 .hero__glow {
@@ -417,6 +422,7 @@ section { position: relative; }
   margin-bottom: var(--space-md);
   letter-spacing: -0.01em;
   color: var(--color-white);
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.45);
 }
 .hero__title-accent { color: var(--color-accent-bright); }
 
@@ -426,6 +432,7 @@ section { position: relative; }
   color: rgba(255, 255, 255, 0.80);
   max-width: 38rem;
   margin-bottom: var(--space-lg);
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.35);
 }
 
 .hero__actions {
@@ -1109,7 +1116,8 @@ section { position: relative; }
 
   .stats { padding-block: 0.75rem; }
 
-  .hero { padding-block: var(--space-xl); }
+  /* No fixed header on phones, so drop the extra top clearance. */
+  .hero { padding-block: var(--space-xl); padding-top: var(--space-xl); }
   /* The eyebrow just restates the h1 on a narrow screen. */
   .hero__eyebrow { display: none; }
   .hero__title { font-size: 1.75rem; margin-bottom: 0.65rem; }
@@ -1193,5 +1201,9 @@ section { position: relative; }
    ========================================================================== */
 @media (max-width: 940px) and (max-height: 520px) and (orientation: landscape) {
   .hero__eyebrow { display: none; }
-  .hero { padding-block: var(--space-lg); }
+  .hero { padding-block: var(--space-lg); padding-top: calc(var(--header-height) + var(--space-sm)); }
+}
+
+@media (max-width: 640px) and (max-height: 520px) and (orientation: landscape) {
+  .hero { padding-top: var(--space-lg); }
 }
